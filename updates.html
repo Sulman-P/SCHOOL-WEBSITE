@@ -35,7 +35,7 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; background: #f5f7fa; }
         
         .bg-kdf-red { background-color: #B22222; }
         .bg-kdf-navy { background-color: #0a1a3a; }
@@ -151,8 +151,10 @@
             font-weight: 600;
             text-transform: uppercase;
         }
-        .category-badge.academics { background: #dbeafe; color: #1e40af; }
-        .category-badge.events { background: #fef3c7; color: #92400e; }
+        .category-badge.news { background: #dbeafe; color: #1e40af; }
+        .category-badge.updates { background: #fef3c7; color: #92400e; }
+        .category-badge.events { background: #d1fae5; color: #065f46; }
+        .category-badge.calendar { background: #ede9fe; color: #5b21b6; }
         .category-badge.career { background: #d1fae5; color: #065f46; }
         .category-badge.parents { background: #ede9fe; color: #5b21b6; }
         .category-badge.resources { background: #fce7f3; color: #be185d; }
@@ -210,6 +212,29 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         
+        .event-date-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: #B22222;
+            color: white;
+        }
+        
+        .db-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .db-status.connected { background: #d1fae5; color: #065f46; }
+        .db-status.connecting { background: #fef3c7; color: #92400e; }
+        .db-status.error { background: #fee2e2; color: #991b1b; }
+        
         @media (max-width: 640px) {
             .modal-box { padding: 20px; margin: 10px; }
         }
@@ -228,27 +253,27 @@
 <nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
-            <a href="/" class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">
                     MFA
                 </div>
                 <div>
                     <h1 class="text-white font-display font-bold text-lg leading-tight">
                         Moi Forces Academy
-                        <span class="block text-xs font-body font-normal text-kdf-gold">Comprehensive School</span>
+                        <span class="block text-xs font-body font-normal text-kdf-gold">Primary &amp; Junior School</span>
                     </h1>
                 </div>
             </a>
             
-            <div class="hidden md:flex items-center gap-8">
-                <a href="/" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
-                <a href="/about.html" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
-                <a href="/academics.html" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
-                <a href="/updates.html" class="nav-link active text-white font-medium">Updates</a>
-                <a href="/virtual-classroom.html" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Classroom</a>
-                <a href="/contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
-                <a href="/virtual-classroom.html" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2">
-                    <i class="fas fa-video"></i> Join Call
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
+                <a href="#academics" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
+                <a href="updates.html" class="nav-link active text-white font-medium">Updates</a>
+                <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Classroom</a>
+                <a href="#contact" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
+                <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2">
+                    <i class="fas fa-user-shield"></i> Admin
                 </a>
             </div>
             
@@ -260,14 +285,14 @@
     
     <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
         <div class="flex flex-col gap-3 pt-4">
-            <a href="/" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
-            <a href="/about.html" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
-            <a href="/academics.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
-            <a href="/updates.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Updates</a>
-            <a href="/virtual-classroom.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
-            <a href="/contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
-            <a href="/virtual-classroom.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
-                <i class="fas fa-video"></i> Join Virtual Class
+            <a href="index.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
+            <a href="#about" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
+            <a href="#academics" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
+            <a href="updates.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Updates</a>
+            <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
+            <a href="#contact" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
+            <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+                <i class="fas fa-user-shield"></i> Admin Dashboard
             </a>
         </div>
     </div>
@@ -286,6 +311,11 @@
             <p class="text-gray-300 text-lg mt-4 max-w-2xl mx-auto">
                 Stay up-to-date with the latest announcements, events, and news from Moi Forces Academy Nairobi.
             </p>
+            <div class="mt-4 flex justify-center gap-3 flex-wrap">
+                <span id="dbStatusUpdates" class="db-status connecting">
+                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                </span>
+            </div>
         </div>
     </div>
 </section>
@@ -302,23 +332,17 @@
                 <button class="filter-btn active px-4 py-2 border-2 border-kdf-navy text-kdf-navy rounded-full font-semibold text-sm transition" data-filter="all">
                     All
                 </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="academics">
-                    📚 Academics
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="news">
+                    📰 News
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="updates">
+                    📌 Updates
                 </button>
                 <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="events">
                     🎉 Events
                 </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="career">
-                    🎖️ Career
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="parents">
-                    👨‍👩‍👦 Parents
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="resources">
-                    📖 Resources
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="science">
-                    🔬 Science
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="calendar">
+                    📅 Calendar
                 </button>
             </div>
             
@@ -331,7 +355,6 @@
                 <select id="sortSelect" class="px-4 py-2.5 border-2 border-gray-200 rounded-full bg-white focus:border-kdf-gold focus:outline-none transition">
                     <option value="newest">Newest First</option>
                     <option value="oldest">Oldest First</option>
-                    <option value="popular">Most Popular</option>
                 </select>
             </div>
         </div>
@@ -341,9 +364,7 @@
             <p class="text-gray-600 text-sm">
                 Showing <span id="resultCount">0</span> updates
             </p>
-            <button id="viewAllBtn" class="text-kdf-red font-medium hover:text-kdf-gold transition text-sm">
-                <i class="fas fa-rss"></i> Subscribe to RSS
-            </button>
+            <span class="text-xs text-kdf-gold"><i class="fas fa-database mr-1"></i> Live from Supabase</span>
         </div>
         
         <!-- Updates Grid -->
@@ -362,8 +383,16 @@
             </button>
         </div>
         
+        <!-- Event Notice -->
+        <div class="mt-8 bg-kdf-gray rounded-2xl p-4 text-center border-l-4 border-kdf-red">
+            <p class="text-sm text-gray-600">
+                <i class="fas fa-calendar-alt text-kdf-red mr-2"></i>
+                <strong>Events from the Calendar Manager</strong> automatically appear here with the "Events" category.
+            </p>
+        </div>
+        
         <!-- Subscribe Section -->
-        <div class="mt-16 bg-kdf-gray rounded-2xl p-8 text-center">
+        <div class="mt-12 bg-kdf-gray rounded-2xl p-8 text-center">
             <h3 class="text-2xl font-display font-bold text-kdf-navy">Never Miss an Update</h3>
             <p class="text-gray-600 mt-2 max-w-lg mx-auto">
                 Subscribe to our newsletter to receive the latest school news and announcements directly in your inbox.
@@ -424,14 +453,17 @@
                     <span class="font-display font-bold text-lg">Moi Forces Academy</span>
                 </div>
                 <p class="text-gray-400 text-sm">Sponsored by the Kenya Defence Forces. Excellence Our Commitment.</p>
+                <a href="admin.html" class="inline-block mt-4 bg-kdf-gold text-kdf-navy px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition">
+                    <i class="fas fa-user-shield mr-2"></i> Admin Dashboard
+                </a>
             </div>
             <div>
                 <h4 class="font-bold text-kdf-gold mb-4">Quick Links</h4>
                 <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="/" class="hover:text-kdf-gold transition">Home</a></li>
-                    <li><a href="/about.html" class="hover:text-kdf-gold transition">About</a></li>
-                    <li><a href="/academics.html" class="hover:text-kdf-gold transition">Academics</a></li>
-                    <li><a href="/updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
+                    <li><a href="index.html" class="hover:text-kdf-gold transition">Home</a></li>
+                    <li><a href="#about" class="hover:text-kdf-gold transition">About</a></li>
+                    <li><a href="#academics" class="hover:text-kdf-gold transition">Academics</a></li>
+                    <li><a href="updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
                 </ul>
             </div>
             <div>
@@ -462,239 +494,153 @@
 <!-- ════════════════════════════════════════ -->
 <!-- JAVASCRIPT -->
 <!-- ════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // DATA (Simulates CMS / Supabase)
+    // SUPABASE CONFIG
     // ────────────────────────────────────────────────
-    const updatesData = [
-        {
-            id: 1,
-            title: 'KJSEA 2026 Preparation Underway',
-            date: '2026-06-15',
-            category: 'Academics',
-            image: '📚',
-            summary: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations. Teachers have developed comprehensive revision materials covering all subjects.',
-            content: `
-                <p>The Kenya Junior Secondary Education Assessment (KJSEA) 2026 is fast approaching, and our Grade 9 students are working diligently to prepare for this important milestone.</p>
-                <h2>Preparation Strategy</h2>
-                <p>Our dedicated team of teachers has developed a comprehensive revision program that includes:</p>
-                <ul>
-                    <li>Weekly revision tests covering all subjects</li>
-                    <li>Past paper analysis and practice sessions</li>
-                    <li>Individualized support for students needing extra help</li>
-                    <li>Mock examinations to build confidence</li>
-                </ul>
-                <p>We encourage all parents to support their children during this critical period by providing a conducive environment for study.</p>
-                <h3>Key Dates</h3>
-                <ul>
-                    <li>Mock Assessment 1: March 2026</li>
-                    <li>Mock Assessment 2: July 2026</li>
-                    <li>Final Assessment(KJSEA): November 2026</li>
-                </ul>
-            `
-        },
-        {
-            id: 2,
-            title: 'Annual Sports Day - Coming Soon',
-            date: '2026-07-06',
-            category: 'Events',
-            image: '🏃',
-            summary: 'Our annual sports day is scheduled for July 2026. All students are encouraged to participate in various ball games events.',
-            content: `
-                <p>The Moi Forces Academy Annual Sports Day is returning in July 2026! This exciting event brings together students, teachers, and stakeholders for a day of sports competition and school spirit.</p>
-                <h2>Event Details</h2>
-                <ul>
-                    <li><strong>Date:</strong> July, 2026</li>
-                    <li><strong>Time:</strong> 8:00 AM - 5:00 PM</li>
-                    <li><strong>Venue:</strong> MFA Sports Grounds</li>
-                </ul>
-                <h3>Activities</h3>
-                <ul>
-                    <li>Football Events (Student vs students(Boys), Students vs Teachers, Girls vs Girls(Students))</li>
-                    <li>Netball Girls and Boys</li>
-                    <li>Other Ball Games (Volleyball, Basketball)</li>
-                    <li>Staff vs Students Friendly Matches</li>
-                </ul>
-                <p>All students are encouraged to participate. Parents and guardians are warmly invited to attend and support our young stars.</p>
-            `
-        },
-        {
-            id: 3,
-            title: 'KDF Career Day 2026',
-            date: '2026-03-21',
-            category: 'Career',
-            image: '🎖️',
-            summary: 'Kenya Defence Forces will host a career day at our school. Students will learn about various career opportunities in the military and outside world.',
-            content: `
-                <p>The Kenya Defence Forces (KDF) will be hosting a Career Day at Moi Forces Academy on March 21, 2026. This is a unique opportunity for our students to explore exciting career opportunities in the military and outside world.</p>
-                <h2>What to Expect</h2>
-                <ul>
-                    <li>Presentations from KDF officers on various career paths</li>
-                    <li>Interactive sessions on leadership and discipline</li>
-                    <li>Information on recruitment and training programs</li>
-                    <li>Q&A sessions with serving officers</li>
-                </ul>
-                <h3>Career Pathways</h3>
-                <ul>
-                    <li>Military Officer Training</li>
-                    <li>Technical and Engineering Careers</li>
-                    <li>Medical and Health Services</li>
-                    <li>Logistics and Administration</li>
-                    <li>Aviation and Naval Careers</li>
-                </ul>
-                <p>All students from Grade 7 to Grade 9 are encouraged to attend. This is a great opportunity to learn about how you can serve your country while building a rewarding career.</p>
-            `
-        },
-        {
-            id: 4,
-            title: 'Parent-Teacher Conference',
-            date: '2026-01-25',
-            category: 'Parents',
-            image: '👨‍👩‍👦',
-            summary: 'The term 1 parent-teacher conference will be held on January 30th. Parents are invited to discuss their children\'s progress.',
-            content: `
-                <p>The Term 1 Parent-Teacher Conference will take place on January 30, 2026. This is an important opportunity for parents to meet with teachers and discuss their children's academic progress and overall development.</p>
-                <h2>Schedule</h2>
-                <ul>
-                    <li><strong>Date:</strong> January 30, 2026</li>
-                    <li><strong>Time:</strong> 8:00 AM - 4:00 PM</li>
-                    <li><strong>Venue:</strong> MFA School Hall</li>
-                </ul>
-                <h3>What to Discuss</h3>
-                <ul>
-                    <li>Academic performance and progress</li>
-                    <li>Behavior and social development</li>
-                    <li>Areas of improvement and support needed</li>
-                    <li>Extra-curricular activities and interests</li>
-                    <li>Goal setting for the rest of the term</li>
-                </ul>
-                <p>Parents are requested to arrive early and check in at the registration desk. We look forward to a productive and engaging conference.</p>
-            `
-        },
-        {
-            id: 5,
-            title: 'New CBC Resources Available',
-            date: '2026-01-05',
-            category: 'Resources',
-            image: '📖',
-            summary: 'We have updated our CBC resources for all grades. Teachers and students can access the new materials through the school portal.',
-            content: `
-                <p>We are excited to announce that new Competency-Based Curriculum (CBC) resources are now available for all grades. These materials have been carefully curated and aligned with the latest KICD curriculum designs.</p>
-                <h2>What's New</h2>
-                <ul>
-                    <li>Updated lesson plans for all subjects</li>
-                    <li>New assessment tools and rubrics</li>
-                    <li>Interactive learning materials for students</li>
-                    <li>Teacher guides and reference materials</li>
-                    <li>Digital resources for blended learning</li>
-                </ul>
-                <h3>How to Access</h3>
-                <p>Teachers can access these resources through the school portal. Students will receive materials through their respective class platforms. For any questions or technical support, please contact the IT Department.</p>
-            `
-        },
-        {
-            id: 6,
-            title: 'MFA Science Fair 2026',
-            date: '2026-02-01',
-            category: 'Science',
-            image: '🔬',
-            summary: 'The annual MFA Science Fair will take place in February. Students are preparing their projects for this exciting event.',
-            content: `
-                <p>The Moi Forces Academy Science Fair is back and bigger than ever! This year's event will showcase the creativity and innovation of our students across all grades.</p>
-                <h2>Event Details</h2>
-                <ul>
-                    <li><strong>Date:</strong> February 21, 2026</li>
-                    <li><strong>Time:</strong> 9:00 AM - 4:00 PM</li>
-                    <li><strong>Venue:</strong> MFA School Hall</li>
-                </ul>
-                <h3>Categories</h3>
-                <ul>
-                    <li>Biology and Life Sciences</li>
-                    <li>Chemistry and Materials Science</li>
-                    <li>Physics and Engineering</li>
-                    <li>Environmental Science</li>
-                    <li>Computer Science and Robotics</li>
-                </ul>
-                <p>Students are busy preparing their projects. Parents and community members are invited to attend and see the incredible work our students are doing.</p>
-            `
-        },
-        {
-            id: 7,
-            title: 'MFA Achieves 100% KJSEA Pass Rate',
-            date: '2026-01-02',
-            category: 'Academics',
-            image: '🏆',
-            summary: 'Moi Forces Academy has achieved a 100% pass rate in the KJSEA examinations. Congratulations to all our students and teachers!',
-            content: `
-                <p>We are proud to announce that Moi Forces Academy has achieved a <strong>100% pass rate</strong> in the KJSEA examinations! This outstanding achievement is a testament to the hard work of our students and the dedication of our teaching staff.</p>
-                <h2>Results Highlights</h2>
-                <ul>
-                    <li>100% of students qualified for university admission</li>
-                    <li>200 students scored Exceeding Expectation One(EE1) </li>
-                    <li>Students achieved top grades in Mathematics, English, and Integrated Sciences</li>
-                    <li>Our students ranked among the top performers in Nairobi</li>
-                </ul>
-                <p>We extend our heartfelt congratulations to all our students, parents, and teachers for this remarkable achievement. This success reaffirms our commitment to academic excellence and holistic education.</p>
-            `
-        },
-        {
-            id: 8,
-            title: 'New School Uniforms Available',
-            date: '2025-12-20',
-            category: 'Resources',
-            image: '👕',
-            summary: 'The new school uniforms are now in stock at the school shop outlet. Parents are encouraged to purchase uniforms for the new term.',
-            content: `
-                <p>The new Moi Forces Academy school uniforms are now available at the school shop outlets. Parents are encouraged to purchase uniforms for their children ahead of the new term.</p>
-                <h2>Uniform Details</h2>
-                <ul>
-                    <li><strong>Available:</strong> Now in stock</li>
-                    <li><strong>Location:</strong> MFA School Shop outlets</li>
-                    <li><strong>Hours:</strong> Monday - Friday, 8:00 AM - 5:00 PM</li>
-                    <li><strong>Payment:</strong> Cash or M-PESA</li>
-                </ul>
-                <h3>Items Available</h3>
-                <ul>
-                    <li>School Shirts (All sizes)</li>
-                    <li>School Trousers/Skirts</li>
-                    <li>School Sweaters</li>
-                    <li>PE Kits</li>
-                    <li>School Ties</li>
-                </ul>
-                <p>Parents are advised to purchase uniforms early to avoid the rush. Discounts are available for bulk purchases.</p>
-            `
-        }
-    ];
+    const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
 
     // ────────────────────────────────────────────────
     // STATE
     // ────────────────────────────────────────────────
-    let filteredData = [...updatesData];
+    let allItems = [];
+    let filteredData = [];
     let currentPage = 1;
     const itemsPerPage = 6;
     let currentFilter = 'all';
     let searchTerm = '';
+    let sbClient = null;
 
     // ────────────────────────────────────────────────
-    // RENDER FUNCTIONS
+    // SUPABASE INITIALIZATION
     // ────────────────────────────────────────────────
-    function renderUpdates() {
-        const container = document.getElementById('updatesGrid');
-        if (!container) return;
+    function initSupabase() {
+        try {
+            sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client initialized');
+            return true;
+        } catch (error) {
+            console.error('❌ Supabase initialization error:', error);
+            return false;
+        }
+    }
 
-        // Filter and search
-        let data = [...updatesData];
+    function updateDbStatus(status, message) {
+        const statusEl = document.getElementById('dbStatusUpdates');
+        if (!statusEl) return;
+        
+        statusEl.className = `db-status ${status}`;
+        if (status === 'connected') {
+            statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Supabase'}`;
+        } else if (status === 'connecting') {
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Loading...'}`;
+        } else {
+            statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // FETCH FROM SUPABASE
+    // ────────────────────────────────────────────────
+    async function fetchPostsFromSupabase() {
+        try {
+            updateDbStatus('connecting', 'Fetching from Supabase...');
+            
+            if (!sbClient) initSupabase();
+            
+            // Fetch posts from Supabase
+            const { data: postsData, error: postsError } = await sbClient
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (postsError) throw new Error(postsError.message);
+            
+            console.log('📊 Posts fetched from Supabase:', postsData?.length || 0);
+            
+            // Fetch events from Supabase
+            const { data: eventsData, error: eventsError } = await sbClient
+                .from('events')
+                .select('*')
+                .order('event_date', { ascending: true });
+            
+            if (eventsError) throw new Error(eventsError.message);
+            
+            console.log('📅 Events fetched from Supabase:', eventsData?.length || 0);
+            
+            // Convert events to post format
+            const eventPosts = (eventsData || []).map(e => ({
+                id: `evt_${e.id}`,
+                title: `📅 ${e.title}`,
+                category: 'events',
+                content: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`,
+                date: e.date || e.event_date || new Date().toISOString().split('T')[0],
+                image: '📅',
+                isEvent: true,
+                eventDate: e.date || e.event_date,
+                summary: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`
+            }));
+            
+            // Convert posts
+            const postItems = (postsData || []).map(p => ({
+                ...p,
+                isEvent: false,
+                summary: p.content ? p.content.substring(0, 150) + '...' : 'No description',
+                image: p.image || '📄'
+            }));
+            
+            // Combine and sort by date (newest first)
+            allItems = [...postItems, ...eventPosts];
+            allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            updateDbStatus('connected', `Supabase (${allItems.length} items)`);
+            
+            // Apply filters and render
+            applyFiltersAndRender();
+            
+        } catch (error) {
+            console.error('Error fetching from Supabase:', error);
+            updateDbStatus('error', 'Failed to fetch data');
+            // Fallback to sample data
+            loadSampleData();
+        }
+    }
+
+    function loadSampleData() {
+        const samplePosts = [
+            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚', summary: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.' },
+            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃', summary: 'Our annual sports day is scheduled for February 2026.' },
+            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️', summary: 'Kenya Defence Forces will host a career day at our school.' },
+            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦', summary: 'The term 1 parent-teacher conference will be held on January 30th.' },
+            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖', summary: 'We have updated our CBC resources for all grades.' },
+            { id: 6, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', date: '2026-01-05', image: '🏫', summary: 'School reopens on January 15, 2026 for Term 1.' },
+            { id: 7, title: 'MFA Science Fair 2026', category: 'events', content: 'The annual MFA Science Fair will take place in February.', date: '2026-02-01', image: '🔬', summary: 'The annual MFA Science Fair will take place in February.' },
+            { id: 8, title: 'KJSEA Achieves 100% Pass Rate', category: 'news', content: 'Moi Forces Academy has achieved a 100% pass rate in the KJSEA examinations.', date: '2026-01-02', image: '🏆', summary: 'Moi Forces Academy has achieved a 100% pass rate in the KJSEA examinations.' },
+        ];
+        
+        allItems = samplePosts;
+        updateDbStatus('connected', 'Sample Data');
+        applyFiltersAndRender();
+    }
+
+    // ────────────────────────────────────────────────
+    // FILTER & RENDER
+    // ────────────────────────────────────────────────
+    function applyFiltersAndRender() {
+        let data = [...allItems];
         
         if (currentFilter !== 'all') {
-            data = data.filter(item => item.category.toLowerCase() === currentFilter);
+            data = data.filter(item => item.category?.toLowerCase() === currentFilter);
         }
         
         if (searchTerm.trim()) {
             const term = searchTerm.toLowerCase().trim();
             data = data.filter(item => 
-                item.title.toLowerCase().includes(term) ||
-                item.summary.toLowerCase().includes(term) ||
-                item.category.toLowerCase().includes(term)
+                (item.title || '').toLowerCase().includes(term) ||
+                (item.summary || item.content || '').toLowerCase().includes(term) ||
+                (item.category || '').toLowerCase().includes(term)
             );
         }
 
@@ -704,26 +650,29 @@
             data.sort((a, b) => new Date(b.date) - new Date(a.date));
         } else if (sortBy === 'oldest') {
             data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        } else {
-            // Popular - by id (simulated)
-            data.sort((a, b) => b.id - a.id);
         }
 
         filteredData = data;
-        
-        // Pagination
-        const totalItems = data.length;
+        renderUpdates();
+    }
+
+    // ────────────────────────────────────────────────
+    // RENDER FUNCTIONS
+    // ────────────────────────────────────────────────
+    function renderUpdates() {
+        const container = document.getElementById('updatesGrid');
+        if (!container) return;
+
+        const totalItems = filteredData.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
         
         const start = (currentPage - 1) * itemsPerPage;
         const end = Math.min(start + itemsPerPage, totalItems);
-        const pageItems = data.slice(start, end);
+        const pageItems = filteredData.slice(start, end);
 
-        // Update result count
         document.getElementById('resultCount').textContent = totalItems;
 
-        // Update pagination
         document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.max(1, totalPages)}`;
         document.getElementById('prevPage').disabled = currentPage === 1;
         document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
@@ -742,23 +691,29 @@
             return;
         }
 
-        container.innerHTML = pageItems.map(update => {
-            const categoryClass = update.category.toLowerCase();
+        container.innerHTML = pageItems.map(item => {
+            const categoryClass = item.category || 'default';
+            const isEvent = item.isEvent || false;
+            const isLive = !item.isEvent && typeof item.id === 'number';
+            
             return `
-                <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100" onclick="openArticle(${update.id})" role="button" tabindex="0" aria-label="Read more about ${update.title}">
+                <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100" onclick="openArticle('${item.id}')" role="button" tabindex="0" aria-label="Read more about ${item.title}">
                     <div class="p-6">
                         <div class="flex items-center gap-3 mb-3">
-                            <span class="text-3xl">${update.image || '📄'}</span>
-                            <span class="category-badge ${categoryClass}">${update.category}</span>
+                            <span class="text-3xl">${item.image || '📄'}</span>
+                            <span class="category-badge ${categoryClass}">${item.category || 'General'}</span>
+                            ${isEvent ? `<span class="event-date-badge">📅 Event</span>` : ''}
+                            ${isLive ? `<span class="text-xs text-kdf-gold ml-auto">🟢 Live</span>` : ''}
                         </div>
-                        <h3 class="text-lg font-bold text-kdf-navy line-clamp-2">${update.title}</h3>
-                        <p class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> ${new Date(update.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        <p class="text-gray-600 mt-3 text-sm leading-relaxed line-clamp-3">${update.summary}</p>
+                        <h3 class="text-lg font-bold text-kdf-navy line-clamp-2">${item.title}</h3>
+                        <p class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> ${new Date(item.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        ${isEvent ? `<p class="text-xs text-kdf-red mt-1"><i class="fas fa-calendar-check mr-1"></i> Event on ${new Date(item.eventDate || item.date).toLocaleDateString()}</p>` : ''}
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed line-clamp-3">${item.summary || item.content || 'No description'}</p>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-kdf-gold font-semibold text-sm hover:text-kdf-red transition">
                                 Read More <i class="fas fa-arrow-right ml-1"></i>
                             </span>
-                            <button class="text-gray-400 hover:text-kdf-red transition" onclick="event.stopPropagation(); shareArticle(${update.id})" aria-label="Share this article">
+                            <button class="text-gray-400 hover:text-kdf-red transition" onclick="event.stopPropagation(); shareArticle('${item.id}')" aria-label="Share this article">
                                 <i class="fas fa-share-alt"></i>
                             </button>
                         </div>
@@ -772,15 +727,23 @@
     // ARTICLE MODAL
     // ────────────────────────────────────────────────
     function openArticle(id) {
-        const article = updatesData.find(item => item.id === id);
+        const article = allItems.find(item => String(item.id) === String(id));
         if (!article) return;
 
-        document.getElementById('modalCategory').textContent = article.category;
-        document.getElementById('modalCategory').className = `category-badge ${article.category.toLowerCase()}`;
+        document.getElementById('modalCategory').textContent = article.category || 'General';
+        document.getElementById('modalCategory').className = `category-badge ${article.category || 'default'}`;
         document.getElementById('modalTitle').textContent = article.title;
         document.getElementById('modalDate').textContent = new Date(article.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' });
         document.getElementById('modalImage').textContent = article.image || '📄';
-        document.getElementById('modalContent').innerHTML = article.content || article.summary;
+        
+        let content = article.content || article.summary || 'No content available.';
+        if (article.isEvent) {
+            content += `<div class="mt-4 p-4 bg-kdf-red/10 rounded-lg border border-kdf-red/20">
+                <p class="text-sm font-semibold text-kdf-red"><i class="fas fa-calendar-check mr-2"></i> Event Date: ${new Date(article.eventDate || article.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <p class="text-sm text-gray-600 mt-1">This is a calendar event from the school administration.</p>
+            </div>`;
+        }
+        document.getElementById('modalContent').innerHTML = content;
         
         document.getElementById('articleModal').classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -792,17 +755,16 @@
     }
 
     function shareArticle(id) {
-        const article = updatesData.find(item => item.id === id);
+        const article = allItems.find(item => String(item.id) === String(id));
         if (!article) return;
         
         if (navigator.share) {
             navigator.share({
                 title: article.title,
-                text: article.summary,
+                text: article.summary || article.content || '',
                 url: window.location.href + '?article=' + id
             }).catch(() => {});
         } else {
-            // Fallback: copy link
             const url = window.location.href + '?article=' + id;
             navigator.clipboard.writeText(url).then(() => {
                 showToast('Link copied to clipboard!', 'success');
@@ -821,19 +783,19 @@
             this.classList.add('active');
             currentFilter = this.dataset.filter;
             currentPage = 1;
-            renderUpdates();
+            applyFiltersAndRender();
         });
     });
 
     document.getElementById('searchInput').addEventListener('input', function() {
         searchTerm = this.value;
         currentPage = 1;
-        renderUpdates();
+        applyFiltersAndRender();
     });
 
     document.getElementById('sortSelect').addEventListener('change', function() {
         currentPage = 1;
-        renderUpdates();
+        applyFiltersAndRender();
     });
 
     function resetFilters() {
@@ -844,7 +806,7 @@
         currentFilter = 'all';
         searchTerm = '';
         currentPage = 1;
-        renderUpdates();
+        applyFiltersAndRender();
     }
 
     // ────────────────────────────────────────────────
@@ -883,15 +845,12 @@
             return;
         }
 
-        // Simulate subscription
         feedback.className = 'mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm';
         feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Thank you for subscribing! You\'ll receive our latest updates.';
         feedback.classList.remove('hidden');
         form.reset();
         
-        setTimeout(() => {
-            feedback.classList.add('hidden');
-        }, 5000);
+        setTimeout(() => feedback.classList.add('hidden'), 5000);
     }
 
     // ────────────────────────────────────────────────
@@ -911,7 +870,6 @@
         `;
         document.body.appendChild(toast);
         
-        // Animate in
         requestAnimationFrame(() => {
             toast.classList.remove('translate-y-20', 'opacity-0');
         });
@@ -938,6 +896,8 @@
     // MOBILE MENU
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
+        initSupabase();
+        
         const menuToggle = document.getElementById('menuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
 
@@ -949,7 +909,6 @@
             });
         }
 
-        // Close mobile menu on link click
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.remove('open');
@@ -958,24 +917,23 @@
             });
         });
 
-        // Close modal on overlay click
         document.getElementById('articleModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // Initial render
-        renderUpdates();
+        // Fetch data from Supabase
+        fetchPostsFromSupabase();
 
         // Handle URL params for direct article links
         const params = new URLSearchParams(window.location.search);
         const articleId = params.get('article');
         if (articleId) {
             setTimeout(() => {
-                const id = parseInt(articleId);
-                if (!isNaN(id) && updatesData.some(u => u.id === id)) {
+                const id = articleId;
+                if (allItems.some(item => String(item.id) === String(id))) {
                     openArticle(id);
                 }
-            }, 500);
+            }, 1000);
         }
     });
 
@@ -990,9 +948,9 @@
     window.showToast = showToast;
 
     console.log('📰 Updates page loaded successfully!');
-    console.log(`📊 ${updatesData.length} updates available`);
+    console.log('📊 Connected to Supabase PostgreSQL');
+    console.log('🔑 Supabase URL:', SUPABASE_URL);
     console.log('♿ Accessibility features enabled');
 </script>
-
 </body>
 </html>
