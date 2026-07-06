@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School Updates — Moi Forces Academy</title>
+    <meta name="description" content="Stay updated with the latest news, announcements, and events from Moi Forces Academy Nairobi." />
+    <meta name="keywords" content="Moi Forces Academy, school updates, news, announcements, Nairobi, KDF" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kdf-red': '#B22222',
+                        'kdf-navy': '#0a1a3a',
+                        'kdf-light-blue': '#4A90D9',
+                        'kdf-gold': '#D4A017',
+                        'kdf-white': '#FFFFFF',
+                        'kdf-gray': '#F5F5F5',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        
+        .bg-kdf-red { background-color: #B22222; }
+        .bg-kdf-navy { background-color: #0a1a3a; }
+        .bg-kdf-gold { background-color: #D4A017; }
+        .text-kdf-red { color: #B22222; }
+        .text-kdf-navy { color: #0a1a3a; }
+        .text-kdf-gold { color: #D4A017; }
+        .border-kdf-red { border-color: #B22222; }
+        .border-kdf-gold { border-color: #D4A017; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+        
+        .update-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .update-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D4A017;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link:hover { color: #D4A017; }
+        
+        .mobile-menu {
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D4A017;
+            color: #0a1a3a;
+            padding: 12px 24px;
+            z-index: 9999;
+            font-weight: 700;
+            border-radius: 0 0 8px 8px;
+            transition: top 0.3s ease;
+        }
+        .skip-link:focus { top: 0; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #B22222; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8B1A1A; }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #D4A017;
+            color: #0a1a3a;
+            border-color: #D4A017;
+        }
+        
+        .pagination-btn {
+            transition: all 0.3s ease;
+        }
+        .pagination-btn:hover:not(:disabled) {
+            background: #D4A017;
+            color: #0a1a3a;
+            border-color: #D4A017;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .category-badge.academics { background: #dbeafe; color: #1e40af; }
+        .category-badge.events { background: #fef3c7; color: #92400e; }
+        .category-badge.career { background: #d1fae5; color: #065f46; }
+        .category-badge.parents { background: #ede9fe; color: #5b21b6; }
+        .category-badge.resources { background: #fce7f3; color: #be185d; }
+        .category-badge.science { background: #ccfbf1; color: #0d9488; }
+        .category-badge.default { background: #e5e7eb; color: #374151; }
+        
+        .article-content {
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        .article-content p { margin-bottom: 1rem; }
+        .article-content ul, .article-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .article-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #0a1a3a; }
+        .article-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #0a1a3a; }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        @media (max-width: 640px) {
+            .modal-box { padding: 20px; margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SKIP LINK -->
+<!-- ════════════════════════════════════════ -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ════════════════════════════════════════ -->
+<!-- NAVIGATION -->
+<!-- ════════════════════════════════════════ -->
+<nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">
+                    MFA
+                </div>
+                <div>
+                    <h1 class="text-white font-display font-bold text-lg leading-tight">
+                        Moi Forces Academy
+                        <span class="block text-xs font-body font-normal text-kdf-gold">Comprehensive School</span>
+                    </h1>
+                </div>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="/" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="/about.html" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
+                <a href="/academics.html" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
+                <a href="/updates.html" class="nav-link active text-white font-medium">Updates</a>
+                <a href="/virtual-classroom.html" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Classroom</a>
+                <a href="/contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
+                <a href="/virtual-classroom.html" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2">
+                    <i class="fas fa-video"></i> Join Call
+                </a>
+            </div>
+            
+            <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-expanded="false" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
+        <div class="flex flex-col gap-3 pt-4">
+            <a href="/" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
+            <a href="/about.html" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
+            <a href="/academics.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
+            <a href="/updates.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Updates</a>
+            <a href="/virtual-classroom.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
+            <a href="/contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
+            <a href="/virtual-classroom.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+                <i class="fas fa-video"></i> Join Virtual Class
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════════════ -->
+<!-- HERO SECTION -->
+<!-- ════════════════════════════════════════ -->
+<section class="hero-gradient py-20 relative" aria-label="Updates page header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center">
+            <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 text-kdf-gold text-sm font-medium mb-4">
+                <i class="fas fa-newspaper"></i> Stay Informed
+            </span>
+            <h1 class="text-4xl md:text-5xl font-display font-bold text-white">School Updates &amp; News</h1>
+            <p class="text-gray-300 text-lg mt-4 max-w-2xl mx-auto">
+                Stay up-to-date with the latest announcements, events, and news from Moi Forces Academy Nairobi.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- MAIN CONTENT -->
+<!-- ════════════════════════════════════════ -->
+<main id="main-content" class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Filter & Search Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-btn active px-4 py-2 border-2 border-kdf-navy text-kdf-navy rounded-full font-semibold text-sm transition" data-filter="all">
+                    All
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="academics">
+                    📚 Academics
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="events">
+                    🎉 Events
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="career">
+                    🎖️ Career
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="parents">
+                    👨‍👩‍👦 Parents
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="resources">
+                    📖 Resources
+                </button>
+                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="science">
+                    🔬 Science
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="relative flex-1 sm:flex-none">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="searchInput" placeholder="Search updates..." 
+                           class="pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-full w-full sm:w-64 focus:border-kdf-gold focus:outline-none transition" />
+                </div>
+                <select id="sortSelect" class="px-4 py-2.5 border-2 border-gray-200 rounded-full bg-white focus:border-kdf-gold focus:outline-none transition">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="popular">Most Popular</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Results Count -->
+        <div class="flex justify-between items-center mb-6">
+            <p class="text-gray-600 text-sm">
+                Showing <span id="resultCount">0</span> updates
+            </p>
+            <button id="viewAllBtn" class="text-kdf-red font-medium hover:text-kdf-gold transition text-sm">
+                <i class="fas fa-rss"></i> Subscribe to RSS
+            </button>
+        </div>
+        
+        <!-- Updates Grid -->
+        <div id="updatesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards rendered by JavaScript -->
+        </div>
+        
+        <!-- Pagination -->
+        <div class="flex justify-center items-center gap-4 mt-10 pt-8 border-t border-gray-200">
+            <button id="prevPage" class="pagination-btn px-5 py-2.5 border-2 border-gray-300 rounded-lg font-semibold text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed">
+                <i class="fas fa-chevron-left mr-2"></i> Previous
+            </button>
+            <span id="pageInfo" class="text-gray-600 font-medium">Page 1 of 1</span>
+            <button id="nextPage" class="pagination-btn px-5 py-2.5 border-2 border-gray-300 rounded-lg font-semibold text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed">
+                Next <i class="fas fa-chevron-right ml-2"></i>
+            </button>
+        </div>
+        
+        <!-- Subscribe Section -->
+        <div class="mt-16 bg-kdf-gray rounded-2xl p-8 text-center">
+            <h3 class="text-2xl font-display font-bold text-kdf-navy">Never Miss an Update</h3>
+            <p class="text-gray-600 mt-2 max-w-lg mx-auto">
+                Subscribe to our newsletter to receive the latest school news and announcements directly in your inbox.
+            </p>
+            <form id="subscribeForm" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mt-6" onsubmit="handleSubscribe(event)">
+                <input type="email" placeholder="Enter your email" class="form-input flex-1" required />
+                <button type="submit" class="bg-kdf-red text-white px-6 py-3 rounded-lg font-bold hover:bg-red-800 transition whitespace-nowrap">
+                    Subscribe <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </form>
+            <div id="subscribeFeedback" class="mt-3 hidden"></div>
+        </div>
+        
+    </div>
+</main>
+
+<!-- ════════════════════════════════════════ -->
+<!-- ARTICLE DETAIL MODAL -->
+<!-- ════════════════════════════════════════ -->
+<div id="articleModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <span id="modalCategory" class="category-badge default text-xs">Category</span>
+                <h2 id="modalTitle" class="text-2xl font-display font-bold text-kdf-navy mt-2">Article Title</h2>
+                <p id="modalDate" class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> Date</p>
+            </div>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl transition" aria-label="Close article">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalImage" class="aspect-video rounded-xl overflow-hidden bg-kdf-gray mb-4 flex items-center justify-center text-6xl">
+            📄
+        </div>
+        <div id="modalContent" class="article-content text-gray-700">
+            Article content goes here...
+        </div>
+        <div class="flex flex-wrap gap-3 mt-6 pt-6 border-t border-gray-200">
+            <button onclick="closeModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition">
+                Close
+            </button>
+            <button class="px-6 py-2.5 bg-kdf-gold text-kdf-navy rounded-lg font-semibold hover:bg-yellow-400 transition flex items-center gap-2">
+                <i class="fas fa-share-alt"></i> Share
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════ -->
+<footer class="bg-kdf-navy text-white py-12 border-t-4 border-kdf-gold" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold">MFA</div>
+                    <span class="font-display font-bold text-lg">Moi Forces Academy</span>
+                </div>
+                <p class="text-gray-400 text-sm">Sponsored by the Kenya Defence Forces. Excellence Our Commitment.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-kdf-gold mb-4">Quick Links</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="/" class="hover:text-kdf-gold transition">Home</a></li>
+                    <li><a href="/about.html" class="hover:text-kdf-gold transition">About</a></li>
+                    <li><a href="/academics.html" class="hover:text-kdf-gold transition">Academics</a></li>
+                    <li><a href="/updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-kdf-gold mb-4">Resources</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-kdf-gold transition">School Calendar</a></li>
+                    <li><a href="#" class="hover:text-kdf-gold transition">Student Portal</a></li>
+                    <li><a href="#" class="hover:text-kdf-gold transition">Staff Portal</a></li>
+                    <li><a href="#" class="hover:text-kdf-gold transition">Parent Portal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-kdf-gold mb-4">Contact</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><i class="fas fa-phone mr-2 text-kdf-gold"></i> +254 700 123 456</li>
+                    <li><i class="fas fa-envelope mr-2 text-kdf-gold"></i> info@moiforcesacademy.ac.ke</li>
+                    <li><i class="fas fa-map-marker-alt mr-2 text-kdf-gold"></i> Nairobi, Kenya</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 Moi Forces Academy Comprehensive School. All rights reserved.</p>
+            <p class="mt-1">Sponsored by the Kenya Defence Forces</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
+<!-- ════════════════════════════════════════ -->
+<script>
+    // ────────────────────────────────────────────────
+    // DATA (Simulates CMS / Supabase)
+    // ────────────────────────────────────────────────
+    const updatesData = [
+        {
+            id: 1,
+            title: 'KJSEA 2026 Preparation Underway',
+            date: '2026-06-15',
+            category: 'Academics',
+            image: '📚',
+            summary: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations. Teachers have developed comprehensive revision materials covering all subjects.',
+            content: `
+                <p>The Kenya Junior Secondary Education Assessment (KJSEA) 2026 is fast approaching, and our Grade 9 students are working diligently to prepare for this important milestone.</p>
+                <h2>Preparation Strategy</h2>
+                <p>Our dedicated team of teachers has developed a comprehensive revision program that includes:</p>
+                <ul>
+                    <li>Weekly revision tests covering all subjects</li>
+                    <li>Past paper analysis and practice sessions</li>
+                    <li>Individualized support for students needing extra help</li>
+                    <li>Mock examinations to build confidence</li>
+                </ul>
+                <p>We encourage all parents to support their children during this critical period by providing a conducive environment for study.</p>
+                <h3>Key Dates</h3>
+                <ul>
+                    <li>Mock Assessment 1: March 2026</li>
+                    <li>Mock Assessment 2: July 2026</li>
+                    <li>Final Assessment(KJSEA): November 2026</li>
+                </ul>
+            `
+        },
+        {
+            id: 2,
+            title: 'Annual Sports Day - Coming Soon',
+            date: '2026-07-06',
+            category: 'Events',
+            image: '🏃',
+            summary: 'Our annual sports day is scheduled for July 2026. All students are encouraged to participate in various ball games events.',
+            content: `
+                <p>The Moi Forces Academy Annual Sports Day is returning in July 2026! This exciting event brings together students, teachers, and stakeholders for a day of sports competition and school spirit.</p>
+                <h2>Event Details</h2>
+                <ul>
+                    <li><strong>Date:</strong> July, 2026</li>
+                    <li><strong>Time:</strong> 8:00 AM - 5:00 PM</li>
+                    <li><strong>Venue:</strong> MFA Sports Grounds</li>
+                </ul>
+                <h3>Activities</h3>
+                <ul>
+                    <li>Football Events (Student vs students(Boys), Students vs Teachers, Girls vs Girls(Students))</li>
+                    <li>Netball Girls and Boys</li>
+                    <li>Other Ball Games (Volleyball, Basketball)</li>
+                    <li>Staff vs Students Friendly Matches</li>
+                </ul>
+                <p>All students are encouraged to participate. Parents and guardians are warmly invited to attend and support our young stars.</p>
+            `
+        },
+        {
+            id: 3,
+            title: 'KDF Career Day 2026',
+            date: '2026-03-21',
+            category: 'Career',
+            image: '🎖️',
+            summary: 'Kenya Defence Forces will host a career day at our school. Students will learn about various career opportunities in the military and outside world.',
+            content: `
+                <p>The Kenya Defence Forces (KDF) will be hosting a Career Day at Moi Forces Academy on March 21, 2026. This is a unique opportunity for our students to explore exciting career opportunities in the military and outside world.</p>
+                <h2>What to Expect</h2>
+                <ul>
+                    <li>Presentations from KDF officers on various career paths</li>
+                    <li>Interactive sessions on leadership and discipline</li>
+                    <li>Information on recruitment and training programs</li>
+                    <li>Q&A sessions with serving officers</li>
+                </ul>
+                <h3>Career Pathways</h3>
+                <ul>
+                    <li>Military Officer Training</li>
+                    <li>Technical and Engineering Careers</li>
+                    <li>Medical and Health Services</li>
+                    <li>Logistics and Administration</li>
+                    <li>Aviation and Naval Careers</li>
+                </ul>
+                <p>All students from Grade 7 to Grade 9 are encouraged to attend. This is a great opportunity to learn about how you can serve your country while building a rewarding career.</p>
+            `
+        },
+        {
+            id: 4,
+            title: 'Parent-Teacher Conference',
+            date: '2026-01-25',
+            category: 'Parents',
+            image: '👨‍👩‍👦',
+            summary: 'The term 1 parent-teacher conference will be held on January 30th. Parents are invited to discuss their children\'s progress.',
+            content: `
+                <p>The Term 1 Parent-Teacher Conference will take place on January 30, 2026. This is an important opportunity for parents to meet with teachers and discuss their children's academic progress and overall development.</p>
+                <h2>Schedule</h2>
+                <ul>
+                    <li><strong>Date:</strong> January 30, 2026</li>
+                    <li><strong>Time:</strong> 8:00 AM - 4:00 PM</li>
+                    <li><strong>Venue:</strong> MFA School Hall</li>
+                </ul>
+                <h3>What to Discuss</h3>
+                <ul>
+                    <li>Academic performance and progress</li>
+                    <li>Behavior and social development</li>
+                    <li>Areas of improvement and support needed</li>
+                    <li>Extra-curricular activities and interests</li>
+                    <li>Goal setting for the rest of the term</li>
+                </ul>
+                <p>Parents are requested to arrive early and check in at the registration desk. We look forward to a productive and engaging conference.</p>
+            `
+        },
+        {
+            id: 5,
+            title: 'New CBC Resources Available',
+            date: '2026-01-05',
+            category: 'Resources',
+            image: '📖',
+            summary: 'We have updated our CBC resources for all grades. Teachers and students can access the new materials through the school portal.',
+            content: `
+                <p>We are excited to announce that new Competency-Based Curriculum (CBC) resources are now available for all grades. These materials have been carefully curated and aligned with the latest KICD curriculum designs.</p>
+                <h2>What's New</h2>
+                <ul>
+                    <li>Updated lesson plans for all subjects</li>
+                    <li>New assessment tools and rubrics</li>
+                    <li>Interactive learning materials for students</li>
+                    <li>Teacher guides and reference materials</li>
+                    <li>Digital resources for blended learning</li>
+                </ul>
+                <h3>How to Access</h3>
+                <p>Teachers can access these resources through the school portal. Students will receive materials through their respective class platforms. For any questions or technical support, please contact the IT Department.</p>
+            `
+        },
+        {
+            id: 6,
+            title: 'MFA Science Fair 2026',
+            date: '2026-02-01',
+            category: 'Science',
+            image: '🔬',
+            summary: 'The annual MFA Science Fair will take place in February. Students are preparing their projects for this exciting event.',
+            content: `
+                <p>The Moi Forces Academy Science Fair is back and bigger than ever! This year's event will showcase the creativity and innovation of our students across all grades.</p>
+                <h2>Event Details</h2>
+                <ul>
+                    <li><strong>Date:</strong> February 21, 2026</li>
+                    <li><strong>Time:</strong> 9:00 AM - 4:00 PM</li>
+                    <li><strong>Venue:</strong> MFA School Hall</li>
+                </ul>
+                <h3>Categories</h3>
+                <ul>
+                    <li>Biology and Life Sciences</li>
+                    <li>Chemistry and Materials Science</li>
+                    <li>Physics and Engineering</li>
+                    <li>Environmental Science</li>
+                    <li>Computer Science and Robotics</li>
+                </ul>
+                <p>Students are busy preparing their projects. Parents and community members are invited to attend and see the incredible work our students are doing.</p>
+            `
+        },
+        {
+            id: 7,
+            title: 'MFA Achieves 100% KJSEA Pass Rate',
+            date: '2026-01-02',
+            category: 'Academics',
+            image: '🏆',
+            summary: 'Moi Forces Academy has achieved a 100% pass rate in the KJSEA examinations. Congratulations to all our students and teachers!',
+            content: `
+                <p>We are proud to announce that Moi Forces Academy has achieved a <strong>100% pass rate</strong> in the KJSEA examinations! This outstanding achievement is a testament to the hard work of our students and the dedication of our teaching staff.</p>
+                <h2>Results Highlights</h2>
+                <ul>
+                    <li>100% of students qualified for university admission</li>
+                    <li>200 students scored Exceeding Expectation One(EE1) </li>
+                    <li>Students achieved top grades in Mathematics, English, and Integrated Sciences</li>
+                    <li>Our students ranked among the top performers in Nairobi</li>
+                </ul>
+                <p>We extend our heartfelt congratulations to all our students, parents, and teachers for this remarkable achievement. This success reaffirms our commitment to academic excellence and holistic education.</p>
+            `
+        },
+        {
+            id: 8,
+            title: 'New School Uniforms Available',
+            date: '2025-12-20',
+            category: 'Resources',
+            image: '👕',
+            summary: 'The new school uniforms are now in stock at the school shop outlet. Parents are encouraged to purchase uniforms for the new term.',
+            content: `
+                <p>The new Moi Forces Academy school uniforms are now available at the school shop outlets. Parents are encouraged to purchase uniforms for their children ahead of the new term.</p>
+                <h2>Uniform Details</h2>
+                <ul>
+                    <li><strong>Available:</strong> Now in stock</li>
+                    <li><strong>Location:</strong> MFA School Shop outlets</li>
+                    <li><strong>Hours:</strong> Monday - Friday, 8:00 AM - 5:00 PM</li>
+                    <li><strong>Payment:</strong> Cash or M-PESA</li>
+                </ul>
+                <h3>Items Available</h3>
+                <ul>
+                    <li>School Shirts (All sizes)</li>
+                    <li>School Trousers/Skirts</li>
+                    <li>School Sweaters</li>
+                    <li>PE Kits</li>
+                    <li>School Ties</li>
+                </ul>
+                <p>Parents are advised to purchase uniforms early to avoid the rush. Discounts are available for bulk purchases.</p>
+            `
+        }
+    ];
+
+    // ────────────────────────────────────────────────
+    // STATE
+    // ────────────────────────────────────────────────
+    let filteredData = [...updatesData];
+    let currentPage = 1;
+    const itemsPerPage = 6;
+    let currentFilter = 'all';
+    let searchTerm = '';
+
+    // ────────────────────────────────────────────────
+    // RENDER FUNCTIONS
+    // ────────────────────────────────────────────────
+    function renderUpdates() {
+        const container = document.getElementById('updatesGrid');
+        if (!container) return;
+
+        // Filter and search
+        let data = [...updatesData];
+        
+        if (currentFilter !== 'all') {
+            data = data.filter(item => item.category.toLowerCase() === currentFilter);
+        }
+        
+        if (searchTerm.trim()) {
+            const term = searchTerm.toLowerCase().trim();
+            data = data.filter(item => 
+                item.title.toLowerCase().includes(term) ||
+                item.summary.toLowerCase().includes(term) ||
+                item.category.toLowerCase().includes(term)
+            );
+        }
+
+        // Sort
+        const sortBy = document.getElementById('sortSelect').value;
+        if (sortBy === 'newest') {
+            data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else if (sortBy === 'oldest') {
+            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        } else {
+            // Popular - by id (simulated)
+            data.sort((a, b) => b.id - a.id);
+        }
+
+        filteredData = data;
+        
+        // Pagination
+        const totalItems = data.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+        
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, totalItems);
+        const pageItems = data.slice(start, end);
+
+        // Update result count
+        document.getElementById('resultCount').textContent = totalItems;
+
+        // Update pagination
+        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.max(1, totalPages)}`;
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+
+        if (totalItems === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-16">
+                    <i class="fas fa-search text-5xl text-gray-300 mb-4 block"></i>
+                    <h3 class="text-xl font-bold text-gray-600">No updates found</h3>
+                    <p class="text-gray-400 mt-2">Try adjusting your filters or search terms</p>
+                    <button onclick="resetFilters()" class="mt-4 bg-kdf-gold text-kdf-navy px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition">
+                        Reset Filters
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = pageItems.map(update => {
+            const categoryClass = update.category.toLowerCase();
+            return `
+                <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100" onclick="openArticle(${update.id})" role="button" tabindex="0" aria-label="Read more about ${update.title}">
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="text-3xl">${update.image || '📄'}</span>
+                            <span class="category-badge ${categoryClass}">${update.category}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-kdf-navy line-clamp-2">${update.title}</h3>
+                        <p class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> ${new Date(update.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed line-clamp-3">${update.summary}</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-kdf-gold font-semibold text-sm hover:text-kdf-red transition">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </span>
+                            <button class="text-gray-400 hover:text-kdf-red transition" onclick="event.stopPropagation(); shareArticle(${update.id})" aria-label="Share this article">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ────────────────────────────────────────────────
+    // ARTICLE MODAL
+    // ────────────────────────────────────────────────
+    function openArticle(id) {
+        const article = updatesData.find(item => item.id === id);
+        if (!article) return;
+
+        document.getElementById('modalCategory').textContent = article.category;
+        document.getElementById('modalCategory').className = `category-badge ${article.category.toLowerCase()}`;
+        document.getElementById('modalTitle').textContent = article.title;
+        document.getElementById('modalDate').textContent = new Date(article.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('modalImage').textContent = article.image || '📄';
+        document.getElementById('modalContent').innerHTML = article.content || article.summary;
+        
+        document.getElementById('articleModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('articleModal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function shareArticle(id) {
+        const article = updatesData.find(item => item.id === id);
+        if (!article) return;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: article.title,
+                text: article.summary,
+                url: window.location.href + '?article=' + id
+            }).catch(() => {});
+        } else {
+            // Fallback: copy link
+            const url = window.location.href + '?article=' + id;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link copied to clipboard!', 'success');
+            }).catch(() => {
+                prompt('Copy this link to share:', url);
+            });
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // FILTERS & SEARCH
+    // ────────────────────────────────────────────────
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.dataset.filter;
+            currentPage = 1;
+            renderUpdates();
+        });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        searchTerm = this.value;
+        currentPage = 1;
+        renderUpdates();
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', function() {
+        currentPage = 1;
+        renderUpdates();
+    });
+
+    function resetFilters() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+        document.getElementById('searchInput').value = '';
+        document.getElementById('sortSelect').value = 'newest';
+        currentFilter = 'all';
+        searchTerm = '';
+        currentPage = 1;
+        renderUpdates();
+    }
+
+    // ────────────────────────────────────────────────
+    // PAGINATION
+    // ────────────────────────────────────────────────
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderUpdates();
+            window.scrollTo({ top: document.getElementById('updatesGrid').offsetTop - 120, behavior: 'smooth' });
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function() {
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderUpdates();
+            window.scrollTo({ top: document.getElementById('updatesGrid').offsetTop - 120, behavior: 'smooth' });
+        }
+    });
+
+    // ────────────────────────────────────────────────
+    // SUBSCRIBE FORM
+    // ────────────────────────────────────────────────
+    function handleSubscribe(event) {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.querySelector('input[type="email"]').value.trim();
+        const feedback = document.getElementById('subscribeFeedback');
+        
+        if (!email) {
+            feedback.className = 'mt-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm';
+            feedback.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i> Please enter a valid email address.';
+            feedback.classList.remove('hidden');
+            return;
+        }
+
+        // Simulate subscription
+        feedback.className = 'mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm';
+        feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Thank you for subscribing! You\'ll receive our latest updates.';
+        feedback.classList.remove('hidden');
+        form.reset();
+        
+        setTimeout(() => {
+            feedback.classList.add('hidden');
+        }, 5000);
+    }
+
+    // ────────────────────────────────────────────────
+    // TOAST NOTIFICATION
+    // ────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        const existing = document.querySelector('.toast-notification');
+        if (existing) existing.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = `toast-notification fixed bottom-6 right-6 z-50 px-6 py-3 rounded-xl text-white font-medium shadow-lg transition-all transform translate-y-20 opacity-0 ${type === 'success' ? 'bg-kdf-navy border-l-4 border-kdf-gold' : 'bg-red-700 border-l-4 border-red-500'}`;
+        toast.innerHTML = `
+            <div class="flex items-center gap-3">
+                <span>${type === 'success' ? '✅' : '❌'}</span>
+                <span>${message}</span>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        // Animate in
+        requestAnimationFrame(() => {
+            toast.classList.remove('translate-y-20', 'opacity-0');
+        });
+        
+        setTimeout(() => {
+            toast.classList.add('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.remove(), 400);
+        }, 4000);
+    }
+
+    // ────────────────────────────────────────────────
+    // KEYBOARD SUPPORT
+    // ────────────────────────────────────────────────
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+        if (e.key === 'Enter' && document.activeElement?.classList.contains('update-card')) {
+            document.activeElement.click();
+        }
+    });
+
+    // ────────────────────────────────────────────────
+    // MOBILE MENU
+    // ────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                const isOpen = mobileMenu.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', isOpen);
+                menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Close modal on overlay click
+        document.getElementById('articleModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Initial render
+        renderUpdates();
+
+        // Handle URL params for direct article links
+        const params = new URLSearchParams(window.location.search);
+        const articleId = params.get('article');
+        if (articleId) {
+            setTimeout(() => {
+                const id = parseInt(articleId);
+                if (!isNaN(id) && updatesData.some(u => u.id === id)) {
+                    openArticle(id);
+                }
+            }, 500);
+        }
+    });
+
+    // ────────────────────────────────────────────────
+    // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+    // ────────────────────────────────────────────────
+    window.openArticle = openArticle;
+    window.closeModal = closeModal;
+    window.shareArticle = shareArticle;
+    window.resetFilters = resetFilters;
+    window.handleSubscribe = handleSubscribe;
+    window.showToast = showToast;
+
+    console.log('📰 Updates page loaded successfully!');
+    console.log(`📊 ${updatesData.length} updates available`);
+    console.log('♿ Accessibility features enabled');
+</script>
+
+</body>
+</html>
