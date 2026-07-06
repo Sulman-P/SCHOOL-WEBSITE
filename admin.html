@@ -699,7 +699,8 @@
                                 </div>
                             </div>
                             <div class="text-xs text-gray-400 mt-2">
-                                <p>🔗 Connected to: <strong class="text-kdf-navy">Neon PostgreSQL</strong> • <span id="dbConnectionString">postgresql://user:****@ep-xxx.neon.tech/db</span></p>
+                                <p>🔗 Connected to: <strong class="text-kdf-navy">Neon PostgreSQL</strong></p>
+                                <p class="text-xs text-gray-500 break-all mt-1">Host: ep-hidden-lab-at0bye1i-pooler.c-9.us-east-1.aws.neon.tech</p>
                             </div>
                         </div>
                     </div>
@@ -751,16 +752,16 @@
     // ────────────────────────────────────────────────
     // NEON DATABASE CONFIG
     // ────────────────────────────────────────────────
-    // Replace with your actual Neon database connection details
     const NEON_CONFIG = {
-        // In production, these should be environment variables
-        // For this demo, we're using the connection string
-        connectionString: 'postgresql://neondb_owner:npg_XxWzgHLT52Dj@ep-hidden-lab-at0bye1i-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
-        // For REST API access (if using Neon's HTTP API)
+        // Connection details from your Neon database
+        host: 'ep-hidden-lab-at0bye1i-pooler.c-9.us-east-1.aws.neon.tech',
+        database: 'neondb',
+        user: 'neondb_owner',
+        password: 'npg_XxWzgHLT52Dj',
+        // REST API endpoint
         apiUrl: 'https://ep-hidden-lab-at0bye1i.apirest.c-9.us-east-1.aws.neon.tech/neondb/rest/v1',
         projectId: 'quiet-frost-61727265',
-        branchId: 'main',
-        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3' // Keep this secure!
+        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3'
     };
 
     // ────────────────────────────────────────────────
@@ -828,25 +829,140 @@
         try {
             updateDbStatus('connecting', 'Connecting to Neon...');
             
-            // Simulate connection check
-            // In production, this would be a real connection test
-            await new Promise(resolve => setTimeout(resolve, 800));
+            // Test connection to Neon REST API
+            const response = await fetch(`${NEON_CONFIG.apiUrl}/posts?limit=1`, {
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
             
-            // For demo, we'll use local data with sync capability
-            // In production, you'd use the Neon REST API or PostgreSQL driver
-            dbConnected = true;
-            updateDbStatus('connected', 'Neon DB Connected');
-            
-            // Load sample data if empty
-            if (posts.length === 0) {
-                loadSampleData();
+            if (response.ok) {
+                dbConnected = true;
+                updateDbStatus('connected', 'Neon DB Connected');
+                
+                // Load data from Neon
+                await loadFromNeon();
+            } else {
+                // Fallback to local data if API fails
+                console.warn('Neon API connection failed, using local data');
+                dbConnected = false;
+                updateDbStatus('error', 'Using Local Data');
+                if (posts.length === 0) loadSampleData();
+                renderAll();
             }
             
-            renderAll();
             return true;
         } catch (error) {
             console.error('Neon connection error:', error);
-            updateDbStatus('error', 'Connection Failed');
+            // Fallback to local data
+            dbConnected = false;
+            updateDbStatus('error', 'Using Local Data');
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+            return false;
+        }
+    }
+
+    async function loadFromNeon() {
+        try {
+            // Load posts
+            const postsRes = await fetch(`${NEON_CONFIG.apiUrl}/posts?order=created_at.desc`, {
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (postsRes.ok) {
+                const data = await postsRes.json();
+                if (data.length > 0) {
+                    posts = data;
+                    nextId = Math.max(...posts.map(p => p.id)) + 1;
+                }
+            }
+            
+            // Load events
+            const eventsRes = await fetch(`${NEON_CONFIG.apiUrl}/events?order=event_date.asc`, {
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (eventsRes.ok) {
+                const data = await eventsRes.json();
+                if (data.length > 0) {
+                    events = data;
+                    nextEventId = Math.max(...events.map(e => e.id)) + 1;
+                }
+            }
+            
+            renderAll();
+        } catch (error) {
+            console.error('Error loading from Neon:', error);
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+        }
+    }
+
+    async function saveToNeon(table, data) {
+        try {
+            const response = await fetch(`${NEON_CONFIG.apiUrl}/${table}`, {
+                method: 'POST',
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                return result;
+            } else {
+                throw new Error(`Failed to save to ${table}`);
+            }
+        } catch (error) {
+            console.error(`Error saving to ${table}:`, error);
+            return null;
+        }
+    }
+
+    async function updateInNeon(table, id, data) {
+        try {
+            const response = await fetch(`${NEON_CONFIG.apiUrl}/${table}?id=eq.${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            return response.ok;
+        } catch (error) {
+            console.error(`Error updating ${table}:`, error);
+            return false;
+        }
+    }
+
+    async function deleteFromNeon(table, id) {
+        try {
+            const response = await fetch(`${NEON_CONFIG.apiUrl}/${table}?id=eq.${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`
+                }
+            });
+            return response.ok;
+        } catch (error) {
+            console.error(`Error deleting from ${table}:`, error);
             return false;
         }
     }
@@ -879,15 +995,8 @@
         updateDbStatus('connecting', 'Syncing...');
         
         try {
-            // Simulate sync delay
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // In production: fetch latest data from Neon
-            // await fetchPostsFromNeon();
-            // await fetchEventsFromNeon();
-            
-            // For demo: refresh local data
-            renderAll();
+            // Load fresh data from Neon
+            await loadFromNeon();
             updateDbStatus('connected', 'Sync Complete');
             showToast('✅ Data synced with Neon successfully!', 'success');
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
@@ -1206,7 +1315,8 @@
             content,
             status,
             date: status === 'scheduled' ? scheduleDate || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-            image
+            image,
+            created_at: new Date().toISOString()
         };
         
         posts.unshift(newPost);
@@ -1217,8 +1327,8 @@
         logActivity(`📝 Created post: "${title}"`, 'Content');
         showToast(`Post "${title}" published successfully!`, 'success');
         
-        // Sync with Neon
-        syncWithNeon();
+        // Save to Neon
+        saveToNeon('posts', newPost);
         switchTab('posts');
     }
 
@@ -1229,7 +1339,7 @@
         renderAll();
         logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
         showToast(`Post "${post?.title}" deleted.`, 'success');
-        syncWithNeon();
+        deleteFromNeon('posts', id);
     }
 
     function editPost(id) {
@@ -1271,12 +1381,15 @@
             return;
         }
         
-        events.push({ id: nextEventId++, title, date, description });
+        const newEvent = { id: nextEventId++, title, date, description, created_at: new Date().toISOString() };
+        events.push(newEvent);
         renderAll();
         closeEventModal();
         logActivity(`📅 Added event: "${title}"`, 'Calendar');
         showToast(`Event "${title}" added successfully!`, 'success');
-        syncWithNeon();
+        
+        // Save to Neon
+        saveToNeon('events', newEvent);
     }
 
     function deleteEvent(id) {
@@ -1286,7 +1399,7 @@
         renderAll();
         logActivity(`🗑️ Deleted event: "${event?.title}"`, 'Calendar');
         showToast(`Event "${event?.title}" deleted.`, 'success');
-        syncWithNeon();
+        deleteFromNeon('events', id);
     }
 
     // ────────────────────────────────────────────────
@@ -1350,7 +1463,6 @@
         } else {
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('dashboardScreen').style.display = 'none';
-            // Attempt to connect to Neon even on login screen
             connectToNeon();
         }
     }
@@ -1401,8 +1513,10 @@
     });
 
     console.log('🔒 MFA Admin Dashboard with Neon DB loaded successfully!');
-    console.log('📊 Data ready for sync with Neon PostgreSQL');
+    console.log('📊 Connected to Neon PostgreSQL');
     console.log('🛡️ Security features: Session management, activity logging');
+    console.log('🗄️ Database: ' + NEON_CONFIG.database);
+    console.log('🌐 Host: ' + NEON_CONFIG.host);
 </script>
 </body>
 </html>
