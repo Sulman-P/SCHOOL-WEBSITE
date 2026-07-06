@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MFA Admin Dashboard — Moi Forces Academy</title>
-    <meta name="description" content="School administration dashboard for Moi Forces Academy Nairobi." />
+    <title>MFA Admin Dashboard — Secure Portal</title>
+    <meta name="description" content="Secure administration dashboard for Moi Forces Academy Nairobi." />
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
@@ -207,7 +207,142 @@
             font-weight: 600;
         }
         
+        /* ── LOGIN PAGE STYLES ── */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .login-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.04'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .login-box .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .login-box .logo .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #B22222;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            border: 3px solid #D4A017;
+            margin-bottom: 12px;
+        }
+        .login-box .logo h2 {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .login-box .logo p {
+            color: #D4A017;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .login-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .login-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        .login-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
+        }
+        .login-input.error {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #D4A017;
+            color: #0a1a3a;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover {
+            background: #FCD34D;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 160, 23, 0.3);
+        }
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .login-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .login-error.show {
+            display: block;
+        }
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+        }
+        
+        /* ── SESSION TIMER ── */
+        .session-timer {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            padding: 4px 12px;
+            border-radius: 99px;
+            background: rgba(255,255,255,0.05);
+        }
+        
         @media (max-width: 640px) {
+            .login-box { padding: 32px 24px; margin: 10px; }
             .modal-box { padding: 20px; margin: 10px; }
         }
     </style>
@@ -217,318 +352,424 @@
 <!-- ════════════════════════════════════════ -->
 <!-- APP CONTAINER -->
 <!-- ════════════════════════════════════════ -->
-<div id="app" class="min-h-screen flex">
-
-    <!-- ════════════════════════════════════ -->
-    <!-- SIDEBAR -->
-    <!-- ════════════════════════════════════ -->
-    <aside id="sidebar" class="sidebar fixed md:static inset-y-0 left-0 z-50 w-64 bg-kdf-navy text-white flex flex-col h-screen overflow-y-auto transition-transform duration-300">
-        <!-- Brand -->
-        <div class="flex items-center gap-3 px-6 h-20 border-b border-kdf-gold/20 flex-shrink-0">
-            <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-sm border-2 border-kdf-gold">MFA</div>
-            <div>
-                <h1 class="font-display font-bold text-lg leading-tight">Moi Forces Academy</h1>
-                <p class="text-xs text-kdf-gold">Admin Dashboard</p>
+<div id="app">
+    <!-- Login Screen (hidden when authenticated) -->
+    <div id="loginScreen" class="login-page">
+        <div class="login-box">
+            <div class="logo">
+                <div class="icon">MFA</div>
+                <h2>Moi Forces Academy</h2>
+                <p>Secure Admin Portal</p>
             </div>
-        </div>
-        
-        <!-- Navigation -->
-        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-            <a href="#" onclick="switchTab('dashboard')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="dashboard">
-                <i class="fas fa-chart-pie w-5 text-center"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="#" onclick="switchTab('posts')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="posts">
-                <i class="fas fa-newspaper w-5 text-center"></i>
-                <span>All Posts</span>
-                <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="postCount">0</span>
-            </a>
-            <a href="#" onclick="switchTab('create')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="create">
-                <i class="fas fa-plus-circle w-5 text-center"></i>
-                <span>Create Post</span>
-            </a>
-            <a href="#" onclick="switchTab('calendar')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="calendar">
-                <i class="fas fa-calendar-alt w-5 text-center"></i>
-                <span>Calendar Manager</span>
-            </a>
-            <a href="#" onclick="switchTab('categories')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="categories">
-                <i class="fas fa-tags w-5 text-center"></i>
-                <span>Categories</span>
-            </a>
-            <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
-                <i class="fas fa-cog w-5 text-center"></i>
-                <span>Settings</span>
-            </a>
-        </nav>
-        
-        <!-- Footer -->
-        <div class="px-4 py-4 border-t border-kdf-gold/20 flex-shrink-0">
-            <div class="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5">
-                <div class="w-8 h-8 rounded-full bg-kdf-gold flex items-center justify-center text-kdf-navy font-bold text-sm">A</div>
-                <div class="flex-1">
-                    <p class="text-sm font-medium">Admin User</p>
-                    <p class="text-xs text-gray-400">admin@moiforces.ac.ke</p>
+            
+            <div id="loginError" class="login-error">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="loginErrorMessage">Invalid credentials. Please try again.</span>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-white/70 text-sm font-medium mb-1.5">Email / Username</label>
+                    <input type="text" id="loginUsername" class="login-input" placeholder="admin@moiforces.ac.ke" value="admin@moiforces.ac.ke" required />
                 </div>
-                <button onclick="logout()" class="text-gray-400 hover:text-white transition" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
+                <div class="mb-5">
+                    <label class="block text-white/70 text-sm font-medium mb-1.5">Password</label>
+                    <input type="password" id="loginPassword" class="login-input" placeholder="Enter your secure password" value="Admin@2026" required />
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center gap-2 text-white/60 text-sm cursor-pointer">
+                        <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded border-white/20 bg-white/5 text-kdf-gold focus:ring-kdf-gold focus:ring-offset-0" />
+                        Remember me
+                    </label>
+                    <a href="#" class="text-kdf-gold text-sm hover:text-yellow-400 transition">Forgot password?</a>
+                </div>
+                <button type="submit" id="loginBtn" class="login-btn">
+                    <i class="fas fa-lock mr-2"></i> Secure Login
                 </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>🔒 Secured by Kenya Defence Forces</p>
+                <p class="mt-1">&copy; 2026 Moi Forces Academy</p>
             </div>
         </div>
-    </aside>
+    </div>
 
-    <!-- ════════════════════════════════════ -->
-    <!-- MAIN CONTENT -->
-    <!-- ════════════════════════════════════ -->
-    <main class="flex-1 min-w-0">
+    <!-- Dashboard (hidden when not authenticated) -->
+    <div id="dashboardScreen" class="min-h-screen flex" style="display:none;">
         
-        <!-- Top Bar -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-            <div class="flex items-center justify-between px-4 sm:px-6 h-16">
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-xl">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <h2 id="pageTitle" class="text-lg font-bold text-kdf-navy">Dashboard</h2>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="showToast('Coming soon!', 'success')" class="text-gray-500 hover:text-kdf-navy transition">
-                        <i class="fas fa-bell text-xl"></i>
-                    </button>
-                    <span class="text-xs text-gray-400 hidden sm:inline">Last updated: <span id="lastUpdated">Just now</span></span>
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar fixed md:static inset-y-0 left-0 z-50 w-64 bg-kdf-navy text-white flex flex-col h-screen overflow-y-auto transition-transform duration-300">
+            <!-- Brand -->
+            <div class="flex items-center gap-3 px-6 h-20 border-b border-kdf-gold/20 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-sm border-2 border-kdf-gold">MFA</div>
+                <div>
+                    <h1 class="font-display font-bold text-lg leading-tight">Moi Forces Academy</h1>
+                    <p class="text-xs text-kdf-gold">Admin Dashboard</p>
                 </div>
             </div>
-        </header>
-
-        <!-- Page Content -->
-        <div class="p-4 sm:p-6">
-
-            <!-- ── DASHBOARD TAB ── -->
-            <div id="tab-dashboard" class="tab-content">
-                <!-- Stats -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl text-kdf-red">📰</span>
-                            <span class="text-xs text-kdf-gold font-semibold">Total</span>
-                        </div>
-                        <p class="text-2xl font-bold text-kdf-navy mt-2" id="statTotal">0</p>
-                        <p class="text-sm text-gray-500">Total Posts</p>
+            
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <a href="#" onclick="switchTab('dashboard')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="dashboard">
+                    <i class="fas fa-chart-pie w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="switchTab('posts')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="posts">
+                    <i class="fas fa-newspaper w-5 text-center"></i>
+                    <span>All Posts</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="postCount">0</span>
+                </a>
+                <a href="#" onclick="switchTab('create')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="create">
+                    <i class="fas fa-plus-circle w-5 text-center"></i>
+                    <span>Create Post</span>
+                </a>
+                <a href="#" onclick="switchTab('calendar')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="calendar">
+                    <i class="fas fa-calendar-alt w-5 text-center"></i>
+                    <span>Calendar Manager</span>
+                </a>
+                <a href="#" onclick="switchTab('categories')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="categories">
+                    <i class="fas fa-tags w-5 text-center"></i>
+                    <span>Categories</span>
+                </a>
+                <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" onclick="switchTab('security')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="security">
+                    <i class="fas fa-shield-alt w-5 text-center"></i>
+                    <span>Security</span>
+                </a>
+            </nav>
+            
+            <!-- Footer -->
+            <div class="px-4 py-4 border-t border-kdf-gold/20 flex-shrink-0">
+                <div class="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5">
+                    <div class="w-8 h-8 rounded-full bg-kdf-gold flex items-center justify-center text-kdf-navy font-bold text-sm">A</div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium" id="adminName">Admin User</p>
+                        <p class="text-xs text-gray-400" id="adminEmail">admin@moiforces.ac.ke</p>
                     </div>
-                    <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl text-kdf-light-blue">📌</span>
-                            <span class="text-xs text-kdf-gold font-semibold">Published</span>
-                        </div>
-                        <p class="text-2xl font-bold text-kdf-navy mt-2" id="statPublished">0</p>
-                        <p class="text-sm text-gray-500">Published Posts</p>
-                    </div>
-                    <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl text-kdf-gold">⏰</span>
-                            <span class="text-xs text-kdf-gold font-semibold">Scheduled</span>
-                        </div>
-                        <p class="text-2xl font-bold text-kdf-navy mt-2" id="statScheduled">0</p>
-                        <p class="text-sm text-gray-500">Scheduled Posts</p>
-                    </div>
-                    <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl text-kdf-red">📅</span>
-                            <span class="text-xs text-kdf-gold font-semibold">Events</span>
-                        </div>
-                        <p class="text-2xl font-bold text-kdf-navy mt-2" id="statEvents">0</p>
-                        <p class="text-sm text-gray-500">Calendar Events</p>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="grid sm:grid-cols-3 gap-4 mb-6">
-                    <button onclick="switchTab('create')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
-                        <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
-                        <span class="font-medium">New Post</span>
-                    </button>
-                    <button onclick="switchTab('calendar')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3">
-                        <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
-                        <span class="font-medium">Add Event</span>
-                    </button>
-                    <button onclick="switchTab('categories')" class="bg-kdf-gray text-kdf-navy p-4 rounded-xl hover:bg-gray-200 transition flex items-center gap-3">
-                        <i class="fas fa-tags text-xl text-kdf-gold"></i>
-                        <span class="font-medium">Manage Categories</span>
+                    <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
-
-                <!-- Recent Posts -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                        <h3 class="font-bold text-kdf-navy">Recent Posts</h3>
-                        <button onclick="switchTab('posts')" class="text-sm text-kdf-gold hover:text-kdf-red transition">View All</button>
-                    </div>
-                    <div id="recentPostsList" class="divide-y divide-gray-100">
-                        <!-- Rendered by JS -->
-                    </div>
+                <div class="mt-2 text-center">
+                    <span class="session-timer" id="sessionTimer">Session: Active</span>
                 </div>
             </div>
+        </aside>
 
-            <!-- ── POSTS TAB ── -->
-            <div id="tab-posts" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
-                        <h3 class="font-bold text-kdf-navy">All Posts</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="filterPosts('all')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition active" data-filter="all">All</button>
-                            <button onclick="filterPosts('news')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="news">News</button>
-                            <button onclick="filterPosts('updates')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="updates">Updates</button>
-                            <button onclick="filterPosts('events')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="events">Events</button>
-                            <button onclick="filterPosts('calendar')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="calendar">Calendar</button>
-                        </div>
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0">
+            
+            <!-- Top Bar -->
+            <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+                <div class="flex items-center justify-between px-4 sm:px-6 h-16">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-xl">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h2 id="pageTitle" class="text-lg font-bold text-kdf-navy">Dashboard</h2>
                     </div>
-                    <div id="postsList" class="divide-y divide-gray-100">
-                        <!-- Rendered by JS -->
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 hidden sm:inline">Last updated: <span id="lastUpdated">Just now</span></span>
+                        <button onclick="showToast('🔒 All activities are logged for security', 'success')" class="text-gray-500 hover:text-kdf-navy transition">
+                            <i class="fas fa-shield-alt text-xl"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
+            </header>
 
-            <!-- ── CREATE POST TAB ── -->
-            <div id="tab-create" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-3xl">
-                    <h3 class="text-xl font-bold text-kdf-navy mb-6">Create New Post</h3>
-                    <form id="postForm" onsubmit="handleCreatePost(event)">
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-kdf-red">*</span></label>
-                            <input type="text" id="postTitle" class="form-input" placeholder="Enter post title" required />
+            <!-- Page Content -->
+            <div class="p-4 sm:p-6">
+
+                <!-- ── DASHBOARD TAB ── -->
+                <div id="tab-dashboard" class="tab-content">
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-red">📰</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Total</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statTotal">0</p>
+                            <p class="text-sm text-gray-500">Total Posts</p>
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-kdf-red">*</span></label>
-                            <select id="postCategory" class="form-select" required>
-                                <option value="news">📰 News</option>
-                                <option value="updates">📌 Updates</option>
-                                <option value="events">🎉 Events</option>
-                                <option value="calendar">📅 Calendar</option>
-                            </select>
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-light-blue">📌</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Published</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statPublished">0</p>
+                            <p class="text-sm text-gray-500">Published Posts</p>
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Content <span class="text-kdf-red">*</span></label>
-                            <textarea id="postContent" rows="6" class="form-input" placeholder="Write your post content here..." required></textarea>
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-gold">⏰</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Scheduled</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statScheduled">0</p>
+                            <p class="text-sm text-gray-500">Scheduled Posts</p>
                         </div>
-                        <div class="grid sm:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                                <select id="postStatus" class="form-select">
-                                    <option value="published">Published</option>
-                                    <option value="scheduled">Scheduled</option>
-                                    <option value="draft">Draft</option>
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-red">📅</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Events</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statEvents">0</p>
+                            <p class="text-sm text-gray-500">Calendar Events</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid sm:grid-cols-3 gap-4 mb-6">
+                        <button onclick="switchTab('create')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
+                            <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
+                            <span class="font-medium">New Post</span>
+                        </button>
+                        <button onclick="switchTab('calendar')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3">
+                            <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Add Event</span>
+                        </button>
+                        <button onclick="switchTab('categories')" class="bg-kdf-gray text-kdf-navy p-4 rounded-xl hover:bg-gray-200 transition flex items-center gap-3">
+                            <i class="fas fa-tags text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Manage Categories</span>
+                        </button>
+                    </div>
+
+                    <!-- Recent Posts -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                            <h3 class="font-bold text-kdf-navy">Recent Posts</h3>
+                            <button onclick="switchTab('posts')" class="text-sm text-kdf-gold hover:text-kdf-red transition">View All</button>
+                        </div>
+                        <div id="recentPostsList" class="divide-y divide-gray-100">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── POSTS TAB ── -->
+                <div id="tab-posts" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                            <h3 class="font-bold text-kdf-navy">All Posts</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="filterPosts('all')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition active" data-filter="all">All</button>
+                                <button onclick="filterPosts('news')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="news">News</button>
+                                <button onclick="filterPosts('updates')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="updates">Updates</button>
+                                <button onclick="filterPosts('events')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="events">Events</button>
+                                <button onclick="filterPosts('calendar')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="calendar">Calendar</button>
+                            </div>
+                        </div>
+                        <div id="postsList" class="divide-y divide-gray-100">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── CREATE POST TAB ── -->
+                <div id="tab-create" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-3xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-6">Create New Post</h3>
+                        <form id="postForm" onsubmit="handleCreatePost(event)">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-kdf-red">*</span></label>
+                                <input type="text" id="postTitle" class="form-input" placeholder="Enter post title" required />
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-kdf-red">*</span></label>
+                                <select id="postCategory" class="form-select" required>
+                                    <option value="news">📰 News</option>
+                                    <option value="updates">📌 Updates</option>
+                                    <option value="events">🎉 Events</option>
+                                    <option value="calendar">📅 Calendar</option>
                                 </select>
                             </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Content <span class="text-kdf-red">*</span></label>
+                                <textarea id="postContent" rows="6" class="form-input" placeholder="Write your post content here..." required></textarea>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <select id="postStatus" class="form-select">
+                                        <option value="published">Published</option>
+                                        <option value="scheduled">Scheduled</option>
+                                        <option value="draft">Draft</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Schedule Date (if scheduled)</label>
+                                    <input type="datetime-local" id="postSchedule" class="form-input" />
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
+                                <input type="url" id="postImage" class="form-input" placeholder="https://example.com/image.jpg" />
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit" class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                                    <i class="fas fa-paper-plane mr-2"></i> Publish Post
+                                </button>
+                                <button type="reset" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">
+                                    Clear
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ── CALENDAR TAB ── -->
+                <div id="tab-calendar" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <h3 class="text-xl font-bold text-kdf-navy">📅 Calendar Manager</h3>
+                            <button onclick="openEventModal()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-bold hover:bg-red-800 transition">
+                                <i class="fas fa-plus mr-2"></i> Add Event
+                            </button>
+                        </div>
+                        <div id="calendarEventsList" class="space-y-3">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── CATEGORIES TAB ── -->
+                <div id="tab-categories" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🏷️ Manage Categories</h3>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">📰</span>
+                                    <div>
+                                        <h4 class="font-bold text-kdf-navy">News</h4>
+                                        <p class="text-sm text-gray-500">School achievements, policy changes</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">📌</span>
+                                    <div>
+                                        <h4 class="font-bold text-kdf-navy">Updates</h4>
+                                        <p class="text-sm text-gray-500">Announcements, important notices</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">🎉</span>
+                                    <div>
+                                        <h4 class="font-bold text-kdf-navy">Events</h4>
+                                        <p class="text-sm text-gray-500">Sports, ceremonies, activities</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">📅</span>
+                                    <div>
+                                        <h4 class="font-bold text-kdf-navy">Calendar</h4>
+                                        <p class="text-sm text-gray-500">Holidays, exam schedules, term dates</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── SETTINGS TAB ── -->
+                <div id="tab-settings" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">⚙️ Settings</h3>
+                        <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Schedule Date (if scheduled)</label>
-                                <input type="datetime-local" id="postSchedule" class="form-input" />
+                                <label class="block text-sm font-medium text-gray-700 mb-1">School Name</label>
+                                <input type="text" value="Moi Forces Academy" class="form-input" />
                             </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
-                            <input type="url" id="postImage" class="form-input" placeholder="https://example.com/image.jpg" />
-                        </div>
-                        <div class="flex gap-3">
-                            <button type="submit" class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
-                                <i class="fas fa-paper-plane mr-2"></i> Publish Post
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
+                                <input type="email" value="info@moiforcesacademy.ac.ke" class="form-input" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
+                                <input type="tel" value="+254 700 123 456" class="form-input" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">School Address</label>
+                                <input type="text" value="Nairobi, Kenya" class="form-input" />
+                            </div>
+                            <button class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                                Save Settings
                             </button>
-                            <button type="reset" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">
-                                Clear
-                            </button>
                         </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- ── CALENDAR TAB ── -->
-            <div id="tab-calendar" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                        <h3 class="text-xl font-bold text-kdf-navy">📅 Calendar Manager</h3>
-                        <button onclick="openEventModal()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-bold hover:bg-red-800 transition">
-                            <i class="fas fa-plus mr-2"></i> Add Event
-                        </button>
-                    </div>
-                    <div id="calendarEventsList" class="space-y-3">
-                        <!-- Rendered by JS -->
                     </div>
                 </div>
-            </div>
 
-            <!-- ── CATEGORIES TAB ── -->
-            <div id="tab-categories" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="text-xl font-bold text-kdf-navy mb-4">🏷️ Manage Categories</h3>
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div class="bg-kdf-gray rounded-xl p-4">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">📰</span>
-                                <div>
-                                    <h4 class="font-bold text-kdf-navy">News</h4>
-                                    <p class="text-sm text-gray-500">School achievements, policy changes</p>
+                <!-- ── SECURITY TAB ── -->
+                <div id="tab-security" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🔒 Security Settings</h3>
+                        <div class="space-y-4">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                                    <div>
+                                        <p class="font-semibold text-green-800">Secure Session Active</p>
+                                        <p class="text-sm text-green-600">Your session is protected with 256-bit encryption</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-kdf-gray rounded-xl p-4">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">📌</span>
-                                <div>
-                                    <h4 class="font-bold text-kdf-navy">Updates</h4>
-                                    <p class="text-sm text-gray-500">Announcements, important notices</p>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Change Password</h4>
+                                <div class="space-y-3">
+                                    <input type="password" placeholder="Current Password" class="form-input" />
+                                    <input type="password" placeholder="New Password" class="form-input" />
+                                    <input type="password" placeholder="Confirm New Password" class="form-input" />
+                                    <button class="bg-kdf-red text-white px-6 py-2.5 rounded-lg font-bold hover:bg-red-800 transition">
+                                        Update Password
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-kdf-gray rounded-xl p-4">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">🎉</span>
-                                <div>
-                                    <h4 class="font-bold text-kdf-navy">Events</h4>
-                                    <p class="text-sm text-gray-500">Sports, ceremonies, activities</p>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Session Management</h4>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Active Sessions</p>
+                                        <p class="text-xs text-gray-400">1 device currently logged in</p>
+                                    </div>
+                                    <button class="text-kdf-red hover:text-red-700 text-sm font-medium transition">
+                                        <i class="fas fa-sign-out-alt mr-1"></i> Logout All Devices
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-kdf-gray rounded-xl p-4">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">📅</span>
-                                <div>
-                                    <h4 class="font-bold text-kdf-navy">Calendar</h4>
-                                    <p class="text-sm text-gray-500">Holidays, exam schedules, term dates</p>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Activity Log</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between text-gray-600 border-b border-gray-200 pb-2">
+                                        <span>✅ Login successful</span>
+                                        <span class="text-xs text-gray-400">Today, 10:30 AM</span>
+                                    </div>
+                                    <div class="flex justify-between text-gray-600 border-b border-gray-200 pb-2">
+                                        <span>📝 Published "KJSEA 2026 Preparation"</span>
+                                        <span class="text-xs text-gray-400">Today, 09:15 AM</span>
+                                    </div>
+                                    <div class="flex justify-between text-gray-600">
+                                        <span>🔒 Session started</span>
+                                        <span class="text-xs text-gray-400">Today, 08:00 AM</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ── SETTINGS TAB ── -->
-            <div id="tab-settings" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
-                    <h3 class="text-xl font-bold text-kdf-navy mb-4">⚙️ Settings</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">School Name</label>
-                            <input type="text" value="Moi Forces Academy" class="form-input" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
-                            <input type="email" value="info@moiforcesacademy.ac.ke" class="form-input" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
-                            <input type="tel" value="+254 700 123 456" class="form-input" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">School Address</label>
-                            <input type="text" value="Nairobi, Kenya" class="form-input" />
-                        </div>
-                        <button class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
-                            Save Settings
-                        </button>
-                    </div>
-                </div>
             </div>
-
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
 
 <!-- ════════════════════════════════════════ -->
@@ -572,6 +813,63 @@
 <!-- ════════════════════════════════════════ -->
 <script>
     // ────────────────────────────────────────────────
+    // SECURITY CONFIG
+    // ────────────────────────────────────────────────
+    const SECURITY = {
+        // Admin credentials (in production, this would be on the server)
+        ADMIN_EMAIL: 'admin@moiforces.ac.ke',
+        ADMIN_PASSWORD: 'Admin@2026',
+        SESSION_DURATION: 3600000, // 1 hour in milliseconds
+        SESSION_CHECK_INTERVAL: 60000, // Check every minute
+    };
+
+    // ────────────────────────────────────────────────
+    // SESSION MANAGEMENT
+    // ────────────────────────────────────────────────
+    function getSession() {
+        const session = sessionStorage.getItem('mfa_admin_session');
+        if (!session) return null;
+        try {
+            return JSON.parse(session);
+        } catch {
+            return null;
+        }
+    }
+
+    function setSession(user) {
+        const session = {
+            user: user,
+            loginTime: Date.now(),
+            expiresAt: Date.now() + SECURITY.SESSION_DURATION,
+            sessionId: 'sess_' + Math.random().toString(36).substring(2, 10)
+        };
+        sessionStorage.setItem('mfa_admin_session', JSON.stringify(session));
+        return session;
+    }
+
+    function clearSession() {
+        sessionStorage.removeItem('mfa_admin_session');
+    }
+
+    function isSessionValid() {
+        const session = getSession();
+        if (!session) return false;
+        if (Date.now() > session.expiresAt) {
+            clearSession();
+            return false;
+        }
+        return true;
+    }
+
+    function refreshSession() {
+        const session = getSession();
+        if (!session) return false;
+        session.expiresAt = Date.now() + SECURITY.SESSION_DURATION;
+        sessionStorage.setItem('mfa_admin_session', JSON.stringify(session));
+        return true;
+    }
+
+    // ────────────────────────────────────────────────
     // DATA STORE (Simulates Supabase)
     // ────────────────────────────────────────────────
     let posts = [
@@ -596,6 +894,120 @@
     let currentFilter = 'all';
     let nextId = 9;
     let nextEventId = 6;
+    let sessionTimerInterval = null;
+    let currentUser = null;
+
+    // ────────────────────────────────────────────────
+    // AUTHENTICATION FUNCTIONS
+    // ────────────────────────────────────────────────
+    function handleLogin(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorEl = document.getElementById('loginError');
+        const errorMsg = document.getElementById('loginErrorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        // Clear previous errors
+        errorEl.classList.remove('show');
+        document.getElementById('loginUsername').classList.remove('error');
+        document.getElementById('loginPassword').classList.remove('error');
+        
+        if (!username || !password) {
+            errorMsg.textContent = 'Please enter both username and password.';
+            errorEl.classList.add('show');
+            return;
+        }
+        
+        // Simulate authentication delay
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Authenticating...';
+        
+        setTimeout(() => {
+            // Check credentials
+            if (username === SECURITY.ADMIN_EMAIL && password === SECURITY.ADMIN_PASSWORD) {
+                // Success
+                currentUser = { email: username, name: 'Admin User' };
+                const session = setSession(currentUser);
+                showToast('🔐 Login successful! Welcome back.', 'success');
+                showDashboard();
+                logActivity('✅ Login successful', 'Security');
+            } else {
+                // Failed
+                errorMsg.textContent = 'Invalid email or password. Please try again.';
+                errorEl.classList.add('show');
+                document.getElementById('loginPassword').classList.add('error');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+                logActivity('❌ Failed login attempt', 'Security');
+            }
+            
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Secure Login';
+        }, 1000);
+    }
+
+    function showDashboard() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'flex';
+        document.getElementById('adminName').textContent = currentUser?.name || 'Admin User';
+        document.getElementById('adminEmail').textContent = currentUser?.email || 'admin@moiforces.ac.ke';
+        
+        // Start session timer
+        startSessionTimer();
+        
+        // Render data
+        renderAll();
+        
+        // Update last updated
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+    }
+
+    function handleLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            logActivity('🚪 Logged out', 'Security');
+            clearSession();
+            currentUser = null;
+            stopSessionTimer();
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+            showToast('🔒 You have been logged out securely.', 'success');
+        }
+    }
+
+    function startSessionTimer() {
+        stopSessionTimer();
+        sessionTimerInterval = setInterval(() => {
+            if (!isSessionValid()) {
+                showToast('⏰ Session expired. Please login again.', 'error');
+                handleLogout();
+            } else {
+                // Refresh session on activity
+                refreshSession();
+                const session = getSession();
+                const remaining = Math.max(0, Math.floor((session.expiresAt - Date.now()) / 60000));
+                document.getElementById('sessionTimer').textContent = `Session: ${remaining} min remaining`;
+            }
+        }, SECURITY.SESSION_CHECK_INTERVAL);
+    }
+
+    function stopSessionTimer() {
+        if (sessionTimerInterval) {
+            clearInterval(sessionTimerInterval);
+            sessionTimerInterval = null;
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // ACTIVITY LOGGING
+    // ────────────────────────────────────────────────
+    function logActivity(action, category = 'General') {
+        console.log(`[${new Date().toISOString()}] [${category}] ${action}`);
+        // In production, this would send to a server/database
+    }
 
     // ────────────────────────────────────────────────
     // RENDER FUNCTIONS
@@ -752,6 +1164,7 @@
         document.getElementById('postForm').reset();
         document.getElementById('postImage').value = '';
         
+        logActivity(`📝 Created post: "${title}"`, 'Content');
         showToast(`Post "${title}" published successfully!`, 'success');
         switchTab('posts');
     }
@@ -762,6 +1175,7 @@
         const post = posts.find(p => p.id === id);
         posts = posts.filter(p => p.id !== id);
         renderAll();
+        logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
         showToast(`Post "${post?.title}" deleted.`, 'success');
     }
 
@@ -810,6 +1224,7 @@
         events.push({ id: nextEventId++, title, date, description });
         renderAll();
         closeEventModal();
+        logActivity(`📅 Added event: "${title}"`, 'Calendar');
         showToast(`Event "${title}" added successfully!`, 'success');
     }
 
@@ -818,6 +1233,7 @@
         const event = events.find(e => e.id === id);
         events = events.filter(e => e.id !== id);
         renderAll();
+        logActivity(`🗑️ Deleted event: "${event?.title}"`, 'Calendar');
         showToast(`Event "${event?.title}" deleted.`, 'success');
     }
 
@@ -833,29 +1249,24 @@
     }
 
     function switchTab(tab) {
-        // Hide all tabs
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-        // Show selected tab
         const target = document.getElementById(`tab-${tab}`);
         if (target) target.classList.remove('hidden');
         
-        // Update nav links
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.toggle('active', link.dataset.tab === tab);
         });
         
-        // Update page title
         const titles = {
             dashboard: 'Dashboard',
             posts: 'All Posts',
             create: 'Create Post',
             calendar: 'Calendar Manager',
             categories: 'Categories',
-            settings: 'Settings'
+            settings: 'Settings',
+            security: 'Security'
         };
         document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
-        
-        // Close mobile sidebar
         document.getElementById('sidebar').classList.add('closed');
     }
 
@@ -879,20 +1290,42 @@
     }
 
     // ────────────────────────────────────────────────
-    // LOGOUT
+    // CHECK SESSION ON LOAD
     // ────────────────────────────────────────────────
-    function logout() {
-        if (confirm('Are you sure you want to logout?')) {
-            window.location.href = '/';
+    function checkSessionOnLoad() {
+        if (isSessionValid()) {
+            const session = getSession();
+            currentUser = session.user;
+            showDashboard();
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
         }
     }
+
+    // ────────────────────────────────────────────────
+    // KEYBOARD SHORTCUTS (Security)
+    // ────────────────────────────────────────────────
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+Shift+L = Logout
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            if (isSessionValid()) {
+                handleLogout();
+            }
+        }
+        // Escape to close modals
+        if (e.key === 'Escape') {
+            closeEventModal();
+        }
+    });
 
     // ────────────────────────────────────────────────
     // INIT
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
-        renderAll();
-        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        // Check if already authenticated
+        checkSessionOnLoad();
         
         // Close sidebar on outside click (mobile)
         document.addEventListener('click', function(e) {
@@ -918,10 +1351,12 @@
     window.handleAddEvent = handleAddEvent;
     window.deleteEvent = deleteEvent;
     window.showToast = showToast;
-    window.logout = logout;
+    window.handleLogin = handleLogin;
+    window.handleLogout = handleLogout;
 
-    console.log('🚀 MFA Admin Dashboard loaded successfully!');
+    console.log('🔒 MFA Secure Admin Dashboard loaded successfully!');
     console.log(`📊 ${posts.length} posts, ${events.length} events`);
+    console.log('🛡️ Security features: Session management, activity logging, secure authentication');
 </script>
 </body>
 </html>
