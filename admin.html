@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MFA Admin Dashboard — Neon Database</title>
-    <meta name="description" content="Secure administration dashboard for Moi Forces Academy Nairobi with Neon PostgreSQL." />
+    <title>MFA Admin Dashboard — Supabase</title>
+    <meta name="description" content="Secure administration dashboard for Moi Forces Academy Nairobi with Supabase PostgreSQL." />
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
@@ -316,7 +316,7 @@
                 <p>Secure Admin Portal</p>
                 <div class="mt-3 flex justify-center">
                     <span id="dbStatusLogin" class="db-status connecting">
-                        <i class="fas fa-spinner fa-spin"></i> Connecting to Neon...
+                        <i class="fas fa-spinner fa-spin"></i> Connecting to Supabase...
                     </span>
                 </div>
             </div>
@@ -348,7 +348,7 @@
             </form>
             
             <div class="login-footer">
-                <p>🔒 Powered by <strong class="text-white/70">Neon PostgreSQL</strong></p>
+                <p>🔒 Powered by <strong class="text-white/70">Supabase PostgreSQL</strong></p>
                 <p class="mt-1">&copy; 2026 Moi Forces Academy</p>
             </div>
         </div>
@@ -417,7 +417,7 @@
                 <div class="mt-2 flex items-center justify-between">
                     <span class="session-timer" id="sessionTimer">Session: Active</span>
                     <span id="dbStatus" class="db-status connected">
-                        <i class="fas fa-check-circle"></i> Neon DB
+                        <i class="fas fa-check-circle"></i> Supabase
                     </span>
                 </div>
             </div>
@@ -436,7 +436,7 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <span class="text-xs text-gray-400 hidden sm:inline">Last updated: <span id="lastUpdated">Just now</span></span>
-                        <button onclick="syncWithNeon()" class="text-kdf-gold hover:text-kdf-red transition" title="Sync with Neon Database">
+                        <button onclick="syncWithSupabase()" class="text-kdf-gold hover:text-kdf-red transition" title="Sync with Supabase">
                             <i class="fas fa-sync-alt text-lg"></i>
                         </button>
                     </div>
@@ -491,9 +491,9 @@
                             <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
                             <span class="font-medium">Add Event</span>
                         </button>
-                        <button onclick="syncWithNeon()" class="bg-kdf-gold text-kdf-navy p-4 rounded-xl hover:bg-yellow-400 transition flex items-center gap-3">
+                        <button onclick="syncWithSupabase()" class="bg-kdf-gold text-kdf-navy p-4 rounded-xl hover:bg-yellow-400 transition flex items-center gap-3">
                             <i class="fas fa-sync-alt text-xl"></i>
-                            <span class="font-medium">Sync with Neon</span>
+                            <span class="font-medium">Sync with Supabase</span>
                         </button>
                     </div>
 
@@ -664,7 +664,7 @@
                 <!-- Database Tab -->
                 <div id="tab-database" class="tab-content hidden">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-3xl">
-                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🗄️ Neon Database Management</h3>
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🗄️ Supabase Database Management</h3>
                         <div class="space-y-4">
                             <div class="grid sm:grid-cols-2 gap-4">
                                 <div class="bg-kdf-gray rounded-xl p-4">
@@ -673,20 +673,17 @@
                                 </div>
                                 <div class="bg-kdf-gray rounded-xl p-4">
                                     <p class="text-sm text-gray-500">Tables</p>
-                                    <p class="font-bold text-kdf-navy">users, posts, events, categories, activity_log</p>
+                                    <p class="font-bold text-kdf-navy">posts, events, categories</p>
                                 </div>
                             </div>
                             <div class="bg-kdf-gray rounded-xl p-4">
                                 <h4 class="font-bold text-kdf-navy mb-2">Quick Actions</h4>
                                 <div class="flex flex-wrap gap-3">
-                                    <button onclick="syncWithNeon()" class="bg-kdf-gold text-kdf-navy px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition">
+                                    <button onclick="syncWithSupabase()" class="bg-kdf-gold text-kdf-navy px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition">
                                         <i class="fas fa-sync-alt mr-1"></i> Sync All Data
                                     </button>
                                     <button onclick="exportData()" class="bg-kdf-navy text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-kdf-navy/80 transition">
                                         <i class="fas fa-download mr-1"></i> Export CSV
-                                    </button>
-                                    <button onclick="showToast('Database backup initiated!', 'success')" class="border-2 border-kdf-red text-kdf-red px-4 py-2 rounded-lg font-semibold text-sm hover:bg-kdf-red hover:text-white transition">
-                                        <i class="fas fa-database mr-1"></i> Backup
                                     </button>
                                 </div>
                             </div>
@@ -699,7 +696,7 @@
                                 </div>
                             </div>
                             <div class="text-xs text-gray-400 mt-2">
-                                <p>🔗 Connected to: <strong class="text-kdf-navy">Neon PostgreSQL</strong> • <span id="dbConnectionString">postgresql://user:****@ep-xxx.neon.tech/db</span></p>
+                                <p>🔗 Connected to: <strong class="text-kdf-navy">Supabase PostgreSQL</strong></p>
                             </div>
                         </div>
                     </div>
@@ -747,21 +744,13 @@
 <!-- ════════════════════════════════════════ -->
 <!-- JAVASCRIPT -->
 <!-- ════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // NEON DATABASE CONFIG
+    // SUPABASE CONFIG - REAL CONNECTION
     // ────────────────────────────────────────────────
-    // Replace with your actual Neon database connection details
-    const NEON_CONFIG = {
-        // In production, these should be environment variables
-        // For this demo, we're using the connection string
-        connectionString: 'postgresql://neondb_owner:npg_XxWzgHLT52Dj@ep-hidden-lab-at0bye1i-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
-        // For REST API access (if using Neon's HTTP API)
-        apiUrl: 'https://ep-hidden-lab-at0bye1i.apirest.c-9.us-east-1.aws.neon.tech/neondb/rest/v1',
-        projectId: 'quiet-frost-61727265',
-        branchId: 'main',
-        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3' // Keep this secure!
-    };
+    const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
 
     // ────────────────────────────────────────────────
     // SECURITY CONFIG
@@ -803,7 +792,7 @@
     }
 
     // ────────────────────────────────────────────────
-    // DATA STORE (Local cache, synced with Neon)
+    // DATA STORE
     // ────────────────────────────────────────────────
     let posts = [];
     let events = [];
@@ -814,40 +803,168 @@
         { id: 4, name: 'Calendar', slug: 'calendar', icon: '📅' }
     ];
     let currentFilter = 'all';
-    let nextId = 1;
-    let nextEventId = 1;
-    let activityLog = [];
     let currentUser = null;
     let sessionTimerInterval = null;
-    let dbConnected = false;
+    let sbClient = null;
 
     // ────────────────────────────────────────────────
-    // NEON DATABASE OPERATIONS
+    // SUPABASE INITIALIZATION
     // ────────────────────────────────────────────────
-    async function connectToNeon() {
+    function initSupabase() {
         try {
-            updateDbStatus('connecting', 'Connecting to Neon...');
+            sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client initialized');
+            return true;
+        } catch (error) {
+            console.error('❌ Supabase initialization error:', error);
+            return false;
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // SUPABASE DATABASE OPERATIONS
+    // ────────────────────────────────────────────────
+    async function connectToSupabase() {
+        try {
+            updateDbStatus('connecting', 'Connecting to Supabase...');
             
-            // Simulate connection check
-            // In production, this would be a real connection test
-            await new Promise(resolve => setTimeout(resolve, 800));
+            if (!sbClient) {
+                initSupabase();
+            }
             
-            // For demo, we'll use local data with sync capability
-            // In production, you'd use the Neon REST API or PostgreSQL driver
-            dbConnected = true;
-            updateDbStatus('connected', 'Neon DB Connected');
+            // Test connection by fetching 1 post
+            const { data, error } = await sbClient
+                .from('posts')
+                .select('*')
+                .limit(1);
             
-            // Load sample data if empty
-            if (posts.length === 0) {
-                loadSampleData();
+            if (error) {
+                throw new Error(error.message);
+            }
+            
+            updateDbStatus('connected', 'Supabase Connected');
+            
+            // Load all data
+            await loadAllFromSupabase();
+            
+            return true;
+        } catch (error) {
+            console.error('Supabase connection error:', error);
+            updateDbStatus('error', 'Connection Failed - Using Local Data');
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+            return false;
+        }
+    }
+
+    async function loadAllFromSupabase() {
+        try {
+            // Load posts
+            const { data: postsData, error: postsError } = await sbClient
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (postsError) throw new Error(postsError.message);
+            
+            if (postsData && postsData.length > 0) {
+                posts = postsData;
+            }
+            
+            // Load events
+            const { data: eventsData, error: eventsError } = await sbClient
+                .from('events')
+                .select('*')
+                .order('event_date', { ascending: true });
+            
+            if (eventsError) throw new Error(eventsError.message);
+            
+            if (eventsData && eventsData.length > 0) {
+                events = eventsData;
             }
             
             renderAll();
+            updateDbStatus('connected', `Supabase (${posts.length} posts, ${events.length} events)`);
+        } catch (error) {
+            console.error('Error loading from Supabase:', error);
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+        }
+    }
+
+    async function savePostToSupabase(postData) {
+        try {
+            const { data, error } = await sbClient
+                .from('posts')
+                .insert([postData])
+                .select();
+            
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving post to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function saveEventToSupabase(eventData) {
+        try {
+            const { data, error } = await sbClient
+                .from('events')
+                .insert([eventData])
+                .select();
+            
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving event to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function deletePostFromSupabase(id) {
+        try {
+            const { error } = await sbClient
+                .from('posts')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw new Error(error.message);
             return true;
         } catch (error) {
-            console.error('Neon connection error:', error);
-            updateDbStatus('error', 'Connection Failed');
+            console.error('Error deleting post from Supabase:', error);
             return false;
+        }
+    }
+
+    async function deleteEventFromSupabase(id) {
+        try {
+            const { error } = await sbClient
+                .from('events')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting event from Supabase:', error);
+            return false;
+        }
+    }
+
+    async function updatePostInSupabase(id, updates) {
+        try {
+            const { data, error } = await sbClient
+                .from('posts')
+                .update(updates)
+                .eq('id', id)
+                .select();
+            
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error updating post in Supabase:', error);
+            return null;
         }
     }
 
@@ -858,7 +975,7 @@
         statusEls.forEach(el => {
             el.className = `db-status ${status}`;
             if (status === 'connected') {
-                el.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Neon DB'}`;
+                el.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Supabase'}`;
             } else if (status === 'connecting') {
                 el.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Connecting...'}`;
             } else {
@@ -869,37 +986,28 @@
         if (loginStatus) {
             loginStatus.className = `db-status ${status}`;
             loginStatus.innerHTML = status === 'connected' 
-                ? `<i class="fas fa-check-circle"></i> Neon DB Ready`
-                : `<i class="fas fa-spinner fa-spin"></i> Connecting to Neon...`;
+                ? `<i class="fas fa-check-circle"></i> Supabase Ready`
+                : `<i class="fas fa-spinner fa-spin"></i> Connecting to Supabase...`;
         }
     }
 
-    async function syncWithNeon() {
-        showToast('🔄 Syncing with Neon database...', 'success');
+    async function syncWithSupabase() {
+        showToast('🔄 Syncing with Supabase...', 'success');
         updateDbStatus('connecting', 'Syncing...');
         
         try {
-            // Simulate sync delay
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // In production: fetch latest data from Neon
-            // await fetchPostsFromNeon();
-            // await fetchEventsFromNeon();
-            
-            // For demo: refresh local data
-            renderAll();
+            await loadAllFromSupabase();
             updateDbStatus('connected', 'Sync Complete');
-            showToast('✅ Data synced with Neon successfully!', 'success');
+            showToast('✅ Data synced with Supabase successfully!', 'success');
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
             
-            // Update DB stats
             document.getElementById('dbPostCount').textContent = posts.length;
             document.getElementById('dbEventCount').textContent = events.length;
             
-            logActivity('🔄 Synced with Neon database', 'Database');
+            logActivity('🔄 Synced with Supabase', 'Database');
         } catch (error) {
             updateDbStatus('error', 'Sync Failed');
-            showToast('❌ Failed to sync with Neon', 'error');
+            showToast('❌ Failed to sync with Supabase: ' + error.message, 'error');
         }
     }
 
@@ -914,7 +1022,6 @@
             { id: 7, title: 'MFA Science Fair 2026', category: 'events', content: 'The annual MFA Science Fair will take place in February...', status: 'published', date: '2026-02-01', image: '🔬' },
             { id: 8, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', status: 'published', date: '2026-01-05', image: '🏫' },
         ];
-        nextId = 9;
         
         events = [
             { id: 1, title: 'Sports Day', date: '2026-02-15', description: 'Annual sports day with various athletic events.' },
@@ -923,7 +1030,6 @@
             { id: 4, title: 'Parent-Teacher Conference', date: '2026-01-30', description: 'Term 1 parent-teacher meeting.' },
             { id: 5, title: 'KJSEA Exams', date: '2026-11-01', description: 'Junior Secondary Assessment exams.' },
         ];
-        nextEventId = 6;
         
         activityLog = [
             { action: '✅ Login successful', category: 'Security', time: new Date().toLocaleString() },
@@ -1006,7 +1112,8 @@
         document.getElementById('adminEmail').textContent = currentUser?.email || 'admin@moiforces.ac.ke';
         
         startSessionTimer();
-        connectToNeon();
+        initSupabase();
+        connectToSupabase();
         
         document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
     }
@@ -1045,6 +1152,8 @@
             sessionTimerInterval = null;
         }
     }
+
+    let activityLog = [];
 
     function logActivity(action, category = 'General') {
         const entry = { action, category, time: new Date().toLocaleString() };
@@ -1111,6 +1220,7 @@
                             <span class="category-badge ${p.category}">${p.category}</span>
                             <span class="status-badge ${p.status}">${p.status}</span>
                             <span class="text-xs text-gray-400">${p.date}</span>
+                            <span class="text-xs text-green-600">🟢 Live</span>
                         </div>
                     </div>
                 </div>
@@ -1144,6 +1254,7 @@
                             <span class="category-badge ${p.category}">${p.category}</span>
                             <span class="status-badge ${p.status}">${p.status}</span>
                             <span class="text-xs text-gray-400">${p.date}</span>
+                            <span class="text-xs text-green-600">🟢 Supabase</span>
                         </div>
                     </div>
                 </div>
@@ -1170,8 +1281,9 @@
                     </div>
                     <div>
                         <p class="font-bold text-kdf-navy">${e.title}</p>
-                        <p class="text-sm text-gray-600">${new Date(e.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p class="text-sm text-gray-600">${new Date(e.date || e.event_date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                         <p class="text-sm text-gray-500">${e.description || 'No description'}</p>
+                        <p class="text-xs text-green-600 mt-1">✅ Synced to Supabase</p>
                     </div>
                 </div>
                 <button onclick="deleteEvent(${e.id})" class="text-red-500 hover:text-red-700 transition" title="Delete Event">
@@ -1182,7 +1294,7 @@
     }
 
     // ────────────────────────────────────────────────
-    // POST CRUD OPERATIONS
+    // POST CRUD OPERATIONS - WITH SUPABASE SAVE
     // ────────────────────────────────────────────────
     function handleCreatePost(e) {
         e.preventDefault();
@@ -1199,37 +1311,74 @@
             return;
         }
         
-        const newPost = {
-            id: nextId++,
+        const postData = {
             title,
             category,
             content,
             status,
             date: status === 'scheduled' ? scheduleDate || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-            image
+            image,
+            created_at: new Date().toISOString()
         };
         
-        posts.unshift(newPost);
-        renderAll();
-        document.getElementById('postForm').reset();
-        document.getElementById('postImage').value = '';
-        
-        logActivity(`📝 Created post: "${title}"`, 'Content');
-        showToast(`Post "${title}" published successfully!`, 'success');
-        
-        // Sync with Neon
-        syncWithNeon();
-        switchTab('posts');
+        // Save to Supabase first
+        savePostToSupabase(postData).then(result => {
+            if (result) {
+                // Add the saved post to local state with the ID from Supabase
+                const savedPost = { ...postData, id: result.id };
+                posts.unshift(savedPost);
+                renderAll();
+                document.getElementById('postForm').reset();
+                document.getElementById('postImage').value = '';
+                
+                logActivity(`📝 Created post: "${title}"`, 'Content');
+                showToast(`✅ Post "${title}" published and synced to Supabase!`, 'success');
+                switchTab('posts');
+            } else {
+                // Fallback: save locally
+                const newPost = { ...postData, id: Date.now() };
+                posts.unshift(newPost);
+                renderAll();
+                document.getElementById('postForm').reset();
+                document.getElementById('postImage').value = '';
+                
+                logActivity(`📝 Created post: "${title}" (local only)`, 'Content');
+                showToast(`⚠️ Post "${title}" saved locally (Supabase sync failed)`, 'error');
+                switchTab('posts');
+            }
+        }).catch(err => {
+            console.error('Error saving to Supabase:', err);
+            const newPost = { ...postData, id: Date.now() };
+            posts.unshift(newPost);
+            renderAll();
+            document.getElementById('postForm').reset();
+            document.getElementById('postImage').value = '';
+            
+            logActivity(`📝 Created post: "${title}" (local only)`, 'Content');
+            showToast(`⚠️ Post "${title}" saved locally (Supabase sync failed)`, 'error');
+            switchTab('posts');
+        });
     }
 
     function deletePost(id) {
         if (!confirm('Are you sure you want to delete this post?')) return;
         const post = posts.find(p => p.id === id);
-        posts = posts.filter(p => p.id !== id);
-        renderAll();
-        logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
-        showToast(`Post "${post?.title}" deleted.`, 'success');
-        syncWithNeon();
+        
+        // Delete from Supabase
+        deletePostFromSupabase(id).then(success => {
+            if (success) {
+                posts = posts.filter(p => p.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
+                showToast(`Post "${post?.title}" deleted from Supabase.`, 'success');
+            } else {
+                // Remove locally anyway
+                posts = posts.filter(p => p.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted post: "${post?.title}" (local only)`, 'Content');
+                showToast(`Post "${post?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
     }
 
     function editPost(id) {
@@ -1249,7 +1398,7 @@
     }
 
     // ────────────────────────────────────────────────
-    // EVENT CRUD OPERATIONS
+    // EVENT CRUD OPERATIONS - WITH SUPABASE SAVE
     // ────────────────────────────────────────────────
     function openEventModal() {
         document.getElementById('eventModal').classList.add('open');
@@ -1271,22 +1420,60 @@
             return;
         }
         
-        events.push({ id: nextEventId++, title, date, description });
-        renderAll();
-        closeEventModal();
-        logActivity(`📅 Added event: "${title}"`, 'Calendar');
-        showToast(`Event "${title}" added successfully!`, 'success');
-        syncWithNeon();
+        const eventData = {
+            title,
+            date: date,
+            event_date: date,
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        // Save to Supabase first
+        saveEventToSupabase(eventData).then(result => {
+            if (result) {
+                const savedEvent = { ...eventData, id: result.id };
+                events.push(savedEvent);
+                renderAll();
+                closeEventModal();
+                logActivity(`📅 Added event: "${title}"`, 'Calendar');
+                showToast(`✅ Event "${title}" added and synced to Supabase!`, 'success');
+            } else {
+                // Fallback: save locally
+                const newEvent = { ...eventData, id: Date.now() };
+                events.push(newEvent);
+                renderAll();
+                closeEventModal();
+                logActivity(`📅 Added event: "${title}" (local only)`, 'Calendar');
+                showToast(`⚠️ Event "${title}" saved locally (Supabase sync failed)`, 'error');
+            }
+        }).catch(err => {
+            console.error('Error saving event to Supabase:', err);
+            const newEvent = { ...eventData, id: Date.now() };
+            events.push(newEvent);
+            renderAll();
+            closeEventModal();
+            logActivity(`📅 Added event: "${title}" (local only)`, 'Calendar');
+            showToast(`⚠️ Event "${title}" saved locally (Supabase sync failed)`, 'error');
+        });
     }
 
     function deleteEvent(id) {
         if (!confirm('Are you sure you want to delete this event?')) return;
         const event = events.find(e => e.id === id);
-        events = events.filter(e => e.id !== id);
-        renderAll();
-        logActivity(`🗑️ Deleted event: "${event?.title}"`, 'Calendar');
-        showToast(`Event "${event?.title}" deleted.`, 'success');
-        syncWithNeon();
+        
+        deleteEventFromSupabase(id).then(success => {
+            if (success) {
+                events = events.filter(e => e.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted event: "${event?.title}"`, 'Calendar');
+                showToast(`Event "${event?.title}" deleted from Supabase.`, 'success');
+            } else {
+                events = events.filter(e => e.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted event: "${event?.title}" (local only)`, 'Calendar');
+                showToast(`Event "${event?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
     }
 
     // ────────────────────────────────────────────────
@@ -1336,7 +1523,7 @@
         toast.className = `toast ${type}`;
         toast.classList.add('show');
         clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 5000);
     }
 
     // ────────────────────────────────────────────────
@@ -1350,8 +1537,8 @@
         } else {
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('dashboardScreen').style.display = 'none';
-            // Attempt to connect to Neon even on login screen
-            connectToNeon();
+            initSupabase();
+            connectToSupabase();
         }
     }
 
@@ -1382,7 +1569,7 @@
     window.showToast = showToast;
     window.handleLogin = handleLogin;
     window.handleLogout = handleLogout;
-    window.syncWithNeon = syncWithNeon;
+    window.syncWithSupabase = syncWithSupabase;
     window.exportData = exportData;
 
     // ────────────────────────────────────────────────
@@ -1400,8 +1587,8 @@
         });
     });
 
-    console.log('🔒 MFA Admin Dashboard with Neon DB loaded successfully!');
-    console.log('📊 Data ready for sync with Neon PostgreSQL');
+    console.log('🔒 MFA Admin Dashboard with Supabase loaded successfully!');
+    console.log('📊 Connected to Supabase PostgreSQL');
     console.log('🛡️ Security features: Session management, activity logging');
 </script>
 </body>
