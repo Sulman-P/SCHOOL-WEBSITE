@@ -9,8 +9,6 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
-    
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,11 +34,9 @@
     </script>
     
     <style>
-        /* ── CUSTOM STYLES ── */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         
-        /* KDF Color Classes */
         .bg-kdf-red { background-color: #B22222; }
         .bg-kdf-navy { background-color: #0a1a3a; }
         .bg-kdf-light-blue { background-color: #4A90D9; }
@@ -55,7 +51,6 @@
         .hover-bg-kdf-gold:hover { background-color: #D4A017; color: #0a1a3a; }
         .hover-text-kdf-gold:hover { color: #D4A017; }
         
-        /* Hero Section with KDF-inspired gradient */
         .hero-gradient {
             background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
             position: relative;
@@ -65,8 +60,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: 
-                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             background-size: 80px 80px;
             pointer-events: none;
         }
@@ -81,7 +75,6 @@
             pointer-events: none;
         }
         
-        /* Update Cards */
         .update-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -90,7 +83,6 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.12);
         }
         
-        /* Navigation */
         .nav-link {
             position: relative;
             transition: color 0.3s ease;
@@ -111,7 +103,6 @@
         }
         .nav-link:hover { color: #D4A017; }
         
-        /* Mobile Menu */
         .mobile-menu {
             transition: max-height 0.4s ease, opacity 0.3s ease;
             max-height: 0;
@@ -123,7 +114,6 @@
             opacity: 1;
         }
         
-        /* Call Button Pulse */
         .call-pulse {
             animation: pulse-call 2s infinite;
         }
@@ -132,7 +122,6 @@
             50% { box-shadow: 0 0 0 20px rgba(212, 160, 23, 0); }
         }
         
-        /* Admin Button Glow */
         .admin-btn {
             background: #D4A017;
             color: #0a1a3a;
@@ -156,17 +145,13 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        .admin-btn:hover::before {
-            opacity: 1;
-        }
+        .admin-btn:hover::before { opacity: 1; }
         
-        /* Accessibility: Focus styles */
         a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
             outline: 3px solid #D4A017;
             outline-offset: 2px;
         }
         
-        /* Skip to content link */
         .skip-link {
             position: absolute;
             top: -100%;
@@ -180,17 +165,13 @@
             border-radius: 0 0 8px 8px;
             transition: top 0.3s ease;
         }
-        .skip-link:focus {
-            top: 0;
-        }
+        .skip-link:focus { top: 0; }
         
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #B22222; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #8B1A1A; }
         
-        /* Form styles */
         .form-input {
             width: 100%;
             padding: 12px 16px;
@@ -209,7 +190,6 @@
             box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.15);
         }
         
-        /* Video call container */
         .call-container {
             background: #0a1a3a;
             border-radius: 16px;
@@ -223,14 +203,12 @@
             background: #1a2a5a;
         }
         
-        /* Responsive grid for updates */
         .updates-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 24px;
         }
         
-        /* Category badge for events */
         .category-badge {
             display: inline-block;
             padding: 2px 12px;
@@ -268,30 +246,21 @@
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
         @media (max-width: 640px) {
-            .updates-grid {
-                grid-template-columns: 1fr;
-            }
+            .updates-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════ -->
-<!-- SKIP LINK (Accessibility) -->
-<!-- ════════════════════════════════════════ -->
+<!-- Skip Link -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- ════════════════════════════════════════ -->
-<!-- NAVIGATION -->
-<!-- ════════════════════════════════════════ -->
+<!-- Navigation -->
 <nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
-            <!-- Logo -->
             <a href="#home" class="flex items-center gap-3" aria-label="Moi Forces Academy Home">
-                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">
-                    MFA
-                </div>
+                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">MFA</div>
                 <div>
                     <h1 class="text-white font-display font-bold text-lg leading-tight">
                         Moi Forces Academy
@@ -300,7 +269,6 @@
                 </div>
             </a>
             
-            <!-- Desktop Nav -->
             <div class="hidden md:flex items-center gap-6">
                 <a href="#home" class="nav-link active text-white font-medium">Home</a>
                 <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
@@ -308,24 +276,20 @@
                 <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
                 <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Class</a>
                 <a href="#contact" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
-                <!-- Admin Button (Gold) -->
                 <a href="admin.html" class="admin-btn px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
                     <i class="fas fa-user-shield"></i> Admin
                 </a>
-                <!-- Call Button -->
                 <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2 call-pulse">
                     <i class="fas fa-video"></i> Join Call
                 </a>
             </div>
             
-            <!-- Mobile Menu Toggle -->
             <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-expanded="false" aria-label="Toggle navigation menu">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </div>
     
-    <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
         <div class="flex flex-col gap-3 pt-4">
             <a href="#home" class="text-white font-medium py-2 hover:text-kdf-gold transition">Home</a>
@@ -334,7 +298,6 @@
             <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
             <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
             <a href="#contact" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
-            <!-- Admin Button (Gold) - Mobile -->
             <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
                 <i class="fas fa-user-shield"></i> Admin Dashboard
             </a>
@@ -345,9 +308,7 @@
     </div>
 </nav>
 
-<!-- ════════════════════════════════════════ -->
-<!-- HERO SECTION -->
-<!-- ════════════════════════════════════════ -->
+<!-- Hero Section -->
 <section id="home" class="hero-gradient min-h-[90vh] flex items-center relative" aria-label="School hero section">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-16">
         <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -374,7 +335,6 @@
                         <i class="fas fa-user-shield"></i> Admin
                     </a>
                 </div>
-                <!-- Quick Stats -->
                 <div class="flex flex-wrap gap-8 mt-10 pt-8 border-t border-white/10">
                     <div><span class="text-2xl font-bold text-kdf-gold">3000+</span><p class="text-gray-400 text-sm">Students</p></div>
                     <div><span class="text-2xl font-bold text-kdf-gold">70+</span><p class="text-gray-400 text-sm">Teachers</p></div>
@@ -392,7 +352,6 @@
                         </div>
                         <p class="text-center text-gray-400 text-sm mt-4">"Excellence Our Commitment"</p>
                     </div>
-                    <!-- Decorative elements -->
                     <div class="absolute -top-4 -right-4 w-24 h-24 bg-kdf-red/20 rounded-full blur-2xl"></div>
                     <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-kdf-light-blue/20 rounded-full blur-2xl"></div>
                 </div>
@@ -401,9 +360,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- ABOUT SECTION -->
-<!-- ════════════════════════════════════════ -->
+<!-- About Section -->
 <section id="about" class="py-20 bg-white" aria-label="About the school">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -462,9 +419,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- ACADEMICS SECTION -->
-<!-- ════════════════════════════════════════ -->
+<!-- Academics Section -->
 <section id="academics" class="py-20 bg-kdf-gray" aria-label="Academics">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -474,7 +429,6 @@
         </div>
         
         <div class="grid md:grid-cols-3 gap-6">
-            <!-- Preprimary -->
             <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition border-t-4 border-kdf-light-blue">
                 <div class="w-14 h-14 rounded-full bg-kdf-light-blue/10 flex items-center justify-center text-2xl text-kdf-light-blue">🎨</div>
                 <h3 class="text-xl font-bold text-kdf-navy mt-4">Preprimary School</h3>
@@ -486,7 +440,6 @@
                 </ul>
             </div>
             
-            <!-- Primary School -->
             <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition border-t-4 border-kdf-red">
                 <div class="w-14 h-14 rounded-full bg-kdf-red/10 flex items-center justify-center text-2xl text-kdf-red">🏫</div>
                 <h3 class="text-xl font-bold text-kdf-navy mt-4">Primary School</h3>
@@ -498,7 +451,6 @@
                 </ul>
             </div>
             
-            <!-- Junior Secondary -->
             <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition border-t-4 border-kdf-gold">
                 <div class="w-14 h-14 rounded-full bg-kdf-gold/10 flex items-center justify-center text-2xl text-kdf-gold">📚</div>
                 <h3 class="text-xl font-bold text-kdf-navy mt-4">Junior Secondary</h3>
@@ -513,9 +465,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- UPDATES SECTION (Dynamic Content from Neon) -->
-<!-- ════════════════════════════════════════ -->
+<!-- Updates Section -->
 <section id="updates" class="py-20 bg-white" aria-label="School updates and announcements">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center justify-between mb-12">
@@ -534,36 +484,26 @@
             </a>
         </div>
         
-        <!-- Updates Grid -->
-        <div id="updatesGrid" class="updates-grid">
-            <!-- Cards will be dynamically inserted via JavaScript -->
-        </div>
+        <div id="updatesGrid" class="updates-grid"></div>
         
-        <!-- Quick Announcements Sidebar (on larger screens) -->
         <div class="mt-8 grid md:grid-cols-3 gap-4">
             <div class="md:col-span-2 bg-kdf-gray rounded-2xl p-6">
                 <h4 class="font-bold text-kdf-navy flex items-center gap-2">
                     <i class="fas fa-bullhorn text-kdf-red"></i> Important Announcements
                 </h4>
-                <div id="announcements" class="mt-3 space-y-3">
-                    <!-- Dynamic announcements -->
-                </div>
+                <div id="announcements" class="mt-3 space-y-3"></div>
             </div>
             <div class="bg-kdf-navy rounded-2xl p-6 text-white">
                 <h4 class="font-bold flex items-center gap-2">
                     <i class="fas fa-calendar-alt text-kdf-gold"></i> Upcoming Events
                 </h4>
-                <div id="eventsList" class="mt-3 space-y-2 text-sm">
-                    <!-- Dynamic events -->
-                </div>
+                <div id="eventsList" class="mt-3 space-y-2 text-sm"></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- VIRTUAL CLASSROOM (Video/Voice Calls) -->
-<!-- ════════════════════════════════════════ -->
+<!-- Virtual Classroom Section -->
 <section id="virtual-classroom" class="py-20 bg-kdf-navy" aria-label="Virtual Classroom">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -574,7 +514,6 @@
         </div>
         
         <div class="grid md:grid-cols-3 gap-6">
-            <!-- Video Call Card -->
             <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-kdf-gold/50 transition">
                 <div class="w-16 h-16 rounded-full bg-kdf-gold/20 flex items-center justify-center text-3xl text-kdf-gold mx-auto">
                     <i class="fas fa-video"></i>
@@ -586,7 +525,6 @@
                 </button>
             </div>
             
-            <!-- Voice Call Card -->
             <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-kdf-gold/50 transition">
                 <div class="w-16 h-16 rounded-full bg-kdf-light-blue/20 flex items-center justify-center text-3xl text-kdf-light-blue mx-auto">
                     <i class="fas fa-phone-alt"></i>
@@ -598,20 +536,16 @@
                 </button>
             </div>
             
-            <!-- Schedule Card -->
             <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-kdf-gold/50 transition">
                 <div class="w-16 h-16 rounded-full bg-kdf-red/20 flex items-center justify-center text-3xl text-kdf-red mx-auto">
                     <i class="fas fa-clock"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white text-center mt-4">Schedule</h3>
                 <p class="text-gray-400 text-center text-sm mt-2">View today's virtual class schedule and join at the right time.</p>
-                <div id="scheduleList" class="mt-4 space-y-2 text-sm text-gray-300">
-                    <!-- Dynamic schedule -->
-                </div>
+                <div id="scheduleList" class="mt-4 space-y-2 text-sm text-gray-300"></div>
             </div>
         </div>
         
-        <!-- Call Status / Active Call Display -->
         <div id="callStatus" class="mt-8 bg-white/5 rounded-2xl p-6 border border-white/10 hidden">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -639,9 +573,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- CONTACT & INQUIRY FORM -->
-<!-- ════════════════════════════════════════ -->
+<!-- Contact Section -->
 <section id="contact" class="py-20 bg-white" aria-label="Contact us">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -651,7 +583,6 @@
         </div>
         
         <div class="grid md:grid-cols-2 gap-12">
-            <!-- Contact Form -->
             <div>
                 <form id="contactForm" class="space-y-4" onsubmit="handleContactForm(event)">
                     <div>
@@ -688,7 +619,6 @@
                 <div id="formFeedback" class="mt-4 hidden"></div>
             </div>
             
-            <!-- Contact Info -->
             <div>
                 <div class="bg-kdf-gray rounded-2xl p-6 space-y-4">
                     <h3 class="text-xl font-bold text-kdf-navy">School Information</h3>
@@ -722,7 +652,6 @@
                     </div>
                 </div>
                 
-                <!-- Social Links -->
                 <div class="mt-6 flex gap-4">
                     <a href="#" class="w-12 h-12 rounded-full bg-kdf-navy text-white flex items-center justify-center hover:bg-kdf-gold transition" aria-label="Facebook">
                         <i class="fab fa-facebook-f"></i>
@@ -742,9 +671,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- FOOTER -->
-<!-- ════════════════════════════════════════ -->
+<!-- Footer -->
 <footer class="bg-kdf-navy text-white py-12 border-t-4 border-kdf-gold" role="contentinfo">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-4 gap-8">
@@ -793,95 +720,31 @@
     </div>
 </footer>
 
-<!-- ════════════════════════════════════════ -->
-<!-- JAVASCRIPT (Dynamic Content from Neon) -->
-<!-- ════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // NEON DATABASE CONFIG
+    // SUPABASE CONFIG - UPDATED CREDENTIALS
     // ────────────────────────────────────────────────
-    const NEON_CONFIG = {
-        apiUrl: 'https://ep-hidden-lab-at0bye1i.apirest.c-9.us-east-1.aws.neon.tech/neondb/rest/v1',
-        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3'
-    };
-
-    // ────────────────────────────────────────────────
-    // FETCH DATA FROM NEON
-    // ────────────────────────────────────────────────
-    async function fetchPostsFromNeon() {
+    const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
+    
+    let sbClient = null;
+    
+    function initSupabase() {
         try {
-            updateDbStatus('connecting', 'Loading updates...');
-            
-            // Fetch posts from Neon
-            const response = await fetch(`${NEON_CONFIG.apiUrl}/posts?order=created_at.desc&limit=6`, {
-                headers: {
-                    'apikey': NEON_CONFIG.apiKey,
-                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            console.log('📊 Posts fetched from Neon:', data.length);
-            
-            // Fetch events from Neon
-            const eventsRes = await fetch(`${NEON_CONFIG.apiUrl}/events?order=event_date.asc&limit=3`, {
-                headers: {
-                    'apikey': NEON_CONFIG.apiKey,
-                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            let events = [];
-            if (eventsRes.ok) {
-                events = await eventsRes.json();
-                console.log('📅 Events fetched from Neon:', events.length);
-            }
-            
-            // Convert events to post format
-            const eventPosts = events.map(e => ({
-                id: `evt_${e.id}`,
-                title: `📅 ${e.title}`,
-                category: 'events',
-                content: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`,
-                status: 'published',
-                date: e.date || e.event_date || new Date().toISOString().split('T')[0],
-                image: '📅',
-                isEvent: true,
-                eventDate: e.date || e.event_date,
-                eventDescription: e.description
-            }));
-            
-            // Combine posts and events
-            let allItems = [...data, ...eventPosts];
-            allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Take only first 6 for homepage
-            allItems = allItems.slice(0, 6);
-            
-            updateDbStatus('connected', `Live (${allItems.length} updates)`);
-            renderUpdates(allItems);
-            renderAnnouncements(data);
-            renderEvents(events);
-            
+            sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client initialized');
+            return true;
         } catch (error) {
-            console.error('Error fetching from Neon:', error);
-            updateDbStatus('error', 'Using sample data');
-            
-            // Fallback to sample data
-            loadSampleData();
+            console.error('❌ Supabase initialization error:', error);
+            return false;
         }
     }
-
+    
     function updateDbStatus(status, message) {
         const statusEl = document.getElementById('dbStatusHome');
         if (!statusEl) return;
-        
         statusEl.className = `db-status ${status}`;
         if (status === 'connected') {
             statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Live'}`;
@@ -891,39 +754,69 @@
             statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
         }
     }
-
-    // ────────────────────────────────────────────────
-    // SAMPLE DATA (Fallback)
-    // ────────────────────────────────────────────────
-    function loadSampleData() {
-        const samplePosts = [
-            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚' },
-            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃' },
-            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️' },
-            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦' },
-            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖' },
-            { id: 6, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', date: '2026-01-05', image: '🏫' },
-        ];
-        
-        const sampleEvents = [
-            { title: 'Sports Day', date: '2026-02-15' },
-            { title: 'KDF Career Day', date: '2026-02-20' },
-            { title: 'Science Fair', date: '2026-02-28' },
-        ];
-        
-        renderUpdates(samplePosts);
-        renderAnnouncements(samplePosts);
-        renderEvents(sampleEvents);
-        updateDbStatus('connected', 'Sample Data');
+    
+    async function fetchPostsFromSupabase() {
+        try {
+            updateDbStatus('connecting', 'Loading updates...');
+            
+            // Fetch posts from Supabase
+            const { data: postsData, error: postsError } = await sbClient
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(6);
+            
+            if (postsError) throw new Error(postsError.message);
+            
+            console.log('📊 Posts fetched from Supabase:', postsData?.length || 0);
+            
+            // Fetch events from Supabase
+            const { data: eventsData, error: eventsError } = await sbClient
+                .from('events')
+                .select('*')
+                .order('event_date', { ascending: true })
+                .limit(3);
+            
+            if (eventsError) throw new Error(eventsError.message);
+            
+            console.log('📅 Events fetched from Supabase:', eventsData?.length || 0);
+            
+            // Convert events to post format
+            const eventPosts = (eventsData || []).map(e => ({
+                id: `evt_${e.id}`,
+                title: `📅 ${e.title}`,
+                category: 'events',
+                content: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`,
+                date: e.date || e.event_date || new Date().toISOString().split('T')[0],
+                image: '📅',
+                isEvent: true,
+                eventDate: e.date || e.event_date,
+                eventDescription: e.description
+            }));
+            
+            // Combine posts and events
+            let allItems = [...(postsData || []), ...eventPosts];
+            allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Take only first 6 for homepage
+            allItems = allItems.slice(0, 6);
+            
+            updateDbStatus('connected', `Supabase (${allItems.length} updates)`);
+            renderUpdates(allItems);
+            renderAnnouncements(postsData || []);
+            renderEvents(eventsData || []);
+            
+        } catch (error) {
+            console.error('Error fetching from Supabase:', error);
+            updateDbStatus('error', 'Using sample data');
+            loadSampleData();
+        }
     }
-
-    // ────────────────────────────────────────────────
-    // RENDER FUNCTIONS
-    // ────────────────────────────────────────────────
+    
     function renderUpdates(items) {
         const container = document.getElementById('updatesGrid');
         if (!container) return;
-
+        
         if (!items || items.length === 0) {
             container.innerHTML = `
                 <div class="col-span-full text-center py-8 text-gray-500">
@@ -933,11 +826,10 @@
             `;
             return;
         }
-
+        
         container.innerHTML = items.map(item => {
             const categoryClass = item.category || 'updates';
             const isEvent = item.isEvent || false;
-            const eventBadge = isEvent ? `<span class="event-date-badge ml-2">📅 ${new Date(item.eventDate || item.date).toLocaleDateString()}</span>` : '';
             
             return `
                 <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
@@ -960,19 +852,18 @@
             `;
         }).join('');
     }
-
+    
     function renderAnnouncements(posts) {
         const container = document.getElementById('announcements');
         if (!container) return;
-
-        // Filter posts with category 'updates' or 'news'
-        const announcements = posts.filter(p => p.category === 'updates' || p.category === 'news').slice(0, 4);
+        
+        const announcements = (posts || []).filter(p => p.category === 'updates' || p.category === 'news').slice(0, 4);
         
         if (announcements.length === 0) {
             container.innerHTML = `<p class="text-sm text-gray-500">No announcements available.</p>`;
             return;
         }
-
+        
         container.innerHTML = announcements.map(item => `
             <div class="flex items-start gap-3 p-3 bg-white rounded-lg">
                 <span class="text-kdf-red">📌</span>
@@ -983,24 +874,46 @@
             </div>
         `).join('');
     }
-
+    
     function renderEvents(events) {
         const container = document.getElementById('eventsList');
         if (!container) return;
-
+        
         if (!events || events.length === 0) {
             container.innerHTML = `<p class="text-sm text-gray-400">No upcoming events.</p>`;
             return;
         }
-
+        
         container.innerHTML = events.slice(0, 4).map(event => `
             <div class="flex items-center justify-between p-2 border-b border-white/10">
                 <span class="text-sm">${event.title}</span>
-                <span class="text-xs text-kdf-gold">${new Date(event.date).toLocaleDateString()}</span>
+                <span class="text-xs text-kdf-gold">${new Date(event.date || event.event_date).toLocaleDateString()}</span>
             </div>
         `).join('');
     }
-
+    
+    function loadSampleData() {
+        const samplePosts = [
+            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚' },
+            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃' },
+            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️' },
+            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦' },
+            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖' },
+            { id: 6, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', date: '2026-01-05', image: '🏫' },
+        ];
+        
+        const sampleEvents = [
+            { title: 'Sports Day', date: '2026-02-15' },
+            { title: 'KDF Career Day', date: '2026-02-20' },
+            { title: 'Science Fair', date: '2026-02-28' },
+        ];
+        
+        renderUpdates(samplePosts);
+        renderAnnouncements(samplePosts);
+        renderEvents(sampleEvents);
+        updateDbStatus('connected', 'Sample Data');
+    }
+    
     // ────────────────────────────────────────────────
     // CALL FUNCTIONALITY
     // ────────────────────────────────────────────────
@@ -1034,7 +947,7 @@
             `;
         }
     }
-
+    
     function startVoiceCall() {
         const status = document.getElementById('callStatus');
         if (status) {
@@ -1062,7 +975,7 @@
             `;
         }
     }
-
+    
     function endCall() {
         const status = document.getElementById('callStatus');
         if (status) {
@@ -1080,7 +993,7 @@
             }
         }
     }
-
+    
     // ────────────────────────────────────────────────
     // CONTACT FORM HANDLER
     // ────────────────────────────────────────────────
@@ -1093,14 +1006,14 @@
         const email = document.getElementById('email').value.trim();
         const subject = document.getElementById('subject').value;
         const message = document.getElementById('message').value.trim();
-
+        
         if (!name || !email || !subject || !message) {
             feedback.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700';
             feedback.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i> Please fill in all required fields.';
             feedback.classList.remove('hidden');
             return;
         }
-
+        
         feedback.className = 'mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700';
         feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Your message has been sent successfully! We will get back to you soon.';
         feedback.classList.remove('hidden');
@@ -1110,7 +1023,7 @@
             feedback.classList.add('hidden');
         }, 5000);
     }
-
+    
     // ────────────────────────────────────────────────
     // SCHEDULE DATA
     // ────────────────────────────────────────────────
@@ -1121,11 +1034,11 @@
         { time: '2:00 PM', subject: 'Kiswahili - Grade 7', teacher: 'Mr. Kiprop' },
         { time: '4:00 PM', subject: 'Social Studies - Grade 8', teacher: 'Ms. Muthoni' }
     ];
-
+    
     function renderSchedule() {
         const container = document.getElementById('scheduleList');
         if (!container) return;
-
+        
         container.innerHTML = scheduleData.map(item => `
             <div class="flex items-center justify-between p-2 bg-white/5 rounded-lg">
                 <div>
@@ -1136,14 +1049,16 @@
             </div>
         `).join('');
     }
-
+    
     // ────────────────────────────────────────────────
     // MOBILE MENU TOGGLE
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
+        initSupabase();
+        
         const menuToggle = document.getElementById('menuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
-
+        
         if (menuToggle && mobileMenu) {
             menuToggle.addEventListener('click', function() {
                 const isOpen = mobileMenu.classList.toggle('open');
@@ -1151,14 +1066,10 @@
                 menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
             });
         }
-
-        // Render schedule
+        
         renderSchedule();
-
-        // Load data from Neon
-        fetchPostsFromNeon();
-
-        // Close mobile menu on link click
+        fetchPostsFromSupabase();
+        
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.remove('open');
@@ -1166,8 +1077,7 @@
                 menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
             });
         });
-
-        // Smooth scroll for anchor links
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const target = document.querySelector(this.getAttribute('href'));
@@ -1177,26 +1087,22 @@
                 }
             });
         });
-
-        // Keyboard support for call buttons
+        
         document.querySelectorAll('[onclick="startVideoCall()"], [onclick="startVoiceCall()"]').forEach(btn => {
             btn.setAttribute('role', 'button');
             btn.setAttribute('tabindex', '0');
         });
     });
-
-    // ────────────────────────────────────────────────
-    // EXPOSE FUNCTIONS TO GLOBAL SCOPE
-    // ────────────────────────────────────────────────
+    
     window.startVideoCall = startVideoCall;
     window.startVoiceCall = startVoiceCall;
     window.endCall = endCall;
     window.handleContactForm = handleContactForm;
-
+    
     console.log('🚀 Moi Forces Academy website loaded successfully!');
-    console.log('📊 Connected to Neon PostgreSQL for live updates');
+    console.log('📊 Connected to Supabase PostgreSQL');
+    console.log('🔑 Supabase URL:', SUPABASE_URL);
     console.log('🎥 Video/Voice call functionality ready');
-    console.log('♿ Accessibility features enabled (skip link, focus styles, ARIA)');
 </script>
 </body>
 </html>
