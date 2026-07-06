@@ -1,4 +1,3 @@
-this admin.html has correct neon keys now update
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -700,7 +699,7 @@ this admin.html has correct neon keys now update
                                 </div>
                             </div>
                             <div class="text-xs text-gray-400 mt-2">
-                                <p>🔗 Connected to: <strong class="text-kdf-navy">Neon PostgreSQL</strong> • <span id="dbConnectionString">postgresql://user:****@ep-xxx.neon.tech/db</span></p>
+                                <p>🔗 Connected to: <strong class="text-kdf-navy">Neon PostgreSQL</strong></p>
                             </div>
                         </div>
                     </div>
@@ -750,18 +749,17 @@ this admin.html has correct neon keys now update
 <!-- ════════════════════════════════════════ -->
 <script>
     // ────────────────────────────────────────────────
-    // NEON DATABASE CONFIG
+    // NEON DATABASE CONFIG - REAL CONNECTION
     // ────────────────────────────────────────────────
-    // Replace with your actual Neon database connection details
     const NEON_CONFIG = {
-        // In production, these should be environment variables
-        // For this demo, we're using the connection string
-        connectionString: 'postgresql://neondb_owner:npg_XxWzgHLT52Dj@ep-hidden-lab-at0bye1i-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
-        // For REST API access (if using Neon's HTTP API)
+        // Real Neon connection details
+        host: 'ep-hidden-lab-at0bye1i-pooler.c-9.us-east-1.aws.neon.tech',
+        database: 'neondb',
+        user: 'neondb_owner',
+        password: 'npg_XxWzgHLT52Dj',
+        // REST API endpoint with real credentials
         apiUrl: 'https://ep-hidden-lab-at0bye1i.apirest.c-9.us-east-1.aws.neon.tech/neondb/rest/v1',
-        projectId: 'quiet-frost-61727265',
-        branchId: 'main',
-        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3' // Keep this secure!
+        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3'
     };
 
     // ────────────────────────────────────────────────
@@ -804,7 +802,7 @@ this admin.html has correct neon keys now update
     }
 
     // ────────────────────────────────────────────────
-    // DATA STORE (Local cache, synced with Neon)
+    // DATA STORE
     // ────────────────────────────────────────────────
     let posts = [];
     let events = [];
@@ -823,31 +821,132 @@ this admin.html has correct neon keys now update
     let dbConnected = false;
 
     // ────────────────────────────────────────────────
-    // NEON DATABASE OPERATIONS
+    // NEON DATABASE OPERATIONS - REAL CRUD
     // ────────────────────────────────────────────────
+    
+    // Helper function to make authenticated Neon API requests
+    async function neonFetch(endpoint, options = {}) {
+        const url = `${NEON_CONFIG.apiUrl}${endpoint}`;
+        const headers = {
+            'apikey': NEON_CONFIG.apiKey,
+            'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+        
+        const response = await fetch(url, {
+            ...options,
+            headers
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Neon API error: ${response.status} - ${errorText}`);
+        }
+        
+        return response;
+    }
+
     async function connectToNeon() {
         try {
             updateDbStatus('connecting', 'Connecting to Neon...');
             
-            // Simulate connection check
-            // In production, this would be a real connection test
-            await new Promise(resolve => setTimeout(resolve, 800));
+            // Test connection by fetching 1 post
+            const response = await neonFetch('/posts?limit=1');
+            const data = await response.json();
             
-            // For demo, we'll use local data with sync capability
-            // In production, you'd use the Neon REST API or PostgreSQL driver
             dbConnected = true;
             updateDbStatus('connected', 'Neon DB Connected');
             
-            // Load sample data if empty
-            if (posts.length === 0) {
-                loadSampleData();
-            }
+            // Load all data from Neon
+            await loadAllFromNeon();
             
-            renderAll();
             return true;
         } catch (error) {
             console.error('Neon connection error:', error);
-            updateDbStatus('error', 'Connection Failed');
+            updateDbStatus('error', 'Connection Failed - Using Local Data');
+            // Fallback to local data
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+            return false;
+        }
+    }
+
+    async function loadAllFromNeon() {
+        try {
+            // Load posts
+            const postsRes = await neonFetch('/posts?order=created_at.desc');
+            const postsData = await postsRes.json();
+            if (postsData && postsData.length > 0) {
+                posts = postsData;
+                nextId = Math.max(...posts.map(p => p.id)) + 1;
+            }
+            
+            // Load events
+            const eventsRes = await neonFetch('/events?order=event_date.asc');
+            const eventsData = await eventsRes.json();
+            if (eventsData && eventsData.length > 0) {
+                events = eventsData;
+                nextEventId = Math.max(...events.map(e => e.id)) + 1;
+            }
+            
+            renderAll();
+            updateDbStatus('connected', `Neon DB (${posts.length} posts, ${events.length} events)`);
+        } catch (error) {
+            console.error('Error loading from Neon:', error);
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+        }
+    }
+
+    async function savePostToNeon(postData) {
+        try {
+            const response = await neonFetch('/posts', {
+                method: 'POST',
+                body: JSON.stringify(postData)
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error saving post to Neon:', error);
+            return null;
+        }
+    }
+
+    async function saveEventToNeon(eventData) {
+        try {
+            const response = await neonFetch('/events', {
+                method: 'POST',
+                body: JSON.stringify(eventData)
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Error saving event to Neon:', error);
+            return null;
+        }
+    }
+
+    async function deletePostFromNeon(id) {
+        try {
+            await neonFetch(`/posts?id=eq.${id}`, {
+                method: 'DELETE'
+            });
+            return true;
+        } catch (error) {
+            console.error('Error deleting post from Neon:', error);
+            return false;
+        }
+    }
+
+    async function deleteEventFromNeon(id) {
+        try {
+            await neonFetch(`/events?id=eq.${id}`, {
+                method: 'DELETE'
+            });
+            return true;
+        } catch (error) {
+            console.error('Error deleting event from Neon:', error);
             return false;
         }
     }
@@ -880,27 +979,18 @@ this admin.html has correct neon keys now update
         updateDbStatus('connecting', 'Syncing...');
         
         try {
-            // Simulate sync delay
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // In production: fetch latest data from Neon
-            // await fetchPostsFromNeon();
-            // await fetchEventsFromNeon();
-            
-            // For demo: refresh local data
-            renderAll();
+            await loadAllFromNeon();
             updateDbStatus('connected', 'Sync Complete');
             showToast('✅ Data synced with Neon successfully!', 'success');
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
             
-            // Update DB stats
             document.getElementById('dbPostCount').textContent = posts.length;
             document.getElementById('dbEventCount').textContent = events.length;
             
             logActivity('🔄 Synced with Neon database', 'Database');
         } catch (error) {
             updateDbStatus('error', 'Sync Failed');
-            showToast('❌ Failed to sync with Neon', 'error');
+            showToast('❌ Failed to sync with Neon: ' + error.message, 'error');
         }
     }
 
@@ -1183,7 +1273,7 @@ this admin.html has correct neon keys now update
     }
 
     // ────────────────────────────────────────────────
-    // POST CRUD OPERATIONS
+    // POST CRUD OPERATIONS - WITH NEON SAVE
     // ────────────────────────────────────────────────
     function handleCreatePost(e) {
         e.preventDefault();
@@ -1207,7 +1297,8 @@ this admin.html has correct neon keys now update
             content,
             status,
             date: status === 'scheduled' ? scheduleDate || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-            image
+            image,
+            created_at: new Date().toISOString()
         };
         
         posts.unshift(newPost);
@@ -1218,8 +1309,17 @@ this admin.html has correct neon keys now update
         logActivity(`📝 Created post: "${title}"`, 'Content');
         showToast(`Post "${title}" published successfully!`, 'success');
         
-        // Sync with Neon
-        syncWithNeon();
+        // SAVE TO NEON DATABASE - THIS IS THE KEY FIX
+        savePostToNeon(newPost).then(result => {
+            if (result) {
+                console.log('Post saved to Neon:', result);
+                showToast('✅ Post synced to Neon database!', 'success');
+            }
+        }).catch(err => {
+            console.error('Error saving to Neon:', err);
+            showToast('⚠️ Post saved locally but failed to sync to Neon.', 'error');
+        });
+        
         switchTab('posts');
     }
 
@@ -1230,7 +1330,11 @@ this admin.html has correct neon keys now update
         renderAll();
         logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
         showToast(`Post "${post?.title}" deleted.`, 'success');
-        syncWithNeon();
+        
+        // Delete from Neon
+        deletePostFromNeon(id).then(success => {
+            if (success) console.log('Post deleted from Neon');
+        });
     }
 
     function editPost(id) {
@@ -1250,7 +1354,7 @@ this admin.html has correct neon keys now update
     }
 
     // ────────────────────────────────────────────────
-    // EVENT CRUD OPERATIONS
+    // EVENT CRUD OPERATIONS - WITH NEON SAVE
     // ────────────────────────────────────────────────
     function openEventModal() {
         document.getElementById('eventModal').classList.add('open');
@@ -1272,12 +1376,30 @@ this admin.html has correct neon keys now update
             return;
         }
         
-        events.push({ id: nextEventId++, title, date, description });
+        const newEvent = { 
+            id: nextEventId++, 
+            title, 
+            date, 
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        events.push(newEvent);
         renderAll();
         closeEventModal();
         logActivity(`📅 Added event: "${title}"`, 'Calendar');
         showToast(`Event "${title}" added successfully!`, 'success');
-        syncWithNeon();
+        
+        // SAVE TO NEON DATABASE
+        saveEventToNeon(newEvent).then(result => {
+            if (result) {
+                console.log('Event saved to Neon:', result);
+                showToast('✅ Event synced to Neon database!', 'success');
+            }
+        }).catch(err => {
+            console.error('Error saving event to Neon:', err);
+            showToast('⚠️ Event saved locally but failed to sync to Neon.', 'error');
+        });
     }
 
     function deleteEvent(id) {
@@ -1287,7 +1409,11 @@ this admin.html has correct neon keys now update
         renderAll();
         logActivity(`🗑️ Deleted event: "${event?.title}"`, 'Calendar');
         showToast(`Event "${event?.title}" deleted.`, 'success');
-        syncWithNeon();
+        
+        // Delete from Neon
+        deleteEventFromNeon(id).then(success => {
+            if (success) console.log('Event deleted from Neon');
+        });
     }
 
     // ────────────────────────────────────────────────
@@ -1351,7 +1477,6 @@ this admin.html has correct neon keys now update
         } else {
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('dashboardScreen').style.display = 'none';
-            // Attempt to connect to Neon even on login screen
             connectToNeon();
         }
     }
@@ -1402,8 +1527,10 @@ this admin.html has correct neon keys now update
     });
 
     console.log('🔒 MFA Admin Dashboard with Neon DB loaded successfully!');
-    console.log('📊 Data ready for sync with Neon PostgreSQL');
+    console.log('📊 Connected to Neon PostgreSQL');
     console.log('🛡️ Security features: Session management, activity logging');
+    console.log('🗄️ Database: ' + NEON_CONFIG.database);
+    console.log('🌐 Host: ' + NEON_CONFIG.host);
 </script>
 </body>
 </html>
