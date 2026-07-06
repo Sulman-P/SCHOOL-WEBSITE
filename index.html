@@ -230,6 +230,43 @@
             gap: 24px;
         }
         
+        /* Category badge for events */
+        .category-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .category-badge.news { background: #dbeafe; color: #1e40af; }
+        .category-badge.updates { background: #fef3c7; color: #92400e; }
+        .category-badge.events { background: #d1fae5; color: #065f46; }
+        .category-badge.calendar { background: #ede9fe; color: #5b21b6; }
+        
+        .event-date-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: #B22222;
+            color: white;
+        }
+        
+        .db-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .db-status.connected { background: #d1fae5; color: #065f46; }
+        .db-status.connecting { background: #fef3c7; color: #92400e; }
+        .db-status.error { background: #fee2e2; color: #991b1b; }
+        
         @media (max-width: 640px) {
             .updates-grid {
                 grid-template-columns: 1fr;
@@ -477,7 +514,7 @@
 </section>
 
 <!-- ════════════════════════════════════════ -->
-<!-- UPDATES SECTION (Dynamic Content) -->
+<!-- UPDATES SECTION (Dynamic Content from Neon) -->
 <!-- ════════════════════════════════════════ -->
 <section id="updates" class="py-20 bg-white" aria-label="School updates and announcements">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -486,6 +523,11 @@
                 <span class="text-kdf-gold font-semibold text-sm uppercase tracking-wider">Stay Informed</span>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-kdf-navy mt-2">School Updates &amp; News</h2>
                 <div class="w-20 h-1 bg-kdf-red mt-4"></div>
+                <div class="mt-2">
+                    <span id="dbStatusHome" class="db-status connecting">
+                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                    </span>
+                </div>
             </div>
             <a href="updates.html" class="text-kdf-red font-medium hover:text-kdf-gold transition flex items-center gap-2">
                 View All <i class="fas fa-arrow-right"></i>
@@ -752,146 +794,209 @@
 </footer>
 
 <!-- ════════════════════════════════════════ -->
-<!-- JAVASCRIPT (Dynamic Content & Interactions) -->
+<!-- JAVASCRIPT (Dynamic Content from Neon) -->
 <!-- ════════════════════════════════════════ -->
 <script>
     // ────────────────────────────────────────────────
-    // DATA (Simulates CMS / Supabase)
+    // NEON DATABASE CONFIG
     // ────────────────────────────────────────────────
-    const updatesData = [
-        {
-            id: 1,
-            title: 'KJSEA 2026 Preparation Underway',
-            date: '2026-01-15',
-            summary: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations. Teachers have developed comprehensive revision materials.',
-            category: 'Academics',
-            image: '📚'
-        },
-        {
-            id: 2,
-            title: 'Annual Sports Day - Coming Soon',
-            date: '2026-01-20',
-            summary: 'Our annual sports day is scheduled for February 2026. All students are encouraged to participate in various athletic events.',
-            category: 'Events',
-            image: '🏃'
-        },
-        {
-            id: 3,
-            title: 'KDF Career Day 2026',
-            date: '2026-01-10',
-            summary: 'Kenya Defence Forces will host a career day at our school. Students will learn about various career opportunities in the military.',
-            category: 'Career',
-            image: '🎖️'
-        },
-        {
-            id: 4,
-            title: 'Parent-Teacher Conference',
-            date: '2026-01-25',
-            summary: 'The term 1 parent-teacher conference will be held on January 30th. Parents are invited to discuss their children\'s progress.',
-            category: 'Parents',
-            image: '👨‍👩‍👦'
-        },
-        {
-            id: 5,
-            title: 'New CBC Resources Available',
-            date: '2026-01-05',
-            summary: 'We have updated our CBC resources for all grades. Teachers and students can access the new materials through the school portal.',
-            category: 'Resources',
-            image: '📖'
-        },
-        {
-            id: 6,
-            title: 'MFA Science Fair 2026',
-            date: '2026-02-01',
-            summary: 'The annual MFA Science Fair will take place in February. Students are preparing their projects for this exciting event.',
-            category: 'Science',
-            image: '🔬'
+    const NEON_CONFIG = {
+        apiUrl: 'https://ep-hidden-lab-at0bye1i.apirest.c-9.us-east-1.aws.neon.tech/neondb/rest/v1',
+        apiKey: 'napi_f0sjr7lnw7077mbn3d4d7hozmg88pydjahsqgwp3h90tj9wxk43rovx6h4qbicf3'
+    };
+
+    // ────────────────────────────────────────────────
+    // FETCH DATA FROM NEON
+    // ────────────────────────────────────────────────
+    async function fetchPostsFromNeon() {
+        try {
+            updateDbStatus('connecting', 'Loading updates...');
+            
+            // Fetch posts from Neon
+            const response = await fetch(`${NEON_CONFIG.apiUrl}/posts?order=created_at.desc&limit=6`, {
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('📊 Posts fetched from Neon:', data.length);
+            
+            // Fetch events from Neon
+            const eventsRes = await fetch(`${NEON_CONFIG.apiUrl}/events?order=event_date.asc&limit=3`, {
+                headers: {
+                    'apikey': NEON_CONFIG.apiKey,
+                    'Authorization': `Bearer ${NEON_CONFIG.apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            let events = [];
+            if (eventsRes.ok) {
+                events = await eventsRes.json();
+                console.log('📅 Events fetched from Neon:', events.length);
+            }
+            
+            // Convert events to post format
+            const eventPosts = events.map(e => ({
+                id: `evt_${e.id}`,
+                title: `📅 ${e.title}`,
+                category: 'events',
+                content: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`,
+                status: 'published',
+                date: e.date || e.event_date || new Date().toISOString().split('T')[0],
+                image: '📅',
+                isEvent: true,
+                eventDate: e.date || e.event_date,
+                eventDescription: e.description
+            }));
+            
+            // Combine posts and events
+            let allItems = [...data, ...eventPosts];
+            allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Take only first 6 for homepage
+            allItems = allItems.slice(0, 6);
+            
+            updateDbStatus('connected', `Live (${allItems.length} updates)`);
+            renderUpdates(allItems);
+            renderAnnouncements(data);
+            renderEvents(events);
+            
+        } catch (error) {
+            console.error('Error fetching from Neon:', error);
+            updateDbStatus('error', 'Using sample data');
+            
+            // Fallback to sample data
+            loadSampleData();
         }
-    ];
+    }
 
-    const announcementsData = [
-        '📢 School reopens on January 2026 for Term 1',
-        '📢 KJSEA 2026 revision materials now available',
-        '📢 New school uniforms now in stock at the school shop',
-        '📢 Parent-Teacher Conference scheduled for January 30th'
-    ];
+    function updateDbStatus(status, message) {
+        const statusEl = document.getElementById('dbStatusHome');
+        if (!statusEl) return;
+        
+        statusEl.className = `db-status ${status}`;
+        if (status === 'connected') {
+            statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Live'}`;
+        } else if (status === 'connecting') {
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Loading...'}`;
+        } else {
+            statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+        }
+    }
 
-    const eventsData = [
-        { title: 'Sports Day', date: 'Feb 15, 2026' },
-        { title: 'KDF Career Day', date: 'Feb 20, 2026' },
-        { title: 'Science Fair', date: 'Feb 28, 2026' },
-        { title: 'Parent-Teacher Conference', date: 'Jan 30, 2026' },
-        { title: 'KJSEA Exams', date: 'Nov 2026' }
-    ];
-
-    const scheduleData = [
-        { time: '8:00 AM', subject: 'Mathematics - Grade 9', teacher: 'Mr. Ochieng' },
-        { time: '10:00 AM', subject: 'English - Grade 7', teacher: 'Ms. Wanjiru' },
-        { time: '12:00 PM', subject: 'Science - Grade 8', teacher: 'Dr. Akinyi' },
-        { time: '2:00 PM', subject: 'Kiswahili - Grade 7', teacher: 'Mr. Kiprop' },
-        { time: '4:00 PM', subject: 'Social Studies - Grade 8', teacher: 'Ms. Muthoni' }
-    ];
+    // ────────────────────────────────────────────────
+    // SAMPLE DATA (Fallback)
+    // ────────────────────────────────────────────────
+    function loadSampleData() {
+        const samplePosts = [
+            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚' },
+            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃' },
+            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️' },
+            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦' },
+            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖' },
+            { id: 6, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', date: '2026-01-05', image: '🏫' },
+        ];
+        
+        const sampleEvents = [
+            { title: 'Sports Day', date: '2026-02-15' },
+            { title: 'KDF Career Day', date: '2026-02-20' },
+            { title: 'Science Fair', date: '2026-02-28' },
+        ];
+        
+        renderUpdates(samplePosts);
+        renderAnnouncements(samplePosts);
+        renderEvents(sampleEvents);
+        updateDbStatus('connected', 'Sample Data');
+    }
 
     // ────────────────────────────────────────────────
     // RENDER FUNCTIONS
     // ────────────────────────────────────────────────
-    function renderUpdates() {
+    function renderUpdates(items) {
         const container = document.getElementById('updatesGrid');
         if (!container) return;
 
-        container.innerHTML = updatesData.map(update => `
-            <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-6">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-3xl">${update.image || '📄'}</span>
-                        <span class="text-xs font-semibold text-kdf-red bg-kdf-red/10 px-3 py-1 rounded-full">${update.category}</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-kdf-navy">${update.title}</h3>
-                    <p class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> ${new Date(update.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                    <p class="text-gray-600 mt-3 text-sm leading-relaxed">${update.summary}</p>
-                    <a href="updates.html" class="inline-block mt-4 text-kdf-gold font-semibold text-sm hover:text-kdf-red transition">
-                        Read More <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
+        if (!items || items.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-8 text-gray-500">
+                    <i class="fas fa-newspaper text-4xl mb-3 block"></i>
+                    <p>No updates yet. Check back soon!</p>
                 </div>
-            </div>
-        `).join('');
+            `;
+            return;
+        }
+
+        container.innerHTML = items.map(item => {
+            const categoryClass = item.category || 'updates';
+            const isEvent = item.isEvent || false;
+            const eventBadge = isEvent ? `<span class="event-date-badge ml-2">📅 ${new Date(item.eventDate || item.date).toLocaleDateString()}</span>` : '';
+            
+            return `
+                <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="text-3xl">${item.image || '📄'}</span>
+                            <span class="category-badge ${categoryClass}">${categoryClass}</span>
+                            ${isEvent ? `<span class="event-date-badge">📅 Event</span>` : ''}
+                            <span class="text-xs text-kdf-gold ml-auto">🟢 Live</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-kdf-navy line-clamp-2">${item.title}</h3>
+                        <p class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> ${new Date(item.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        ${isEvent ? `<p class="text-xs text-kdf-red mt-1"><i class="fas fa-calendar-check mr-1"></i> Event on ${new Date(item.eventDate || item.date).toLocaleDateString()}</p>` : ''}
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed line-clamp-3">${item.content || 'No description'}</p>
+                        <a href="updates.html" class="inline-block mt-4 text-kdf-gold font-semibold text-sm hover:text-kdf-red transition">
+                            Read More <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
-    function renderAnnouncements() {
+    function renderAnnouncements(posts) {
         const container = document.getElementById('announcements');
         if (!container) return;
 
-        container.innerHTML = announcementsData.map(announcement => `
+        // Filter posts with category 'updates' or 'news'
+        const announcements = posts.filter(p => p.category === 'updates' || p.category === 'news').slice(0, 4);
+        
+        if (announcements.length === 0) {
+            container.innerHTML = `<p class="text-sm text-gray-500">No announcements available.</p>`;
+            return;
+        }
+
+        container.innerHTML = announcements.map(item => `
             <div class="flex items-start gap-3 p-3 bg-white rounded-lg">
                 <span class="text-kdf-red">📌</span>
-                <p class="text-sm text-gray-700">${announcement}</p>
+                <div>
+                    <p class="text-sm text-gray-700 font-medium">${item.title}</p>
+                    <p class="text-xs text-gray-400">${new Date(item.date).toLocaleDateString()}</p>
+                </div>
             </div>
         `).join('');
     }
 
-    function renderEvents() {
+    function renderEvents(events) {
         const container = document.getElementById('eventsList');
         if (!container) return;
 
-        container.innerHTML = eventsData.map(event => `
+        if (!events || events.length === 0) {
+            container.innerHTML = `<p class="text-sm text-gray-400">No upcoming events.</p>`;
+            return;
+        }
+
+        container.innerHTML = events.slice(0, 4).map(event => `
             <div class="flex items-center justify-between p-2 border-b border-white/10">
                 <span class="text-sm">${event.title}</span>
-                <span class="text-xs text-kdf-gold">${event.date}</span>
-            </div>
-        `).join('');
-    }
-
-    function renderSchedule() {
-        const container = document.getElementById('scheduleList');
-        if (!container) return;
-
-        container.innerHTML = scheduleData.map(item => `
-            <div class="flex items-center justify-between p-2 bg-white/5 rounded-lg">
-                <div>
-                    <span class="text-sm font-medium text-white">${item.subject}</span>
-                    <span class="block text-xs text-gray-400">${item.teacher}</span>
-                </div>
-                <span class="text-xs text-kdf-gold font-semibold">${item.time}</span>
+                <span class="text-xs text-kdf-gold">${new Date(event.date).toLocaleDateString()}</span>
             </div>
         `).join('');
     }
@@ -1007,6 +1112,32 @@
     }
 
     // ────────────────────────────────────────────────
+    // SCHEDULE DATA
+    // ────────────────────────────────────────────────
+    const scheduleData = [
+        { time: '8:00 AM', subject: 'Mathematics - Grade 9', teacher: 'Mr. Ochieng' },
+        { time: '10:00 AM', subject: 'English - Grade 7', teacher: 'Ms. Wanjiru' },
+        { time: '12:00 PM', subject: 'Science - Grade 8', teacher: 'Dr. Akinyi' },
+        { time: '2:00 PM', subject: 'Kiswahili - Grade 7', teacher: 'Mr. Kiprop' },
+        { time: '4:00 PM', subject: 'Social Studies - Grade 8', teacher: 'Ms. Muthoni' }
+    ];
+
+    function renderSchedule() {
+        const container = document.getElementById('scheduleList');
+        if (!container) return;
+
+        container.innerHTML = scheduleData.map(item => `
+            <div class="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                <div>
+                    <span class="text-sm font-medium text-white">${item.subject}</span>
+                    <span class="block text-xs text-gray-400">${item.teacher}</span>
+                </div>
+                <span class="text-xs text-kdf-gold font-semibold">${item.time}</span>
+            </div>
+        `).join('');
+    }
+
+    // ────────────────────────────────────────────────
     // MOBILE MENU TOGGLE
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
@@ -1021,11 +1152,13 @@
             });
         }
 
-        renderUpdates();
-        renderAnnouncements();
-        renderEvents();
+        // Render schedule
         renderSchedule();
 
+        // Load data from Neon
+        fetchPostsFromNeon();
+
+        // Close mobile menu on link click
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.remove('open');
@@ -1034,6 +1167,7 @@
             });
         });
 
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const target = document.querySelector(this.getAttribute('href'));
@@ -1044,22 +1178,25 @@
             });
         });
 
+        // Keyboard support for call buttons
         document.querySelectorAll('[onclick="startVideoCall()"], [onclick="startVoiceCall()"]').forEach(btn => {
             btn.setAttribute('role', 'button');
             btn.setAttribute('tabindex', '0');
         });
     });
 
+    // ────────────────────────────────────────────────
+    // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+    // ────────────────────────────────────────────────
     window.startVideoCall = startVideoCall;
     window.startVoiceCall = startVoiceCall;
     window.endCall = endCall;
     window.handleContactForm = handleContactForm;
 
     console.log('🚀 Moi Forces Academy website loaded successfully!');
-    console.log('📊 Dynamic content rendered from JavaScript (CMS-ready)');
+    console.log('📊 Connected to Neon PostgreSQL for live updates');
     console.log('🎥 Video/Voice call functionality ready');
     console.log('♿ Accessibility features enabled (skip link, focus styles, ARIA)');
 </script>
-
 </body>
 </html>
