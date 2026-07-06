@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us — Moi Forces Academy</title>
+    <meta name="description" content="Get in touch with Moi Forces Academy Nairobi. Contact us for admissions, inquiries, feedback, and more." />
+    <meta name="keywords" content="Moi Forces Academy, contact, Nairobi, school, admissions, inquiries" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kdf-red': '#B22222',
+                        'kdf-navy': '#0a1a3a',
+                        'kdf-light-blue': '#4A90D9',
+                        'kdf-gold': '#D4A017',
+                        'kdf-white': '#FFFFFF',
+                        'kdf-gray': '#F5F5F5',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; background: #f5f7fa; }
+        
+        .bg-kdf-red { background-color: #B22222; }
+        .bg-kdf-navy { background-color: #0a1a3a; }
+        .bg-kdf-gold { background-color: #D4A017; }
+        .text-kdf-red { color: #B22222; }
+        .text-kdf-navy { color: #0a1a3a; }
+        .text-kdf-gold { color: #D4A017; }
+        .border-kdf-red { border-color: #B22222; }
+        .border-kdf-gold { border-color: #D4A017; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D4A017;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link:hover { color: #D4A017; }
+        
+        .mobile-menu {
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D4A017;
+            color: #0a1a3a;
+            padding: 12px 24px;
+            z-index: 9999;
+            font-weight: 700;
+            border-radius: 0 0 8px 8px;
+            transition: top 0.3s ease;
+        }
+        .skip-link:focus { top: 0; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #B22222; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8B1A1A; }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
+        }
+        .form-input.error {
+            border-color: #B22222;
+            box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.15);
+        }
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            min-height: 140px;
+            resize: vertical;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+            font-family: inherit;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
+        }
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
+        }
+        
+        .contact-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            min-height: 320px;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+            border: 0;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            padding: 14px 24px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            pointer-events: none;
+            max-width: 400px;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .toast.success { background: #0a1a3a; border-left: 4px solid #D4A017; }
+        .toast.error { background: #7f1d1d; border-left: 4px solid #ef4444; }
+        
+        .admin-btn {
+            background: #D4A017;
+            color: #0a1a3a;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-btn:hover {
+            background: #FCD34D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
+        }
+        
+        .db-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .db-status.connected { background: #d1fae5; color: #065f46; }
+        .db-status.connecting { background: #fef3c7; color: #92400e; }
+        .db-status.error { background: #fee2e2; color: #991b1b; }
+        
+        @media (max-width: 640px) {
+            .toast { max-width: 90%; bottom: 16px; right: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SKIP LINK -->
+<!-- ════════════════════════════════════════ -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ════════════════════════════════════════ -->
+<!-- NAVIGATION -->
+<!-- ════════════════════════════════════════ -->
+<nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">
+                    MFA
+                </div>
+                <div>
+                    <h1 class="text-white font-display font-bold text-lg leading-tight">
+                        Moi Forces Academy
+                        <span class="block text-xs font-body font-normal text-kdf-gold">Primary &amp; Junior School</span>
+                    </h1>
+                </div>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
+                <a href="#academics" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
+                <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
+                <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Class</a>
+                <a href="contact.html" class="nav-link active text-white font-medium">Contact</a>
+                <a href="admin.html" class="admin-btn px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </div>
+            
+            <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-expanded="false" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
+        <div class="flex flex-col gap-3 pt-4">
+            <a href="index.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
+            <a href="#about" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
+            <a href="#academics" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
+            <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
+            <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Class</a>
+            <a href="contact.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Contact</a>
+            <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+                <i class="fas fa-user-shield"></i> Admin Dashboard
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ════════════════════════════════════════ -->
+<!-- HERO SECTION -->
+<!-- ════════════════════════════════════════ -->
+<section class="hero-gradient py-20 relative" aria-label="Contact page header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center">
+            <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 text-kdf-gold text-sm font-medium mb-4">
+                <i class="fas fa-phone-alt"></i> Get in Touch
+            </span>
+            <h1 class="text-4xl md:text-5xl font-display font-bold text-white">Contact Us</h1>
+            <p class="text-gray-300 text-lg mt-4 max-w-2xl mx-auto">
+                We'd love to hear from you. Reach out to us for inquiries, admissions, feedback, or any other questions.
+            </p>
+            <div class="mt-4 flex justify-center gap-3 flex-wrap">
+                <span id="dbStatusContact" class="db-status connecting">
+                    <i class="fas fa-spinner fa-spin"></i> Connecting...
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- MAIN CONTENT -->
+<!-- ════════════════════════════════════════ -->
+<main id="main-content" class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Contact Grid -->
+        <div class="grid lg:grid-cols-3 gap-8">
+            
+            <!-- Contact Info Cards -->
+            <div class="lg:col-span-1 space-y-4">
+                <div class="contact-card bg-kdf-gray rounded-2xl p-6 border border-gray-200">
+                    <div class="w-14 h-14 rounded-full bg-kdf-red/10 flex items-center justify-center text-2xl text-kdf-red mb-4">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-kdf-navy">Location</h3>
+                    <p class="text-gray-600 mt-2">Moi Forces Academy, Nairobi<br />Kenya Airforce Headquarters</p>
+                    <a href="https://maps.google.com" target="_blank" class="inline-block mt-3 text-kdf-gold font-medium text-sm hover:text-kdf-red transition">
+                        <i class="fas fa-directions mr-1"></i> Get Directions
+                    </a>
+                </div>
+                
+                <div class="contact-card bg-kdf-gray rounded-2xl p-6 border border-gray-200">
+                    <div class="w-14 h-14 rounded-full bg-kdf-gold/10 flex items-center justify-center text-2xl text-kdf-gold mb-4">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-kdf-navy">Phone</h3>
+                    <p class="text-gray-600 mt-2">+254 700 123 456</p>
+                    <p class="text-gray-500 text-sm mt-1">Mon - Fri: 7:00 AM - 5:00 PM</p>
+                </div>
+                
+                <div class="contact-card bg-kdf-gray rounded-2xl p-6 border border-gray-200">
+                    <div class="w-14 h-14 rounded-full bg-kdf-light-blue/10 flex items-center justify-center text-2xl text-kdf-light-blue mb-4">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-kdf-navy">Email</h3>
+                    <p class="text-gray-600 mt-2">info@moiforcesacademy.ac.ke</p>
+                    <p class="text-gray-500 text-sm mt-1">We respond within 24 hours</p>
+                </div>
+                
+                <div class="contact-card bg-kdf-gray rounded-2xl p-6 border border-gray-200">
+                    <div class="w-14 h-14 rounded-full bg-kdf-red/10 flex items-center justify-center text-2xl text-kdf-red mb-4">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-kdf-navy">School Hours</h3>
+                    <p class="text-gray-600 mt-2">Monday - Friday: 7:00 AM - 5:00 PM</p>
+                    <p class="text-gray-600">Saturday: 8:00 AM - 12:00 PM</p>
+                    <p class="text-gray-600">Sunday: Closed</p>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="bg-kdf-navy rounded-2xl p-6 text-white">
+                    <h3 class="text-lg font-bold text-kdf-gold mb-3">Connect With Us</h3>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-kdf-gold hover:text-kdf-navy transition text-xl" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-kdf-gold hover:text-kdf-navy transition text-xl" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-kdf-gold hover:text-kdf-navy transition text-xl" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-kdf-gold hover:text-kdf-navy transition text-xl" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                    <h2 class="text-2xl font-display font-bold text-kdf-navy mb-2">Send Us a Message</h2>
+                    <p class="text-gray-600 mb-6">Fill in the form below and we'll get back to you as soon as possible.</p>
+                    
+                    <form id="contactForm" onsubmit="handleContactForm(event)" class="space-y-5">
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                    Full Name <span class="text-kdf-red">*</span>
+                                </label>
+                                <input type="text" id="fullName" name="fullName" class="form-input" required 
+                                       placeholder="Enter your full name" />
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                    Email Address <span class="text-kdf-red">*</span>
+                                </label>
+                                <input type="email" id="email" name="email" class="form-input" required 
+                                       placeholder="Enter your email address" />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Phone Number
+                            </label>
+                            <input type="tel" id="phone" name="phone" class="form-input" 
+                                   placeholder="Enter your phone number" />
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Subject <span class="text-kdf-red">*</span>
+                            </label>
+                            <select id="subject" name="subject" class="form-select" required>
+                                <option value="">Select a subject</option>
+                                <option value="Admissions">📋 Admissions Inquiry</option>
+                                <option value="Academics">📚 Academics</option>
+                                <option value="Events">🎉 School Events</option>
+                                <option value="Feedback">💬 Feedback</option>
+                                <option value="Complaint">📢 Complaint</option>
+                                <option value="Other">📌 Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Message <span class="text-kdf-red">*</span>
+                            </label>
+                            <textarea id="message" name="message" class="form-textarea" required 
+                                      placeholder="Write your message here..."></textarea>
+                        </div>
+                        
+                        <div class="flex items-start gap-3 pt-2">
+                            <input type="checkbox" id="consent" name="consent" class="w-5 h-5 mt-0.5 rounded border-gray-300 text-kdf-gold focus:ring-kdf-gold" required />
+                            <label for="consent" class="text-sm text-gray-600">
+                                I consent to Moi Forces Academy storing my information for the purpose of responding to my inquiry.
+                                <span class="text-kdf-red">*</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" id="submitBtn" 
+                                class="w-full bg-kdf-red text-white py-3.5 rounded-xl font-bold hover:bg-red-800 transition flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                    
+                    <div id="formFeedback" class="mt-4 hidden"></div>
+                    
+                    <!-- Alternative Contact -->
+                    <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+                        <p class="text-sm text-gray-500">
+                            <i class="fas fa-shield-alt text-kdf-gold mr-1"></i> 
+                            Your information is secure and will not be shared with third parties.
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            <i class="fas fa-clock text-kdf-gold mr-1"></i>
+                            We aim to respond to all inquiries within 24 hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Section -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-display font-bold text-kdf-navy mb-4 text-center">Find Us</h2>
+            <div class="map-container border-2 border-gray-200">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d255282.35853743783!2d36.68219672231843!3d-1.3028611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1700000000000" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Moi Forces Academy Location Map"
+                    aria-label="Map showing Moi Forces Academy location in Nairobi">
+                </iframe>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="mt-12 bg-kdf-gray rounded-2xl p-8">
+            <h2 class="text-2xl font-display font-bold text-kdf-navy mb-6 text-center">Frequently Asked Questions</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-bold text-kdf-navy flex items-center gap-2">
+                        <i class="fas fa-question-circle text-kdf-gold"></i> How do I apply for admission?
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Visit our school or contact the admissions office for application forms and requirements.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-kdf-navy flex items-center gap-2">
+                        <i class="fas fa-question-circle text-kdf-gold"></i> What are the school fees?
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Please contact our finance office directly for the current fee structure and payment plans.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-kdf-navy flex items-center gap-2">
+                        <i class="fas fa-question-circle text-kdf-gold"></i> Do you offer scholarships?
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Yes, we offer merit-based and need-based scholarships. Contact the admin office for details.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-kdf-navy flex items-center gap-2">
+                        <i class="fas fa-question-circle text-kdf-gold"></i> What are the school hours?
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">School runs from Monday to Friday, 7:00 AM to 5:00 PM. Saturday is half-day.</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</main>
+
+<!-- ════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════ -->
+<footer class="bg-kdf-navy text-white py-12 border-t-4 border-kdf-gold" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold">MFA</div>
+                    <span class="font-display font-bold text-lg">Moi Forces Academy</span>
+                </div>
+                <p class="text-gray-400 text-sm">Sponsored by the Kenya Defence Forces. Excellence Our Commitment.</p>
+                <a href="admin.html" class="inline-block mt-4 bg-kdf-gold text-kdf-navy px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition">
+                    <i class="fas fa-user-shield mr-2"></i> Admin Dashboard
+                </a>
+            </div>
+            <div>
+                <h4 class="font-bold text-kdf-gold mb-4">Quick Links</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="index.html" class="hover:text-kdf-gold transition">Home</a></li>
+                    <li><a href="#about" class="hover:text-kdf-gold transition">About</a></li>
+                    <li><a href="#academics" class="hover:text-kdf-gold transition">Academics</a></li>
+                    <li><a href="updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
+                    <li><a href="contact.html" class="hover:text-kdf-gold transition">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-kdf-gold mb-4">Resources</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-kdf-gold transition">School Calendar</a></li>
+                    <li><a href="#" class="hover:text-kdf-gold transition">Student Portal</a></li>
+                    <li><a href="#" class="hover:text-kdf-gold transition">Staff Portal</a></li>
+                    <li><a href="#" class="hover:text-kdf-gold transition">Parent Portal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-kdf-gold mb-4">Contact</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><i class="fas fa-phone mr-2 text-kdf-gold"></i> +254 700 123 456</li>
+                    <li><i class="fas fa-envelope mr-2 text-kdf-gold"></i> info@moiforcesacademy.ac.ke</li>
+                    <li><i class="fas fa-map-marker-alt mr-2 text-kdf-gold"></i> Nairobi, Kenya</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10 mt-8 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 Moi Forces Academy Comprehensive School. All rights reserved.</p>
+            <p class="mt-1">Sponsored by the Kenya Defence Forces</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ════════════════════════════════════════ -->
+<!-- TOAST NOTIFICATION -->
+<!-- ════════════════════════════════════════ -->
+<div id="toast" class="toast"></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
+<!-- ════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+    // ────────────────────────────────────────────────
+    // SUPABASE CONFIG
+    // ────────────────────────────────────────────────
+    const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
+
+    let sbClient = null;
+
+    // ────────────────────────────────────────────────
+    // INIT SUPABASE
+    // ────────────────────────────────────────────────
+    function initSupabase() {
+        try {
+            sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            updateDbStatus('connected', 'Supabase Ready');
+            console.log('✅ Supabase client initialized');
+            return true;
+        } catch (error) {
+            console.error('❌ Supabase initialization error:', error);
+            updateDbStatus('error', 'Connection Error');
+            return false;
+        }
+    }
+
+    function updateDbStatus(status, message) {
+        const statusEl = document.getElementById('dbStatusContact');
+        if (!statusEl) return;
+        
+        statusEl.className = `db-status ${status}`;
+        if (status === 'connected') {
+            statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Connected'}`;
+        } else if (status === 'connecting') {
+            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Connecting...'}`;
+        } else {
+            statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // CONTACT FORM HANDLER
+    // ────────────────────────────────────────────────
+    async function handleContactForm(event) {
+        event.preventDefault();
+        
+        const form = event.target;
+        const submitBtn = document.getElementById('submitBtn');
+        const feedback = document.getElementById('formFeedback');
+        
+        // Get form data
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value.trim();
+        const consent = document.getElementById('consent').checked;
+
+        // Validate
+        if (!fullName || !email || !subject || !message || !consent) {
+            feedback.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-3';
+            feedback.innerHTML = `
+                <i class="fas fa-exclamation-circle text-lg mt-0.5"></i>
+                <div>
+                    <p class="font-medium">Please fill in all required fields.</p>
+                    <p class="text-sm">Make sure you've completed all fields marked with <span class="text-kdf-red">*</span> and agreed to the consent.</p>
+                </div>
+            `;
+            feedback.classList.remove('hidden');
+            return;
+        }
+
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            feedback.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-3';
+            feedback.innerHTML = `
+                <i class="fas fa-exclamation-circle text-lg mt-0.5"></i>
+                <div>
+                    <p class="font-medium">Invalid email address.</p>
+                    <p class="text-sm">Please enter a valid email address.</p>
+                </div>
+            `;
+            feedback.classList.remove('hidden');
+            return;
+        }
+
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
+
+        try {
+            // Save to Supabase
+            const { data, error } = await sbClient
+                .from('contact_messages')
+                .insert([{
+                    full_name: fullName,
+                    email: email,
+                    phone: phone || null,
+                    subject: subject,
+                    message: message,
+                    status: 'new',
+                    created_at: new Date().toISOString()
+                }])
+                .select();
+
+            if (error) throw new Error(error.message);
+
+            // Success
+            feedback.className = 'mt-4 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 flex items-start gap-3';
+            feedback.innerHTML = `
+                <i class="fas fa-check-circle text-lg mt-0.5"></i>
+                <div>
+                    <p class="font-medium">Message sent successfully!</p>
+                    <p class="text-sm">Thank you for contacting us. We will get back to you within 24 hours.</p>
+                </div>
+            `;
+            feedback.classList.remove('hidden');
+            
+            // Reset form
+            form.reset();
+            showToast('✅ Your message has been sent successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            
+            // Error
+            feedback.className = 'mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-start gap-3';
+            feedback.innerHTML = `
+                <i class="fas fa-exclamation-circle text-lg mt-0.5"></i>
+                <div>
+                    <p class="font-medium">Something went wrong.</p>
+                    <p class="text-sm">Please try again later or contact us directly by phone.</p>
+                </div>
+            `;
+            feedback.classList.remove('hidden');
+            showToast('❌ Failed to send message. Please try again.', 'error');
+        }
+
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Send Message';
+    }
+
+    // ────────────────────────────────────────────────
+    // TOAST NOTIFICATION
+    // ────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 5000);
+    }
+
+    // ────────────────────────────────────────────────
+    // MOBILE MENU TOGGLE
+    // ────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+        // Init Supabase
+        initSupabase();
+        
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                const isOpen = mobileMenu.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', isOpen);
+                menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    });
+
+    // ────────────────────────────────────────────────
+    // EXPOSE FUNCTIONS TO GLOBAL
+    // ────────────────────────────────────────────────
+    window.handleContactForm = handleContactForm;
+    window.showToast = showToast;
+
+    console.log('📞 Contact page loaded successfully!');
+    console.log('📊 Connected to Supabase PostgreSQL');
+    console.log('🔑 Supabase URL:', SUPABASE_URL);
+</script>
+
+</body>
+</html>
