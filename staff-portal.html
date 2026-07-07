@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Portal — Moi Forces Academy</title>
+    <meta name="description" content="Staff portal for Moi Forces Academy Nairobi. Access teaching resources, schedules, and announcements." />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kdf-red': '#B22222',
+                        'kdf-navy': '#0a1a3a',
+                        'kdf-light-blue': '#4A90D9',
+                        'kdf-gold': '#D4A017',
+                        'kdf-white': '#FFFFFF',
+                        'kdf-gray': '#F5F5F5',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; background: #f0f2f5; }
+        
+        .bg-kdf-red { background-color: #B22222; }
+        .bg-kdf-navy { background-color: #0a1a3a; }
+        .bg-kdf-gold { background-color: #D4A017; }
+        .text-kdf-red { color: #B22222; }
+        .text-kdf-navy { color: #0a1a3a; }
+        .text-kdf-gold { color: #D4A017; }
+        .border-kdf-gold { border-color: #D4A017; }
+        
+        .portal-hero {
+            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .portal-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D4A017;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link:hover { color: #D4A017; }
+        
+        .mobile-menu {
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D4A017;
+            color: #0a1a3a;
+            padding: 12px 24px;
+            z-index: 9999;
+            font-weight: 700;
+            border-radius: 0 0 8px 8px;
+            transition: top 0.3s ease;
+        }
+        .skip-link:focus { top: 0; }
+        
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        
+        .task-card {
+            transition: all 0.3s ease;
+        }
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        
+        .admin-btn {
+            background: #D4A017;
+            color: #0a1a3a;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-btn:hover {
+            background: #FCD34D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
+        }
+        
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+        }
+        .login-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        .login-input::placeholder { color: rgba(255,255,255,0.5); }
+        .login-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.1);
+        }
+        .login-input.error {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #D4A017;
+            color: #0a1a3a;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover {
+            background: #FCD34D;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 160, 23, 0.3);
+        }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .login-error.show { display: block; }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            padding: 14px 24px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .toast.success { background: #0a1a3a; border-left: 4px solid #D4A017; }
+        .toast.error { background: #7f1d1d; border-left: 4px solid #ef4444; }
+        
+        @media (max-width: 640px) {
+            .login-box { padding: 28px 20px; margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Skip Link -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Navigation -->
+<nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">MFA</div>
+                <div>
+                    <h1 class="text-white font-display font-bold text-lg leading-tight">
+                        Moi Forces Academy
+                        <span class="block text-xs font-body font-normal text-kdf-gold">Staff Portal</span>
+                    </h1>
+                </div>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
+                <a href="staff-portal.html" class="nav-link active text-white font-medium">Staff</a>
+                <a href="student-portal.html" class="nav-link text-gray-300 hover:text-white font-medium">Students</a>
+                <a href="parent-portal.html" class="nav-link text-gray-300 hover:text-white font-medium">Parents</a>
+                <a href="contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
+                <a href="admin.html" class="admin-btn px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </div>
+            
+            <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-expanded="false" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
+        <div class="flex flex-col gap-3 pt-4">
+            <a href="index.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
+            <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
+            <a href="staff-portal.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Staff</a>
+            <a href="student-portal.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Students</a>
+            <a href="parent-portal.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Parents</a>
+            <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
+            <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+                <i class="fas fa-user-shield"></i> Admin Dashboard
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center bg-kdf-navy/5 p-4">
+    <div class="login-box">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 rounded-full bg-kdf-red flex items-center justify-center text-white text-3xl font-bold border-3 border-kdf-gold mx-auto mb-4">👨‍🏫</div>
+            <h2 class="text-white font-display text-2xl font-bold">Staff Portal</h2>
+            <p class="text-gray-400 text-sm mt-1">Secure access for MFA staff members</p>
+        </div>
+        
+        <div id="loginError" class="login-error">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span id="loginErrorMessage">Invalid credentials. Please try again.</span>
+        </div>
+        
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="mb-4">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Staff Email</label>
+                <input type="email" id="loginEmail" class="login-input" placeholder="staff@moiforces.ac.ke" value="staff@moiforces.ac.ke" required />
+            </div>
+            <div class="mb-5">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Password</label>
+                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" value="Staff@2026" required />
+            </div>
+            <button type="submit" id="loginBtn" class="login-btn">
+                <i class="fas fa-lock mr-2"></i> Sign In
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <p class="text-xs text-gray-500">🔒 Secured by Moi Forces Academy</p>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboardScreen" style="display:none;">
+    <div class="bg-kdf-navy/5 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            
+            <!-- Header -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="text-3xl font-display font-bold text-kdf-navy">👨‍🏫 Staff Dashboard</h1>
+                    <p class="text-gray-600">Welcome back, <span id="staffName" class="font-semibold text-kdf-red">Staff Member</span></p>
+                </div>
+                <button onclick="handleLogout()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-red-800 transition flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-light-blue">📚</span>
+                        <span class="text-xs text-kdf-gold font-semibold">My Classes</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="classCount">0</p>
+                    <p class="text-sm text-gray-500">Assigned Classes</p>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-gold">👨‍🎓</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Students</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="studentCount">0</p>
+                    <p class="text-sm text-gray-500">Total Students</p>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-red">📝</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Assignments</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="assignmentCount">0</p>
+                    <p class="text-sm text-gray-500">Pending Grading</p>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-red">📅</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Today</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="todayClasses">0</p>
+                    <p class="text-sm text-gray-500">Classes Today</p>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                <div class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
+                    <span class="font-medium">Create Assignment</span>
+                </div>
+                <div class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
+                    <span class="font-medium">View Schedule</span>
+                </div>
+                <div class="bg-kdf-gray text-kdf-navy p-4 rounded-xl hover:bg-gray-200 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-upload text-xl text-kdf-gold"></i>
+                    <span class="font-medium">Upload Resources</span>
+                </div>
+            </div>
+            
+            <!-- Today's Schedule -->
+            <div class="grid lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="font-bold text-kdf-navy">📋 Today's Schedule</h3>
+                        <span class="text-xs text-gray-500" id="currentDate"></span>
+                    </div>
+                    <div id="scheduleList" class="divide-y divide-gray-100">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="font-bold text-kdf-navy mb-4">📢 Quick Announcements</h3>
+                    <div id="announcementsList" class="space-y-3">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Resources -->
+            <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="font-bold text-kdf-navy mb-4">📚 Teaching Resources</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                        <i class="fas fa-file-pdf text-2xl text-kdf-red"></i>
+                        <p class="font-medium text-kdf-navy mt-2 text-sm">Lesson Plans</p>
+                        <p class="text-xs text-gray-500">12 files</p>
+                    </div>
+                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                        <i class="fas fa-file-alt text-2xl text-kdf-light-blue"></i>
+                        <p class="font-medium text-kdf-navy mt-2 text-sm">Past Papers</p>
+                        <p class="text-xs text-gray-500">8 files</p>
+                    </div>
+                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                        <i class="fas fa-video text-2xl text-kdf-gold"></i>
+                        <p class="font-medium text-kdf-navy mt-2 text-sm">Video Lessons</p>
+                        <p class="text-xs text-gray-500">6 files</p>
+                    </div>
+                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                        <i class="fas fa-edit text-2xl text-kdf-red"></i>
+                        <p class="font-medium text-kdf-navy mt-2 text-sm">Exam Papers</p>
+                        <p class="text-xs text-gray-500">4 files</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // ────────────────────────────────────────────────
+    // STAFF DATA (Simulates Supabase)
+    // ────────────────────────────────────────────────
+    const staffData = {
+        staff: [
+            { id: 1, name: 'Mr. David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', classes: ['Grade 7A', 'Grade 8B'] },
+            { id: 2, name: 'Ms. Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', classes: ['Grade 7B', 'Grade 9A'] },
+            { id: 3, name: 'Dr. Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', classes: ['Grade 8A', 'Grade 8B'] },
+        ],
+        schedule: [
+            { time: '8:00 - 8:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
+            { time: '8:45 - 9:25', subject: 'Mathematics', class: 'Grade 8B', room: 'Rm 102' },
+            { time: '9:30 - 10:10', subject: 'Mathematics', class: 'Grade 7B', room: 'Rm 101' },
+            { time: '10:30 - 11:10', subject: 'Mathematics', class: 'Grade 8A', room: 'Rm 103' },
+            { time: '11:15 - 11:55', subject: 'Mathematics', class: 'Grade 9A', room: 'Rm 102' },
+            { time: '12:00 - 12:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
+        ],
+        announcements: [
+            { title: 'Staff Meeting', date: 'Today 3:00 PM', priority: 'high' },
+            { title: 'New CBC Resources Available', date: 'Jan 20, 2026', priority: 'medium' },
+            { title: 'KJSEA Exam Prep', date: 'Jan 25, 2026', priority: 'high' },
+            { title: 'Holiday Notice', date: 'Jan 30, 2026', priority: 'low' },
+        ],
+        assignments: [
+            { title: 'Algebra Quiz', class: 'Grade 7A', due: 'Jan 22', submitted: 28, total: 32 },
+            { title: 'Fractions Test', class: 'Grade 8B', due: 'Jan 24', submitted: 30, total: 30 },
+            { title: 'Geometry Exercise', class: 'Grade 9A', due: 'Jan 26', submitted: 0, total: 28 },
+        ]
+    };
+
+    // ────────────────────────────────────────────────
+    // SESSION MANAGEMENT
+    // ────────────────────────────────────────────────
+    const STAFF_CREDENTIALS = {
+        email: 'staff@moiforces.ac.ke',
+        password: 'Staff@2026'
+    };
+
+    let currentStaff = null;
+
+    function getStaffSession() {
+        const session = sessionStorage.getItem('mfa_staff_session');
+        if (!session) return null;
+        try { return JSON.parse(session); } catch { return null; }
+    }
+
+    function setStaffSession(user) {
+        const session = {
+            user: user,
+            loginTime: Date.now(),
+            expiresAt: Date.now() + 3600000
+        };
+        sessionStorage.setItem('mfa_staff_session', JSON.stringify(session));
+        return session;
+    }
+
+    function clearStaffSession() {
+        sessionStorage.removeItem('mfa_staff_session');
+    }
+
+    function isStaffSessionValid() {
+        const session = getStaffSession();
+        if (!session) return false;
+        if (Date.now() > session.expiresAt) {
+            clearStaffSession();
+            return false;
+        }
+        return true;
+    }
+
+    // ────────────────────────────────────────────────
+    // AUTHENTICATION
+    // ────────────────────────────────────────────────
+    function handleLogin(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorEl = document.getElementById('loginError');
+        const errorMsg = document.getElementById('loginErrorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        errorEl.classList.remove('show');
+        document.getElementById('loginEmail').classList.remove('error');
+        document.getElementById('loginPassword').classList.remove('error');
+        
+        if (!email || !password) {
+            errorMsg.textContent = 'Please enter both email and password.';
+            errorEl.classList.add('show');
+            return;
+        }
+        
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing in...';
+        
+        setTimeout(() => {
+            if (email === STAFF_CREDENTIALS.email && password === STAFF_CREDENTIALS.password) {
+                const staff = staffData.staff.find(s => s.email === email);
+                currentStaff = staff || { name: 'Staff Member', email: email };
+                setStaffSession(currentStaff);
+                showToast('✅ Welcome back, ' + currentStaff.name + '!', 'success');
+                showDashboard();
+            } else {
+                errorMsg.textContent = 'Invalid email or password. Please try again.';
+                errorEl.classList.add('show');
+                document.getElementById('loginPassword').classList.add('error');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+            }
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Sign In';
+        }, 800);
+    }
+
+    function showDashboard() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+        document.getElementById('staffName').textContent = currentStaff?.name || 'Staff Member';
+        renderDashboard();
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function handleLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            clearStaffSession();
+            currentStaff = null;
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+            showToast('🔒 Logged out successfully.', 'success');
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // RENDER DASHBOARD
+    // ────────────────────────────────────────────────
+    function renderDashboard() {
+        // Stats
+        const classCount = currentStaff?.classes?.length || 0;
+        document.getElementById('classCount').textContent = classCount;
+        document.getElementById('studentCount').textContent = classCount * 32;
+        document.getElementById('assignmentCount').textContent = staffData.assignments.filter(a => a.submitted < a.total).length;
+        document.getElementById('todayClasses').textContent = staffData.schedule.length;
+        
+        // Schedule
+        const scheduleContainer = document.getElementById('scheduleList');
+        scheduleContainer.innerHTML = staffData.schedule.map(item => `
+            <div class="flex flex-wrap items-center justify-between px-6 py-3 hover:bg-gray-50 transition">
+                <div class="flex items-center gap-4">
+                    <span class="font-medium text-kdf-navy">${item.time}</span>
+                    <span class="text-sm font-medium">${item.subject}</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-600">
+                    <span>${item.class}</span>
+                    <span class="text-xs text-gray-400">${item.room}</span>
+                </div>
+            </div>
+        `).join('');
+        
+        // Announcements
+        const announcementsContainer = document.getElementById('announcementsList');
+        announcementsContainer.innerHTML = staffData.announcements.map(a => `
+            <div class="flex items-start gap-3 p-3 bg-kdf-gray rounded-lg">
+                <span class="${a.priority === 'high' ? 'text-kdf-red' : a.priority === 'medium' ? 'text-kdf-gold' : 'text-kdf-light-blue'}">
+                    <i class="fas ${a.priority === 'high' ? 'fa-exclamation-circle' : a.priority === 'medium' ? 'fa-info-circle' : 'fa-check-circle'}"></i>
+                </span>
+                <div>
+                    <p class="text-sm font-medium text-kdf-navy">${a.title}</p>
+                    <p class="text-xs text-gray-500">${a.date}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ────────────────────────────────────────────────
+    // TOAST NOTIFICATION
+    // ────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // ────────────────────────────────────────────────
+    // MOBILE MENU
+    // ────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check session
+        if (isStaffSessionValid()) {
+            const session = getStaffSession();
+            currentStaff = session.user;
+            showDashboard();
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
+        }
+        
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                const isOpen = mobileMenu.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', isOpen);
+                menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+    });
+
+    window.handleLogin = handleLogin;
+    window.handleLogout = handleLogout;
+    window.showToast = showToast;
+
+    console.log('👨‍🏫 Staff Portal loaded successfully!');
+</script>
+
+</body>
+</html>
