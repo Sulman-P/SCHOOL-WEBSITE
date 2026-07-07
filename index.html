@@ -147,6 +147,42 @@
         }
         .admin-btn:hover::before { opacity: 1; }
         
+        /* Portal Buttons */
+        .portal-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .portal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .portal-btn-staff {
+            background: #0a1a3a;
+            color: white;
+            border: 2px solid #D4A017;
+        }
+        .portal-btn-staff:hover {
+            background: #1a2a5a;
+            border-color: #FCD34D;
+        }
+        .portal-btn-student {
+            background: #4A90D9;
+            color: white;
+            border: 2px solid white/20;
+        }
+        .portal-btn-student:hover {
+            background: #3a7ac9;
+        }
+        .portal-btn-parent {
+            background: #B22222;
+            color: white;
+            border: 2px solid #D4A017;
+        }
+        .portal-btn-parent:hover {
+            background: #8B1A1A;
+        }
+        
         a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
             outline: 3px solid #D4A017;
             outline-offset: 2px;
@@ -269,17 +305,29 @@
                 </div>
             </a>
             
-            <div class="hidden md:flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-3">
                 <a href="#home" class="nav-link active text-white font-medium">Home</a>
                 <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
                 <a href="#academics" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
                 <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
                 <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Class</a>
-                <a href="/contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
-                <a href="admin.html" class="admin-btn px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                <a href="contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
+                
+                <!-- Portal Buttons -->
+                <a href="staff-portal.html" class="portal-btn portal-btn-staff px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                    <i class="fas fa-chalkboard-teacher"></i> Staff
+                </a>
+                <a href="student-portal.html" class="portal-btn portal-btn-student px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                    <i class="fas fa-user-graduate"></i> Student
+                </a>
+                <a href="parent-portal.html" class="portal-btn portal-btn-parent px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                    <i class="fas fa-users"></i> Parent
+                </a>
+                
+                <a href="admin.html" class="admin-btn px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition">
                     <i class="fas fa-user-shield"></i> Admin
                 </a>
-                <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2 call-pulse">
+                <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2 call-pulse">
                     <i class="fas fa-video"></i> Join Call
                 </a>
             </div>
@@ -297,8 +345,20 @@
             <a href="#academics" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
             <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
             <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
-            <a href="/contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
-            <a href="/admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+            <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
+            
+            <!-- Portal Buttons - Mobile -->
+            <a href="staff-portal.html" class="bg-kdf-navy text-white border-2 border-kdf-gold px-5 py-3 rounded-full font-bold text-center hover:bg-kdf-navy/80 transition flex items-center justify-center gap-2">
+                <i class="fas fa-chalkboard-teacher"></i> Staff Portal
+            </a>
+            <a href="student-portal.html" class="bg-kdf-light-blue text-white px-5 py-3 rounded-full font-bold text-center hover:bg-blue-600 transition flex items-center justify-center gap-2">
+                <i class="fas fa-user-graduate"></i> Student Portal
+            </a>
+            <a href="parent-portal.html" class="bg-kdf-red text-white px-5 py-3 rounded-full font-bold text-center hover:bg-red-800 transition flex items-center justify-center gap-2">
+                <i class="fas fa-users"></i> Parent Portal
+            </a>
+            
+            <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
                 <i class="fas fa-user-shield"></i> Admin Dashboard
             </a>
             <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
@@ -696,12 +756,11 @@
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-kdf-gold mb-4">Resources</h4>
+                <h4 class="font-bold text-kdf-gold mb-4">Portals</h4>
                 <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-kdf-gold transition">School Calendar</a></li>
-                    <li><a href="#" class="hover:text-kdf-gold transition">Student Portal</a></li>
-                    <li><a href="#" class="hover:text-kdf-gold transition">Staff Portal</a></li>
-                    <li><a href="#" class="hover:text-kdf-gold transition">Parent Portal</a></li>
+                    <li><a href="staff-portal.html" class="hover:text-kdf-gold transition"><i class="fas fa-chalkboard-teacher mr-1"></i> Staff Portal</a></li>
+                    <li><a href="student-portal.html" class="hover:text-kdf-gold transition"><i class="fas fa-user-graduate mr-1"></i> Student Portal</a></li>
+                    <li><a href="parent-portal.html" class="hover:text-kdf-gold transition"><i class="fas fa-users mr-1"></i> Parent Portal</a></li>
                 </ul>
             </div>
             <div>
@@ -724,7 +783,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // SUPABASE CONFIG - UPDATED CREDENTIALS
+    // SUPABASE CONFIG
     // ────────────────────────────────────────────────
     const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
@@ -759,7 +818,6 @@
         try {
             updateDbStatus('connecting', 'Loading updates...');
             
-            // Fetch posts from Supabase
             const { data: postsData, error: postsError } = await sbClient
                 .from('posts')
                 .select('*')
@@ -770,7 +828,6 @@
             
             console.log('📊 Posts fetched from Supabase:', postsData?.length || 0);
             
-            // Fetch events from Supabase
             const { data: eventsData, error: eventsError } = await sbClient
                 .from('events')
                 .select('*')
@@ -781,7 +838,6 @@
             
             console.log('📅 Events fetched from Supabase:', eventsData?.length || 0);
             
-            // Convert events to post format
             const eventPosts = (eventsData || []).map(e => ({
                 id: `evt_${e.id}`,
                 title: `📅 ${e.title}`,
@@ -794,11 +850,8 @@
                 eventDescription: e.description
             }));
             
-            // Combine posts and events
             let allItems = [...(postsData || []), ...eventPosts];
             allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Take only first 6 for homepage
             allItems = allItems.slice(0, 6);
             
             updateDbStatus('connected', `Supabase (${allItems.length} updates)`);
