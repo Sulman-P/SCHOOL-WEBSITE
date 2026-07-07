@@ -11,27 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'kdf-red': '#B22222',
-                        'kdf-navy': '#0a1a3a',
-                        'kdf-light-blue': '#4A90D9',
-                        'kdf-gold': '#D4A017',
-                        'kdf-white': '#FFFFFF',
-                        'kdf-gray': '#F5F5F5',
-                    },
-                    fontFamily: {
-                        'display': ['Playfair Display', 'serif'],
-                        'body': ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
@@ -76,6 +55,15 @@
             width: 60%;
         }
         .nav-link:hover { color: #D4A017; }
+        
+        .portal-nav-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .portal-nav-link:hover {
+            border-left-color: #D4A017;
+            background: rgba(212, 160, 23, 0.08);
+        }
         
         .stat-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -177,6 +165,8 @@
         .category-badge.updates { background: #fef3c7; color: #92400e; }
         .category-badge.events { background: #d1fae5; color: #065f46; }
         .category-badge.calendar { background: #ede9fe; color: #5b21b6; }
+        .category-badge.meeting { background: #fce7f3; color: #be185d; }
+        .category-badge.video { background: #dbeafe; color: #1e40af; }
         
         .status-badge {
             display: inline-block;
@@ -188,6 +178,9 @@
         .status-badge.published { background: #d1fae5; color: #065f46; }
         .status-badge.scheduled { background: #fef3c7; color: #92400e; }
         .status-badge.draft { background: #f3f4f6; color: #6b7280; }
+        .status-badge.live { background: #fee2e2; color: #991b1b; }
+        .status-badge.active { background: #dbeafe; color: #1e40af; }
+        .status-badge.inactive { background: #f3f4f6; color: #6b7280; }
         
         .login-page {
             min-height: 100vh;
@@ -294,6 +287,43 @@
         .db-status.connecting { background: #fef3c7; color: #92400e; }
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
+        .user-card {
+            transition: all 0.3s ease;
+        }
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        
+        .meeting-card {
+            transition: all 0.3s ease;
+        }
+        .meeting-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .search-highlight {
+            background: #FEF3C7;
+            padding: 0 4px;
+            border-radius: 2px;
+        }
+        
         @media (max-width: 640px) {
             .login-box { padding: 32px 24px; margin: 10px; }
             .modal-box { padding: 20px; margin: 10px; }
@@ -372,6 +402,11 @@
                     <i class="fas fa-chart-pie w-5 text-center"></i>
                     <span>Dashboard</span>
                 </a>
+                <a href="#" onclick="switchTab('users')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="users">
+                    <i class="fas fa-users w-5 text-center"></i>
+                    <span>User Management</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="userCount">0</span>
+                </a>
                 <a href="#" onclick="switchTab('posts')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="posts">
                     <i class="fas fa-newspaper w-5 text-center"></i>
                     <span>All Posts</span>
@@ -385,22 +420,55 @@
                     <i class="fas fa-calendar-alt w-5 text-center"></i>
                     <span>Calendar Manager</span>
                 </a>
+                <a href="#" onclick="switchTab('meetings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="meetings">
+                    <i class="fas fa-video w-5 text-center"></i>
+                    <span>Virtual Meetings</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="meetingCount">0</span>
+                </a>
+                <a href="#" onclick="switchTab('videos')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="videos">
+                    <i class="fas fa-youtube w-5 text-center"></i>
+                    <span>Video Library</span>
+                    <span class="ml-auto bg-kdf-gold text-white text-xs px-2 py-0.5 rounded-full" id="videoCount">0</span>
+                </a>
                 <a href="#" onclick="switchTab('categories')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="categories">
                     <i class="fas fa-tags w-5 text-center"></i>
                     <span>Categories</span>
                 </a>
-                <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
-                    <i class="fas fa-cog w-5 text-center"></i>
-                    <span>Settings</span>
-                </a>
-                <a href="#" onclick="switchTab('security')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="security">
-                    <i class="fas fa-shield-alt w-5 text-center"></i>
-                    <span>Security</span>
-                </a>
-                <a href="#" onclick="switchTab('database')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="database">
-                    <i class="fas fa-database w-5 text-center"></i>
-                    <span>Database</span>
-                </a>
+                
+                <div class="mt-4 pt-4 border-t border-kdf-gold/20">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider px-4 mb-2 font-semibold">Portals</p>
+                    
+                    <a href="staff-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-chalkboard-teacher w-5 text-center text-kdf-gold"></i>
+                        <span>Staff Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                    <a href="student-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-user-graduate w-5 text-center text-kdf-light-blue"></i>
+                        <span>Student Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                    <a href="parent-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-users w-5 text-center text-kdf-red"></i>
+                        <span>Parent Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-kdf-gold/20">
+                    <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" onclick="switchTab('security')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="security">
+                        <i class="fas fa-shield-alt w-5 text-center"></i>
+                        <span>Security</span>
+                    </a>
+                    <a href="#" onclick="switchTab('database')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="database">
+                        <i class="fas fa-database w-5 text-center"></i>
+                        <span>Database</span>
+                    </a>
+                </div>
             </nav>
             
             <div class="px-4 py-4 border-t border-kdf-gold/20 flex-shrink-0">
@@ -420,6 +488,9 @@
                         <i class="fas fa-check-circle"></i> Supabase
                     </span>
                 </div>
+                <a href="index.html" class="mt-2 block text-center text-xs text-gray-500 hover:text-kdf-gold transition">
+                    <i class="fas fa-home mr-1"></i> Back to School Homepage
+                </a>
             </div>
         </aside>
 
@@ -435,10 +506,35 @@
                         <h2 id="pageTitle" class="text-lg font-bold text-kdf-navy">Dashboard</h2>
                     </div>
                     <div class="flex items-center gap-3">
+                        <!-- Global Search Bar -->
+                        <div class="relative hidden md:block">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="globalSearchInput" placeholder="Search staff, students, posts..." 
+                                   class="pl-9 pr-4 py-2 w-64 border-2 border-gray-200 rounded-full text-sm focus:border-kdf-gold focus:outline-none transition"
+                                   oninput="globalSearch(this.value)" />
+                        </div>
+                        <button onclick="document.getElementById('globalSearchInput').focus()" class="md:hidden text-gray-500 hover:text-kdf-navy transition">
+                            <i class="fas fa-search text-lg"></i>
+                        </button>
                         <span class="text-xs text-gray-400 hidden sm:inline">Last updated: <span id="lastUpdated">Just now</span></span>
                         <button onclick="syncWithSupabase()" class="text-kdf-gold hover:text-kdf-red transition" title="Sync with Supabase">
                             <i class="fas fa-sync-alt text-lg"></i>
                         </button>
+                        <div class="hidden md:flex gap-2">
+                            <a href="staff-portal.html" target="_blank" class="text-xs bg-kdf-navy text-white px-3 py-1.5 rounded-full hover:bg-kdf-navy/80 transition flex items-center gap-1">
+                                <i class="fas fa-chalkboard-teacher"></i> Staff
+                            </a>
+                            <a href="student-portal.html" target="_blank" class="text-xs bg-kdf-light-blue text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition flex items-center gap-1">
+                                <i class="fas fa-user-graduate"></i> Student
+                            </a>
+                            <a href="parent-portal.html" target="_blank" class="text-xs bg-kdf-red text-white px-3 py-1.5 rounded-full hover:bg-red-800 transition flex items-center gap-1">
+                                <i class="fas fa-users"></i> Parent
+                            </a>
+                        </div>
+                        <a href="index.html" class="text-xs bg-kdf-gold text-kdf-navy px-3 py-1.5 rounded-full hover:bg-yellow-400 transition flex items-center gap-1" title="Go to Homepage">
+                            <i class="fas fa-home"></i>
+                            <span class="hidden sm:inline">Home</span>
+                        </a>
                     </div>
                 </div>
             </header>
@@ -458,32 +554,36 @@
                         </div>
                         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between">
-                                <span class="text-2xl text-kdf-light-blue">📌</span>
-                                <span class="text-xs text-kdf-gold font-semibold">Published</span>
+                                <span class="text-2xl text-kdf-light-blue">👥</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Staff</span>
                             </div>
-                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statPublished">0</p>
-                            <p class="text-sm text-gray-500">Published Posts</p>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statStaff">0</p>
+                            <p class="text-sm text-gray-500">Staff Members</p>
                         </div>
                         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between">
-                                <span class="text-2xl text-kdf-gold">⏰</span>
-                                <span class="text-xs text-kdf-gold font-semibold">Scheduled</span>
+                                <span class="text-2xl text-kdf-gold">🎓</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Students</span>
                             </div>
-                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statScheduled">0</p>
-                            <p class="text-sm text-gray-500">Scheduled Posts</p>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statStudents">0</p>
+                            <p class="text-sm text-gray-500">Active Students</p>
                         </div>
                         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl text-kdf-red">📅</span>
-                                <span class="text-xs text-kdf-gold font-semibold">Events</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Meetings</span>
                             </div>
-                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statEvents">0</p>
-                            <p class="text-sm text-gray-500">Calendar Events</p>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statMeetings">0</p>
+                            <p class="text-sm text-gray-500">Virtual Meetings</p>
                         </div>
                     </div>
 
-                    <div class="grid sm:grid-cols-3 gap-4 mb-6">
-                        <button onclick="switchTab('create')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
+                    <div class="grid sm:grid-cols-4 gap-4 mb-6">
+                        <button onclick="switchTab('users')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
+                            <i class="fas fa-users text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Manage Users</span>
+                        </button>
+                        <button onclick="switchTab('create')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3">
                             <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
                             <span class="font-medium">New Post</span>
                         </button>
@@ -491,9 +591,9 @@
                             <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
                             <span class="font-medium">Add Event</span>
                         </button>
-                        <button onclick="syncWithSupabase()" class="bg-kdf-gold text-kdf-navy p-4 rounded-xl hover:bg-yellow-400 transition flex items-center gap-3">
-                            <i class="fas fa-sync-alt text-xl"></i>
-                            <span class="font-medium">Sync with Supabase</span>
+                        <button onclick="openMeetingModal()" class="bg-kdf-light-blue text-white p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3">
+                            <i class="fas fa-video text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Create Meeting</span>
                         </button>
                     </div>
 
@@ -503,6 +603,30 @@
                             <button onclick="switchTab('posts')" class="text-sm text-kdf-gold hover:text-kdf-red transition">View All</button>
                         </div>
                         <div id="recentPostsList" class="divide-y divide-gray-100"></div>
+                    </div>
+                </div>
+
+                <!-- User Management Tab -->
+                <div id="tab-users" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                            <h3 class="font-bold text-kdf-navy">👥 User Management</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="filterUsers('all')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition active" data-filter="all">All</button>
+                                <button onclick="filterUsers('staff')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="staff">👨‍🏫 Staff</button>
+                                <button onclick="filterUsers('student')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="student">🎓 Students</button>
+                                <button onclick="filterUsers('parent')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="parent">👨‍👩‍👦 Parents</button>
+                            </div>
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="userSearchInput" placeholder="Search users..." 
+                                       class="pl-8 pr-4 py-1.5 border-2 border-gray-200 rounded-full text-sm focus:border-kdf-gold focus:outline-none transition w-48"
+                                       oninput="searchUsers(this.value)" />
+                            </div>
+                        </div>
+                        <div id="usersList" class="divide-y divide-gray-100">
+                            <!-- Rendered by JS -->
+                        </div>
                     </div>
                 </div>
 
@@ -583,6 +707,32 @@
                             </button>
                         </div>
                         <div id="calendarEventsList" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- Meetings Tab -->
+                <div id="tab-meetings" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <h3 class="text-xl font-bold text-kdf-navy">🎥 Virtual Meetings</h3>
+                            <button onclick="openMeetingModal()" class="bg-kdf-light-blue text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-600 transition">
+                                <i class="fas fa-plus mr-2"></i> Create Meeting
+                            </button>
+                        </div>
+                        <div id="meetingsList" class="space-y-4"></div>
+                    </div>
+                </div>
+
+                <!-- Videos Tab -->
+                <div id="tab-videos" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <h3 class="text-xl font-bold text-kdf-navy">🎬 Video Library</h3>
+                            <button onclick="openVideoModal()" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                                <i class="fas fa-plus mr-2"></i> Add Video
+                            </button>
+                        </div>
+                        <div id="videosList" class="grid md:grid-cols-2 gap-6"></div>
                     </div>
                 </div>
 
@@ -673,7 +823,7 @@
                                 </div>
                                 <div class="bg-kdf-gray rounded-xl p-4">
                                     <p class="text-sm text-gray-500">Tables</p>
-                                    <p class="font-bold text-kdf-navy">posts, events, categories</p>
+                                    <p class="font-bold text-kdf-navy">staff_users, students, parents, posts, events, meetings, videos</p>
                                 </div>
                             </div>
                             <div class="bg-kdf-gray rounded-xl p-4">
@@ -690,9 +840,9 @@
                             <div class="bg-kdf-gray rounded-xl p-4">
                                 <h4 class="font-bold text-kdf-navy mb-2">Table Records</h4>
                                 <div class="grid grid-cols-3 gap-4 text-sm">
-                                    <div><span class="text-gray-500">Posts:</span> <span id="dbPostCount" class="font-bold">0</span></div>
-                                    <div><span class="text-gray-500">Events:</span> <span id="dbEventCount" class="font-bold">0</span></div>
-                                    <div><span class="text-gray-500">Categories:</span> <span id="dbCategoryCount" class="font-bold">4</span></div>
+                                    <div><span class="text-gray-500">Staff:</span> <span id="dbStaffCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Students:</span> <span id="dbStudentCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Parents:</span> <span id="dbParentCount" class="font-bold">0</span></div>
                                 </div>
                             </div>
                             <div class="text-xs text-gray-400 mt-2">
@@ -704,6 +854,86 @@
 
             </div>
         </main>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- MEETING MODAL -->
+<!-- ════════════════════════════════════════ -->
+<div id="meetingModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 class="text-xl font-bold text-kdf-navy mb-4">🎥 Create Virtual Meeting</h3>
+        <form id="meetingForm" onsubmit="handleCreateMeeting(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Title <span class="text-kdf-red">*</span></label>
+                <input type="text" id="meetingTitle" class="form-input" placeholder="e.g. Grade 9 Mathematics Session" required />
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date <span class="text-kdf-red">*</span></label>
+                    <input type="date" id="meetingDate" class="form-input" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Time <span class="text-kdf-red">*</span></label>
+                    <input type="time" id="meetingTime" class="form-input" required />
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Link <span class="text-kdf-red">*</span></label>
+                <input type="url" id="meetingLink" class="form-input" placeholder="https://meet.google.com/xxx-xxxx-xxx" required />
+                <p class="text-xs text-gray-500 mt-1">Paste your Google Meet, Zoom, or Teams link here</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="meetingDescription" rows="3" class="form-input" placeholder="Meeting agenda or additional information"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="bg-kdf-light-blue text-white px-6 py-2.5 rounded-lg font-bold hover:bg-blue-600 transition">
+                    <i class="fas fa-save mr-2"></i> Create Meeting
+                </button>
+                <button type="button" onclick="closeMeetingModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VIDEO MODAL -->
+<!-- ════════════════════════════════════════ -->
+<div id="videoModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 class="text-xl font-bold text-kdf-navy mb-4">🎬 Add Video to Library</h3>
+        <form id="videoForm" onsubmit="handleAddVideo(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Video Title <span class="text-kdf-red">*</span></label>
+                <input type="text" id="videoTitle" class="form-input" placeholder="e.g. KJSEA 2026 Revision" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">YouTube URL <span class="text-kdf-red">*</span></label>
+                <input type="url" id="videoUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=xxxxxxx" required />
+                <p class="text-xs text-gray-500 mt-1">Paste a YouTube video link. Videos will be embedded on the page.</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <select id="videoCategory" class="form-select">
+                    <option value="academic">📚 Academic</option>
+                    <option value="sports">🏃 Sports</option>
+                    <option value="events">🎉 Events</option>
+                    <option value="announcements">📢 Announcements</option>
+                    <option value="other">📌 Other</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="videoDescription" rows="3" class="form-input" placeholder="Brief description of the video"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                    <i class="fas fa-save mr-2"></i> Add Video
+                </button>
+                <button type="button" onclick="closeVideoModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -791,11 +1021,19 @@
         return true;
     }
 
+
     // ────────────────────────────────────────────────
     // DATA STORE
     // ────────────────────────────────────────────────
     let posts = [];
     let events = [];
+    let meetings = [];
+    let videos = [];
+    let staffUsers = [];
+    let studentUsers = [];
+    let parentUsers = [];
+    let currentUserFilter = 'all';
+    let userSearchTerm = '';
     let categories = [
         { id: 1, name: 'News', slug: 'news', icon: '📰' },
         { id: 2, name: 'Updates', slug: 'updates', icon: '📌' },
@@ -832,7 +1070,6 @@
                 initSupabase();
             }
             
-            // Test connection by fetching 1 post
             const { data, error } = await sbClient
                 .from('posts')
                 .select('*')
@@ -843,10 +1080,7 @@
             }
             
             updateDbStatus('connected', 'Supabase Connected');
-            
-            // Load all data
             await loadAllFromSupabase();
-            
             return true;
         } catch (error) {
             console.error('Supabase connection error:', error);
@@ -866,10 +1100,7 @@
                 .order('created_at', { ascending: false });
             
             if (postsError) throw new Error(postsError.message);
-            
-            if (postsData && postsData.length > 0) {
-                posts = postsData;
-            }
+            if (postsData && postsData.length > 0) posts = postsData;
             
             // Load events
             const { data: eventsData, error: eventsError } = await sbClient
@@ -878,13 +1109,55 @@
                 .order('event_date', { ascending: true });
             
             if (eventsError) throw new Error(eventsError.message);
+            if (eventsData && eventsData.length > 0) events = eventsData;
             
-            if (eventsData && eventsData.length > 0) {
-                events = eventsData;
-            }
+            // Load meetings
+            const { data: meetingsData, error: meetingsError } = await sbClient
+                .from('meetings')
+                .select('*')
+                .order('meeting_date', { ascending: true });
+            
+            if (meetingsError) throw new Error(meetingsError.message);
+            if (meetingsData && meetingsData.length > 0) meetings = meetingsData;
+            
+            // Load videos
+            const { data: videosData, error: videosError } = await sbClient
+                .from('videos')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (videosError) throw new Error(videosError.message);
+            if (videosData && videosData.length > 0) videos = videosData;
+            
+            // Load staff users
+            const { data: staffData, error: staffError } = await sbClient
+                .from('staff_users')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (staffError) throw new Error(staffError.message);
+            if (staffData && staffData.length > 0) staffUsers = staffData;
+            
+            // Load student users
+            const { data: studentData, error: studentError } = await sbClient
+                .from('students')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (studentError) throw new Error(studentError.message);
+            if (studentData && studentData.length > 0) studentUsers = studentData;
+            
+            // Load parent users
+            const { data: parentData, error: parentError } = await sbClient
+                .from('parents')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (parentError) throw new Error(parentError.message);
+            if (parentData && parentData.length > 0) parentUsers = parentData;
             
             renderAll();
-            updateDbStatus('connected', `Supabase (${posts.length} posts, ${events.length} events)`);
+            updateDbStatus('connected', `Supabase (${staffUsers.length + studentUsers.length + parentUsers.length} users, ${posts.length} posts, ${meetings.length} meetings, ${videos.length} videos)`);
         } catch (error) {
             console.error('Error loading from Supabase:', error);
             if (posts.length === 0) loadSampleData();
@@ -894,11 +1167,7 @@
 
     async function savePostToSupabase(postData) {
         try {
-            const { data, error } = await sbClient
-                .from('posts')
-                .insert([postData])
-                .select();
-            
+            const { data, error } = await sbClient.from('posts').insert([postData]).select();
             if (error) throw new Error(error.message);
             return data ? data[0] : null;
         } catch (error) {
@@ -909,11 +1178,7 @@
 
     async function saveEventToSupabase(eventData) {
         try {
-            const { data, error } = await sbClient
-                .from('events')
-                .insert([eventData])
-                .select();
-            
+            const { data, error } = await sbClient.from('events').insert([eventData]).select();
             if (error) throw new Error(error.message);
             return data ? data[0] : null;
         } catch (error) {
@@ -922,13 +1187,31 @@
         }
     }
 
+    async function saveMeetingToSupabase(meetingData) {
+        try {
+            const { data, error } = await sbClient.from('meetings').insert([meetingData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving meeting to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function saveVideoToSupabase(videoData) {
+        try {
+            const { data, error } = await sbClient.from('videos').insert([videoData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving video to Supabase:', error);
+            return null;
+        }
+    }
+
     async function deletePostFromSupabase(id) {
         try {
-            const { error } = await sbClient
-                .from('posts')
-                .delete()
-                .eq('id', id);
-            
+            const { error } = await sbClient.from('posts').delete().eq('id', id);
             if (error) throw new Error(error.message);
             return true;
         } catch (error) {
@@ -939,11 +1222,7 @@
 
     async function deleteEventFromSupabase(id) {
         try {
-            const { error } = await sbClient
-                .from('events')
-                .delete()
-                .eq('id', id);
-            
+            const { error } = await sbClient.from('events').delete().eq('id', id);
             if (error) throw new Error(error.message);
             return true;
         } catch (error) {
@@ -952,19 +1231,36 @@
         }
     }
 
-    async function updatePostInSupabase(id, updates) {
+    async function deleteMeetingFromSupabase(id) {
         try {
-            const { data, error } = await sbClient
-                .from('posts')
-                .update(updates)
-                .eq('id', id)
-                .select();
-            
+            const { error } = await sbClient.from('meetings').delete().eq('id', id);
             if (error) throw new Error(error.message);
-            return data ? data[0] : null;
+            return true;
         } catch (error) {
-            console.error('Error updating post in Supabase:', error);
-            return null;
+            console.error('Error deleting meeting from Supabase:', error);
+            return false;
+        }
+    }
+
+    async function deleteVideoFromSupabase(id) {
+        try {
+            const { error } = await sbClient.from('videos').delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting video from Supabase:', error);
+            return false;
+        }
+    }
+
+    async function deleteUserFromSupabase(table, id) {
+        try {
+            const { error } = await sbClient.from(table).delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting user from Supabase:', error);
+            return false;
         }
     }
 
@@ -1001,8 +1297,9 @@
             showToast('✅ Data synced with Supabase successfully!', 'success');
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
             
-            document.getElementById('dbPostCount').textContent = posts.length;
-            document.getElementById('dbEventCount').textContent = events.length;
+            document.getElementById('dbStaffCount').textContent = staffUsers.length;
+            document.getElementById('dbStudentCount').textContent = studentUsers.length;
+            document.getElementById('dbParentCount').textContent = parentUsers.length;
             
             logActivity('🔄 Synced with Supabase', 'Database');
         } catch (error) {
@@ -1013,28 +1310,40 @@
 
     function loadSampleData() {
         posts = [
-            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations...', status: 'published', date: '2026-01-15', image: '📚' },
-            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026...', status: 'published', date: '2026-01-20', image: '🏃' },
-            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school...', status: 'scheduled', date: '2026-01-10', image: '🎖️' },
-            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th...', status: 'published', date: '2026-01-25', image: '👨‍👩‍👦' },
-            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades...', status: 'draft', date: '2026-01-05', image: '📖' },
-            { id: 6, title: 'Term 1 Calendar 2026', category: 'calendar', content: 'Term 1 runs from January 15 to April 10, 2026.', status: 'published', date: '2026-01-01', image: '📅' },
-            { id: 7, title: 'MFA Science Fair 2026', category: 'events', content: 'The annual MFA Science Fair will take place in February...', status: 'published', date: '2026-02-01', image: '🔬' },
-            { id: 8, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', status: 'published', date: '2026-01-05', image: '🏫' },
+            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation...', status: 'published', date: '2026-01-15', image: '📚' },
         ];
         
         events = [
             { id: 1, title: 'Sports Day', date: '2026-02-15', description: 'Annual sports day with various athletic events.' },
-            { id: 2, title: 'KDF Career Day', date: '2026-02-20', description: 'Career guidance from Kenya Defence Forces officers.' },
-            { id: 3, title: 'Science Fair', date: '2026-02-28', description: 'Students showcase their science projects.' },
-            { id: 4, title: 'Parent-Teacher Conference', date: '2026-01-30', description: 'Term 1 parent-teacher meeting.' },
-            { id: 5, title: 'KJSEA Exams', date: '2026-11-01', description: 'Junior Secondary Assessment exams.' },
+        ];
+        
+        meetings = [
+            { id: 1, title: 'Grade 9 Mathematics Revision', meeting_date: '2026-01-20', meeting_time: '10:00 AM', meeting_link: 'https://meet.google.com/xxx-xxxx-xxx', description: 'Final revision session before KJSEA exams.' },
+        ];
+        
+        videos = [
+            { id: 1, title: 'KJSEA 2026 Revision Guide', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Comprehensive revision guide for KJSEA 2026.' },
+        ];
+        
+        staffUsers = [
+            { id: 1, name: 'David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', role: 'staff' },
+            { id: 2, name: 'Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', role: 'staff' },
+            { id: 3, name: 'Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', role: 'admin' },
+        ];
+        
+        studentUsers = [
+            { id: 1, student_id: 'S001', name: 'John Mwangi', class: 'Grade 8A' },
+            { id: 2, student_id: 'S002', name: 'Mary Wanjiru', class: 'Grade 7B' },
+            { id: 3, student_id: 'S003', name: 'Peter Kiprop', class: 'Grade 9A' },
+        ];
+        
+        parentUsers = [
+            { id: 1, parent_id: 'P001', name: 'James Mwangi', child_name: 'John Mwangi', child_class: 'Grade 8A' },
+            { id: 2, parent_id: 'P002', name: 'Ann Wanjiru', child_name: 'Mary Wanjiru', child_class: 'Grade 7B' },
         ];
         
         activityLog = [
             { action: '✅ Login successful', category: 'Security', time: new Date().toLocaleString() },
-            { action: '📝 Created post "KJSEA 2026 Preparation"', category: 'Content', time: new Date().toLocaleString() },
-            { action: '📅 Added event "Sports Day"', category: 'Calendar', time: new Date().toLocaleString() },
         ];
     }
 
@@ -1045,6 +1354,11 @@
         const data = {
             posts: posts,
             events: events,
+            meetings: meetings,
+            videos: videos,
+            staff: staffUsers,
+            students: studentUsers,
+            parents: parentUsers,
             categories: categories,
             exportedAt: new Date().toISOString()
         };
@@ -1124,11 +1438,7 @@
             clearSession();
             currentUser = null;
             stopSessionTimer();
-            document.getElementById('dashboardScreen').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('loginError').classList.remove('show');
-            showToast('🔒 You have been logged out securely.', 'success');
+            window.location.href = 'index.html';
         }
     }
 
@@ -1136,8 +1446,11 @@
         stopSessionTimer();
         sessionTimerInterval = setInterval(() => {
             if (!isSessionValid()) {
-                showToast('⏰ Session expired. Please login again.', 'error');
-                handleLogout();
+                showToast('⏰ Session expired. Redirecting to homepage...', 'error');
+                clearSession();
+                currentUser = null;
+                stopSessionTimer();
+                setTimeout(() => { window.location.href = 'index.html'; }, 1500);
             } else {
                 const session = getSession();
                 const remaining = Math.max(0, Math.floor((session.expiresAt - Date.now()) / 60000));
@@ -1182,23 +1495,29 @@
         renderRecentPosts();
         renderPostsList();
         renderCalendarEvents();
+        renderMeetings();
+        renderVideos();
+        renderUsers();
         renderActivityLog();
+        
         document.getElementById('postCount').textContent = posts.length;
-        document.getElementById('dbPostCount').textContent = posts.length;
-        document.getElementById('dbEventCount').textContent = events.length;
-        document.getElementById('dbCategoryCount').textContent = categories.length;
+        document.getElementById('meetingCount').textContent = meetings.length;
+        document.getElementById('videoCount').textContent = videos.length;
+        document.getElementById('userCount').textContent = staffUsers.length + studentUsers.length + parentUsers.length;
+        document.getElementById('dbStaffCount').textContent = staffUsers.length;
+        document.getElementById('dbStudentCount').textContent = studentUsers.length;
+        document.getElementById('dbParentCount').textContent = parentUsers.length;
     }
 
     function renderStats() {
         const total = posts.length;
         const published = posts.filter(p => p.status === 'published').length;
-        const scheduled = posts.filter(p => p.status === 'scheduled').length;
-        const eventPosts = posts.filter(p => p.category === 'events').length + events.length;
-        
         document.getElementById('statTotal').textContent = total;
         document.getElementById('statPublished').textContent = published;
-        document.getElementById('statScheduled').textContent = scheduled;
-        document.getElementById('statEvents').textContent = eventPosts;
+        document.getElementById('statVideos').textContent = videos.length;
+        document.getElementById('statMeetings').textContent = meetings.length;
+        document.getElementById('statStaff').textContent = staffUsers.length;
+        document.getElementById('statStudents').textContent = studentUsers.length;
     }
 
     function renderRecentPosts() {
@@ -1293,8 +1612,259 @@
         `).join('');
     }
 
+    function renderMeetings() {
+        const container = document.getElementById('meetingsList');
+        if (meetings.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No meetings scheduled. Create one!</div>`;
+            return;
+        }
+        
+        container.innerHTML = meetings.map(m => `
+            <div class="meeting-card bg-kdf-gray rounded-xl p-4 border-l-4 border-kdf-light-blue hover:shadow-md transition">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">🎥</span>
+                            <h4 class="font-bold text-kdf-navy">${m.title}</h4>
+                            <span class="status-badge ${new Date(m.meeting_date) >= new Date() ? 'live' : 'completed'} text-xs">
+                                ${new Date(m.meeting_date) >= new Date() ? '🟢 Upcoming' : '✅ Completed'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">
+                            <i class="far fa-calendar-alt mr-1"></i> ${new Date(m.meeting_date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })} 
+                            at ${m.meeting_time}
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">${m.description || 'No description'}</p>
+                        <a href="${m.meeting_link}" target="_blank" class="inline-block mt-2 text-kdf-light-blue hover:text-blue-600 transition text-sm font-medium">
+                            <i class="fas fa-external-link-alt mr-1"></i> Join Meeting
+                        </a>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="deleteMeeting(${m.id})" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderVideos() {
+        const container = document.getElementById('videosList');
+        if (videos.length === 0) {
+            container.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8 text-sm">No videos in the library. Add one!</div>`;
+            return;
+        }
+        
+        container.innerHTML = videos.map(v => {
+            let videoId = '';
+            if (v.video_url) {
+                const match = v.video_url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+                if (match) videoId = match[1];
+            }
+            
+            return `
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition">
+                    <div class="video-embed">
+                        ${videoId ? 
+                            `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>` :
+                            `<div class="flex items-center justify-center h-full bg-kdf-gray text-gray-400">🎬 Video unavailable</div>`
+                        }
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="category-badge ${v.category || 'other'}">${v.category || 'General'}</span>
+                            <span class="text-xs text-gray-400">${new Date(v.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <h4 class="font-bold text-kdf-navy">${v.title}</h4>
+                        <p class="text-sm text-gray-500 mt-1">${v.description || 'No description'}</p>
+                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                            <a href="${v.video_url}" target="_blank" class="text-kdf-red hover:text-red-700 transition text-sm font-medium">
+                                <i class="fab fa-youtube mr-1"></i> Watch on YouTube
+                            </a>
+                            <button onclick="deleteVideo(${v.id})" class="text-red-500 hover:text-red-700 transition text-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
     // ────────────────────────────────────────────────
-    // POST CRUD OPERATIONS - WITH SUPABASE SAVE
+    // USER MANAGEMENT FUNCTIONS
+    // ────────────────────────────────────────────────
+    function renderUsers() {
+        const container = document.getElementById('usersList');
+        if (!container) return;
+        
+        let allUsers = [];
+        
+        // Add staff users with type
+        staffUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'staff', icon: '👨‍🏫', displayName: u.name, details: u.subject || 'Staff' });
+        });
+        
+        // Add student users with type
+        studentUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'student', icon: '🎓', displayName: u.name, details: u.class || 'Student' });
+        });
+        
+        // Add parent users with type
+        parentUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'parent', icon: '👨‍👩‍👦', displayName: u.name, details: u.child_name || 'Parent' });
+        });
+        
+        // Apply filters
+        if (currentUserFilter !== 'all') {
+            allUsers = allUsers.filter(u => u.type === currentUserFilter);
+        }
+        
+        // Apply search
+        if (userSearchTerm.trim()) {
+            const term = userSearchTerm.toLowerCase().trim();
+            allUsers = allUsers.filter(u => 
+                (u.name || '').toLowerCase().includes(term) ||
+                (u.email || '').toLowerCase().includes(term) ||
+                (u.subject || '').toLowerCase().includes(term) ||
+                (u.class || '').toLowerCase().includes(term) ||
+                (u.child_name || '').toLowerCase().includes(term) ||
+                (u.student_id || '').toLowerCase().includes(term)
+            );
+        }
+        
+        document.getElementById('userCount').textContent = allUsers.length;
+        
+        if (allUsers.length === 0) {
+            container.innerHTML = `<div class="px-6 py-12 text-center text-gray-500 text-sm">No users found matching your criteria.</div>`;
+            return;
+        }
+        
+        container.innerHTML = allUsers.map(u => `
+            <div class="user-card flex flex-wrap items-center justify-between px-6 py-4 hover:bg-gray-50 transition gap-3">
+                <div class="flex items-center gap-3 flex-1 min-w-[200px]">
+                    <div class="w-10 h-10 rounded-full ${u.type === 'staff' ? 'bg-kdf-navy' : u.type === 'student' ? 'bg-kdf-light-blue' : 'bg-kdf-red'} flex items-center justify-center text-white font-bold text-sm">
+                        ${u.name ? u.name.charAt(0).toUpperCase() : '?'}
+                    </div>
+                    <div>
+                        <p class="font-medium text-kdf-navy">${u.name || 'Unknown'}</p>
+                        <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                            <span class="text-xs px-2 py-0.5 rounded-full ${u.type === 'staff' ? 'bg-kdf-navy/10 text-kdf-navy' : u.type === 'student' ? 'bg-kdf-light-blue/10 text-kdf-light-blue' : 'bg-kdf-red/10 text-kdf-red'}">
+                                ${u.icon} ${u.type.charAt(0).toUpperCase() + u.type.slice(1)}
+                            </span>
+                            <span class="text-xs text-gray-500">${u.details || ''}</span>
+                            ${u.email ? `<span class="text-xs text-gray-400">${u.email}</span>` : ''}
+                            ${u.student_id ? `<span class="text-xs text-gray-400">ID: ${u.student_id}</span>` : ''}
+                            ${u.parent_id ? `<span class="text-xs text-gray-400">ID: ${u.parent_id}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="viewUser('${u.id}', '${u.type}')" class="text-kdf-gold hover:text-kdf-red transition text-sm px-3 py-1.5 border border-kdf-gold rounded-lg">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                    <button onclick="deleteUser('${u.id}', '${u.type}')" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterUsers(type) {
+        currentUserFilter = type;
+        document.querySelectorAll('#tab-users .filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === type);
+        });
+        renderUsers();
+    }
+
+    function searchUsers(term) {
+        userSearchTerm = term;
+        renderUsers();
+    }
+
+    function globalSearch(term) {
+        const searchTerm = term.toLowerCase().trim();
+        
+        if (searchTerm.length > 0) {
+            let results = [];
+            
+            staffUsers.forEach(u => {
+                if ((u.name || '').toLowerCase().includes(searchTerm) || (u.email || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Staff', name: u.name, details: u.subject || 'Staff' });
+                }
+            });
+            
+            studentUsers.forEach(u => {
+                if ((u.name || '').toLowerCase().includes(searchTerm) || (u.student_id || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Student', name: u.name, details: u.class || 'Student' });
+                }
+            });
+            
+            posts.forEach(p => {
+                if ((p.title || '').toLowerCase().includes(searchTerm) || (p.content || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Post', name: p.title, details: p.category || 'Post' });
+                }
+            });
+            
+            if (results.length > 0) {
+                const message = results.slice(0, 5).map(r => `${r.type}: ${r.name}`).join('\n');
+                showToast(`🔍 Found ${results.length} results:\n${message}`, 'success');
+                switchTab('users');
+            } else {
+                showToast('🔍 No results found for "' + term + '"', 'error');
+            }
+        }
+    }
+
+    function viewUser(id, type) {
+        let user;
+        if (type === 'staff') {
+            user = staffUsers.find(u => u.id == id);
+        } else if (type === 'student') {
+            user = studentUsers.find(u => u.id == id);
+        } else {
+            user = parentUsers.find(u => u.id == id);
+        }
+        
+        if (user) {
+            const details = Object.entries(user).map(([key, value]) => `${key}: ${value}`).join('\n');
+            showToast(`👤 User Details:\n${details}`, 'success');
+        }
+    }
+
+    async function deleteUser(id, type) {
+        if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+        
+        let table;
+        if (type === 'staff') table = 'staff_users';
+        else if (type === 'student') table = 'students';
+        else table = 'parents';
+        
+        const success = await deleteUserFromSupabase(table, id);
+        
+        if (success) {
+            if (type === 'staff') {
+                staffUsers = staffUsers.filter(u => u.id != id);
+            } else if (type === 'student') {
+                studentUsers = studentUsers.filter(u => u.id != id);
+            } else {
+                parentUsers = parentUsers.filter(u => u.id != id);
+            }
+            
+            renderUsers();
+            renderStats();
+            showToast(`✅ ${type} deleted successfully!`, 'success');
+            logActivity(`🗑️ Deleted ${type}: ${id}`, 'Users');
+        } else {
+            showToast('❌ Failed to delete user.', 'error');
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // POST CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function handleCreatePost(e) {
         e.preventDefault();
@@ -1321,10 +1891,8 @@
             created_at: new Date().toISOString()
         };
         
-        // Save to Supabase first
         savePostToSupabase(postData).then(result => {
             if (result) {
-                // Add the saved post to local state with the ID from Supabase
                 const savedPost = { ...postData, id: result.id };
                 posts.unshift(savedPost);
                 renderAll();
@@ -1335,7 +1903,6 @@
                 showToast(`✅ Post "${title}" published and synced to Supabase!`, 'success');
                 switchTab('posts');
             } else {
-                // Fallback: save locally
                 const newPost = { ...postData, id: Date.now() };
                 posts.unshift(newPost);
                 renderAll();
@@ -1364,7 +1931,6 @@
         if (!confirm('Are you sure you want to delete this post?')) return;
         const post = posts.find(p => p.id === id);
         
-        // Delete from Supabase
         deletePostFromSupabase(id).then(success => {
             if (success) {
                 posts = posts.filter(p => p.id !== id);
@@ -1372,7 +1938,6 @@
                 logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
                 showToast(`Post "${post?.title}" deleted from Supabase.`, 'success');
             } else {
-                // Remove locally anyway
                 posts = posts.filter(p => p.id !== id);
                 renderAll();
                 logActivity(`🗑️ Deleted post: "${post?.title}" (local only)`, 'Content');
@@ -1398,7 +1963,7 @@
     }
 
     // ────────────────────────────────────────────────
-    // EVENT CRUD OPERATIONS - WITH SUPABASE SAVE
+    // EVENT CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function openEventModal() {
         document.getElementById('eventModal').classList.add('open');
@@ -1428,7 +1993,6 @@
             created_at: new Date().toISOString()
         };
         
-        // Save to Supabase first
         saveEventToSupabase(eventData).then(result => {
             if (result) {
                 const savedEvent = { ...eventData, id: result.id };
@@ -1438,7 +2002,6 @@
                 logActivity(`📅 Added event: "${title}"`, 'Calendar');
                 showToast(`✅ Event "${title}" added and synced to Supabase!`, 'success');
             } else {
-                // Fallback: save locally
                 const newEvent = { ...eventData, id: Date.now() };
                 events.push(newEvent);
                 renderAll();
@@ -1477,6 +2040,172 @@
     }
 
     // ────────────────────────────────────────────────
+    // MEETING CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    function openMeetingModal() {
+        document.getElementById('meetingModal').classList.add('open');
+        document.getElementById('meetingForm').reset();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('meetingDate').value = today;
+    }
+
+    function closeMeetingModal() {
+        document.getElementById('meetingModal').classList.remove('open');
+    }
+
+    function handleCreateMeeting(e) {
+        e.preventDefault();
+        const title = document.getElementById('meetingTitle').value.trim();
+        const date = document.getElementById('meetingDate').value;
+        const time = document.getElementById('meetingTime').value;
+        const link = document.getElementById('meetingLink').value.trim();
+        const description = document.getElementById('meetingDescription').value.trim();
+        
+        if (!title || !date || !time || !link) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        const meetingData = {
+            title,
+            meeting_date: date,
+            meeting_time: time,
+            meeting_link: link,
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        saveMeetingToSupabase(meetingData).then(result => {
+            if (result) {
+                const savedMeeting = { ...meetingData, id: result.id };
+                meetings.push(savedMeeting);
+                renderAll();
+                closeMeetingModal();
+                logActivity(`🎥 Created meeting: "${title}"`, 'Meetings');
+                showToast(`✅ Meeting "${title}" created and synced to Supabase!`, 'success');
+                switchTab('meetings');
+            } else {
+                const newMeeting = { ...meetingData, id: Date.now() };
+                meetings.push(newMeeting);
+                renderAll();
+                closeMeetingModal();
+                logActivity(`🎥 Created meeting: "${title}" (local only)`, 'Meetings');
+                showToast(`⚠️ Meeting "${title}" saved locally (Supabase sync failed)`, 'error');
+                switchTab('meetings');
+            }
+        }).catch(err => {
+            console.error('Error saving meeting to Supabase:', err);
+            const newMeeting = { ...meetingData, id: Date.now() };
+            meetings.push(newMeeting);
+            renderAll();
+            closeMeetingModal();
+            logActivity(`🎥 Created meeting: "${title}" (local only)`, 'Meetings');
+            showToast(`⚠️ Meeting "${title}" saved locally (Supabase sync failed)`, 'error');
+            switchTab('meetings');
+        });
+    }
+
+    function deleteMeeting(id) {
+        if (!confirm('Are you sure you want to delete this meeting?')) return;
+        const meeting = meetings.find(m => m.id === id);
+        
+        deleteMeetingFromSupabase(id).then(success => {
+            if (success) {
+                meetings = meetings.filter(m => m.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted meeting: "${meeting?.title}"`, 'Meetings');
+                showToast(`Meeting "${meeting?.title}" deleted from Supabase.`, 'success');
+            } else {
+                meetings = meetings.filter(m => m.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted meeting: "${meeting?.title}" (local only)`, 'Meetings');
+                showToast(`Meeting "${meeting?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
+    }
+
+    // ────────────────────────────────────────────────
+    // VIDEO CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    function openVideoModal() {
+        document.getElementById('videoModal').classList.add('open');
+        document.getElementById('videoForm').reset();
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').classList.remove('open');
+    }
+
+    function handleAddVideo(e) {
+        e.preventDefault();
+        const title = document.getElementById('videoTitle').value.trim();
+        const url = document.getElementById('videoUrl').value.trim();
+        const category = document.getElementById('videoCategory').value;
+        const description = document.getElementById('videoDescription').value.trim();
+        
+        if (!title || !url) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        const videoData = {
+            title,
+            video_url: url,
+            category,
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        saveVideoToSupabase(videoData).then(result => {
+            if (result) {
+                const savedVideo = { ...videoData, id: result.id };
+                videos.push(savedVideo);
+                renderAll();
+                closeVideoModal();
+                logActivity(`🎬 Added video: "${title}"`, 'Videos');
+                showToast(`✅ Video "${title}" added and synced to Supabase!`, 'success');
+                switchTab('videos');
+            } else {
+                const newVideo = { ...videoData, id: Date.now() };
+                videos.push(newVideo);
+                renderAll();
+                closeVideoModal();
+                logActivity(`🎬 Added video: "${title}" (local only)`, 'Videos');
+                showToast(`⚠️ Video "${title}" saved locally (Supabase sync failed)`, 'error');
+                switchTab('videos');
+            }
+        }).catch(err => {
+            console.error('Error saving video to Supabase:', err);
+            const newVideo = { ...videoData, id: Date.now() };
+            videos.push(newVideo);
+            renderAll();
+            closeVideoModal();
+            logActivity(`🎬 Added video: "${title}" (local only)`, 'Videos');
+            showToast(`⚠️ Video "${title}" saved locally (Supabase sync failed)`, 'error');
+            switchTab('videos');
+        });
+    }
+
+    function deleteVideo(id) {
+        if (!confirm('Are you sure you want to delete this video?')) return;
+        const video = videos.find(v => v.id === id);
+        
+        deleteVideoFromSupabase(id).then(success => {
+            if (success) {
+                videos = videos.filter(v => v.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted video: "${video?.title}"`, 'Videos');
+                showToast(`Video "${video?.title}" deleted from Supabase.`, 'success');
+            } else {
+                videos = videos.filter(v => v.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted video: "${video?.title}" (local only)`, 'Videos');
+                showToast(`Video "${video?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
+    }
+
+    // ────────────────────────────────────────────────
     // FILTER & TAB MANAGEMENT
     // ────────────────────────────────────────────────
     function filterPosts(category) {
@@ -1498,9 +2227,12 @@
         
         const titles = {
             dashboard: 'Dashboard',
+            users: 'User Management',
             posts: 'All Posts',
             create: 'Create Post',
             calendar: 'Calendar Manager',
+            meetings: 'Virtual Meetings',
+            videos: 'Video Library',
             categories: 'Categories',
             settings: 'Settings',
             security: 'Security',
@@ -1550,7 +2282,15 @@
             e.preventDefault();
             if (isSessionValid()) handleLogout();
         }
-        if (e.key === 'Escape') closeEventModal();
+        if (e.key === 'Escape') {
+            closeEventModal();
+            closeMeetingModal();
+            closeVideoModal();
+        }
+        if (e.ctrlKey && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('globalSearchInput').focus();
+        }
     });
 
     // ────────────────────────────────────────────────
@@ -1559,6 +2299,11 @@
     window.switchTab = switchTab;
     window.toggleSidebar = toggleSidebar;
     window.filterPosts = filterPosts;
+    window.filterUsers = filterUsers;
+    window.searchUsers = searchUsers;
+    window.globalSearch = globalSearch;
+    window.viewUser = viewUser;
+    window.deleteUser = deleteUser;
     window.handleCreatePost = handleCreatePost;
     window.deletePost = deletePost;
     window.editPost = editPost;
@@ -1566,6 +2311,14 @@
     window.closeEventModal = closeEventModal;
     window.handleAddEvent = handleAddEvent;
     window.deleteEvent = deleteEvent;
+    window.openMeetingModal = openMeetingModal;
+    window.closeMeetingModal = closeMeetingModal;
+    window.handleCreateMeeting = handleCreateMeeting;
+    window.deleteMeeting = deleteMeeting;
+    window.openVideoModal = openVideoModal;
+    window.closeVideoModal = closeVideoModal;
+    window.handleAddVideo = handleAddVideo;
+    window.deleteVideo = deleteVideo;
     window.showToast = showToast;
     window.handleLogin = handleLogin;
     window.handleLogout = handleLogout;
@@ -1589,7 +2342,11 @@
 
     console.log('🔒 MFA Admin Dashboard with Supabase loaded successfully!');
     console.log('📊 Connected to Supabase PostgreSQL');
+    console.log('👥 User Management: Staff, Students, Parents');
+    console.log('🎥 Virtual Meeting and Video Library features enabled');
+    console.log('🔍 Global Search: Ctrl+F to search users and content');
     console.log('🛡️ Security features: Session management, activity logging');
+    console.log('🏠 Logout redirects to Moi Forces Academy homepage');
 </script>
 </body>
 </html>
