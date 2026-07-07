@@ -280,7 +280,117 @@
         .db-status.connecting { background: #fef3c7; color: #92400e; }
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
-        /* Badge styles */
+        /* Video Embed */
+        .video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .video-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gallery-item .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10,26,58,0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        .gallery-item .overlay span {
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .lightbox.open { display: flex; }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .lightbox .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: none;
+            border: none;
+        }
+        .lightbox .close-lightbox:hover {
+            transform: rotate(90deg);
+        }
+        .lightbox .caption {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 20px;
+            border-radius: 8px;
+        }
+        
         .badge-logo {
             width: 100%;
             height: 100%;
@@ -302,8 +412,10 @@
         
         @media (max-width: 640px) {
             .updates-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             .nav-badge { width: 40px; height: 40px; }
             .badge-logo { padding: 10px; }
+            .lightbox img { max-width: 95%; max-height: 70vh; }
         }
     </style>
 </head>
@@ -317,7 +429,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
             <a href="#home" class="flex items-center gap-3" aria-label="Moi Forces Academy Home">
-                <!-- Moi Forces Academy Badge -->
                 <img src="https://upload.wikimedia.org/wikipedia/en/d/d4/Moi_forces_academy.jpeg" 
                      alt="Moi Forces Academy Badge" 
                      class="nav-badge" />
@@ -334,24 +445,25 @@
                 <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
                 <a href="#academics" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
                 <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
+                <a href="#videos" class="nav-link text-gray-300 hover:text-white font-medium">Videos</a>
+                <a href="#gallery" class="nav-link text-gray-300 hover:text-white font-medium">Gallery</a>
                 <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Class</a>
                 <a href="contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
                 
-                <!-- Portal Buttons -->
-                <a href="staff-portal.html" class="portal-btn portal-btn-staff px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                <a href="staff-portal.html" class="portal-btn portal-btn-staff px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-chalkboard-teacher"></i> Staff
                 </a>
-                <a href="student-portal.html" class="portal-btn portal-btn-student px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                <a href="student-portal.html" class="portal-btn portal-btn-student px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-user-graduate"></i> Student
                 </a>
-                <a href="parent-portal.html" class="portal-btn portal-btn-parent px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                <a href="parent-portal.html" class="portal-btn portal-btn-parent px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-users"></i> Parent
                 </a>
                 
-                <a href="admin.html" class="admin-btn px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                <a href="admin.html" class="admin-btn px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5 transition">
                     <i class="fas fa-user-shield"></i> Admin
                 </a>
-                <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2 call-pulse">
+                <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-3 py-2 rounded-full font-bold text-xs hover:bg-yellow-400 transition flex items-center gap-1.5 call-pulse">
                     <i class="fas fa-video"></i> Join Call
                 </a>
             </div>
@@ -368,6 +480,8 @@
             <a href="#about" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
             <a href="#academics" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
             <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
+            <a href="#videos" class="text-gray-300 font-medium py-2 hover:text-white transition">Videos</a>
+            <a href="#gallery" class="text-gray-300 font-medium py-2 hover:text-white transition">Gallery</a>
             <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
             <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
             
@@ -411,11 +525,11 @@
                     <a href="updates.html" class="bg-kdf-gold text-kdf-navy px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition shadow-lg shadow-kdf-gold/30">
                         <i class="fas fa-newspaper mr-2"></i> School Updates
                     </a>
-                    <a href="#virtual-classroom" class="bg-white/10 backdrop-blur-sm text-white px-8 py-3.5 rounded-full font-bold border border-white/20 hover:bg-white/20 transition flex items-center gap-2">
-                        <i class="fas fa-video"></i> Join Class
+                    <a href="#videos" class="bg-white/10 backdrop-blur-sm text-white px-8 py-3.5 rounded-full font-bold border border-white/20 hover:bg-white/20 transition flex items-center gap-2">
+                        <i class="fas fa-video"></i> Watch Videos
                     </a>
-                    <a href="admin.html" class="bg-kdf-red text-white px-8 py-3.5 rounded-full font-bold hover:bg-red-800 transition shadow-lg shadow-kdf-red/30 flex items-center gap-2">
-                        <i class="fas fa-user-shield"></i> Admin
+                    <a href="#gallery" class="bg-kdf-red text-white px-8 py-3.5 rounded-full font-bold hover:bg-red-800 transition shadow-lg shadow-kdf-red/30 flex items-center gap-2">
+                        <i class="fas fa-images"></i> Gallery
                     </a>
                 </div>
                 <div class="flex flex-wrap gap-8 mt-10 pt-8 border-t border-white/10">
@@ -584,6 +698,61 @@
         </div>
     </div>
 </section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VIDEOS SECTION -->
+<!-- ════════════════════════════════════════ -->
+<section id="videos" class="py-20 bg-kdf-gray" aria-label="School videos">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <span class="text-kdf-gold font-semibold text-sm uppercase tracking-wider">Watch & Learn</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-kdf-navy mt-2">Video Library</h2>
+            <div class="w-20 h-1 bg-kdf-red mx-auto mt-4"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Watch educational videos, school events, and important announcements from Moi Forces Academy.</p>
+        </div>
+        
+        <!-- Video Grid -->
+        <div id="videosGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Rendered by JavaScript -->
+        </div>
+        
+        <div class="text-center mt-8">
+            <p class="text-sm text-gray-500">🎬 Videos are loaded from the school's video library. Check back for new content!</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- GALLERY SECTION -->
+<!-- ════════════════════════════════════════ -->
+<section id="gallery" class="py-20 bg-white" aria-label="School gallery">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <span class="text-kdf-gold font-semibold text-sm uppercase tracking-wider">Memories</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-kdf-navy mt-2">School Gallery</h2>
+            <div class="w-20 h-1 bg-kdf-red mx-auto mt-4"></div>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Explore photos from school events, sports days, academic activities, and more.</p>
+        </div>
+        
+        <!-- Gallery Grid -->
+        <div id="galleryGrid" class="gallery-grid">
+            <!-- Rendered by JavaScript -->
+        </div>
+        
+        <div class="text-center mt-8">
+            <p class="text-sm text-gray-500">📸 Click on any photo to view it in full size.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<!-- LIGHTBOX -->
+<!-- ════════════════════════════════════════ -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <button class="close-lightbox" onclick="closeLightbox()">&times;</button>
+    <img id="lightboxImage" src="" alt="Gallery image" />
+    <div id="lightboxCaption" class="caption"></div>
+</div>
 
 <!-- Virtual Classroom Section -->
 <section id="virtual-classroom" class="py-20 bg-kdf-navy" aria-label="Virtual Classroom">
@@ -776,7 +945,8 @@
                     <li><a href="#about" class="hover:text-kdf-gold transition">About</a></li>
                     <li><a href="#academics" class="hover:text-kdf-gold transition">Academics</a></li>
                     <li><a href="updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
-                    <li><a href="#virtual-classroom" class="hover:text-kdf-gold transition">Virtual Classroom</a></li>
+                    <li><a href="#videos" class="hover:text-kdf-gold transition">Videos</a></li>
+                    <li><a href="#gallery" class="hover:text-kdf-gold transition">Gallery</a></li>
                 </ul>
             </div>
             <div>
@@ -838,6 +1008,9 @@
         }
     }
     
+    // ────────────────────────────────────────────────
+    // FETCH POSTS FROM SUPABASE
+    // ────────────────────────────────────────────────
     async function fetchPostsFromSupabase() {
         try {
             updateDbStatus('connecting', 'Loading updates...');
@@ -969,6 +1142,152 @@
         `).join('');
     }
     
+    // ────────────────────────────────────────────────
+    // FETCH VIDEOS FROM SUPABASE
+    // ────────────────────────────────────────────────
+    async function fetchVideos() {
+        try {
+            const { data, error } = await sbClient
+                .from('videos')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw new Error(error.message);
+            
+            console.log('🎬 Videos fetched from Supabase:', data?.length || 0);
+            renderVideos(data || []);
+        } catch (error) {
+            console.error('Error fetching videos:', error);
+            // Sample videos as fallback
+            renderVideos([
+                { id: 1, title: 'KJSEA 2026 Revision Guide', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Comprehensive revision guide for KJSEA 2026.' },
+                { id: 2, title: 'Mathematics Made Easy', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Step-by-step guide to mastering Mathematics.' },
+                { id: 3, title: 'Science Experiments at Home', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Fun science experiments you can do at home.' },
+            ]);
+        }
+    }
+    
+    function renderVideos(videos) {
+        const container = document.getElementById('videosGrid');
+        if (!container) return;
+        
+        if (videos.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12 text-gray-500">
+                    <i class="fas fa-video text-4xl mb-3 block"></i>
+                    <p>No videos available yet. Check back soon!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = videos.map(v => {
+            let videoId = '';
+            if (v.video_url) {
+                const match = v.video_url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+                if (match) videoId = match[1];
+            }
+            
+            return `
+                <div class="video-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200">
+                    <div class="video-embed">
+                        ${videoId ? 
+                            `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>` :
+                            `<div class="flex items-center justify-center h-full bg-kdf-gray text-gray-400">🎬 Video unavailable</div>`
+                        }
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="category-badge ${v.category || 'other'}">${v.category || 'General'}</span>
+                            <span class="text-xs text-gray-400">${new Date(v.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <h4 class="font-bold text-kdf-navy">${v.title}</h4>
+                        <p class="text-sm text-gray-500 mt-1 line-clamp-2">${v.description || 'No description'}</p>
+                        <a href="${v.video_url}" target="_blank" class="inline-block mt-3 text-kdf-red hover:text-red-700 transition text-sm font-medium">
+                            <i class="fab fa-youtube mr-1"></i> Watch on YouTube
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // ────────────────────────────────────────────────
+    // FETCH GALLERY IMAGES FROM SUPABASE
+    // ────────────────────────────────────────────────
+    async function fetchGallery() {
+        try {
+            const { data, error } = await sbClient
+                .from('gallery')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw new Error(error.message);
+            
+            console.log('🖼️ Gallery images fetched from Supabase:', data?.length || 0);
+            renderGallery(data || []);
+        } catch (error) {
+            console.error('Error fetching gallery:', error);
+            // Sample gallery images as fallback
+            renderGallery([
+                { id: 1, title: 'Sports Day 2026', image_url: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=400&fit=crop', description: 'Students competing in the annual sports day.' },
+                { id: 2, title: 'Science Fair', image_url: 'https://images.unsplash.com/photo-1530023367847-a683933f4172?w=400&h=400&fit=crop', description: 'Students showcasing their science projects.' },
+                { id: 3, title: 'Graduation Ceremony', image_url: 'https://images.unsplash.com/photo-1523050854058-8df90110c7f1?w=400&h=400&fit=crop', description: 'Class of 2026 graduation ceremony.' },
+                { id: 4, title: 'KDF Career Day', image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop', description: 'Kenya Defence Forces career day at school.' },
+                { id: 5, title: 'Classroom Learning', image_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=400&fit=crop', description: 'Students engaged in classroom activities.' },
+                { id: 6, title: 'School Assembly', image_url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&h=400&fit=crop', description: 'Morning school assembly with students and staff.' },
+            ]);
+        }
+    }
+    
+    function renderGallery(images) {
+        const container = document.getElementById('galleryGrid');
+        if (!container) return;
+        
+        if (images.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12 text-gray-500">
+                    <i class="fas fa-images text-4xl mb-3 block"></i>
+                    <p>No photos in the gallery yet. Check back soon!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = images.map(img => `
+            <div class="gallery-item" onclick="openLightbox('${img.image_url}', '${img.title || 'School Event'}')">
+                <img src="${img.image_url}" alt="${img.title || 'School event photo'}" loading="lazy" />
+                <div class="overlay">
+                    <span>${img.title || 'School Event'}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // ────────────────────────────────────────────────
+    // LIGHTBOX FUNCTIONS
+    // ────────────────────────────────────────────────
+    function openLightbox(imageUrl, caption) {
+        const lightbox = document.getElementById('lightbox');
+        const img = document.getElementById('lightboxImage');
+        const captionEl = document.getElementById('lightboxCaption');
+        
+        img.src = imageUrl;
+        captionEl.textContent = caption || 'School Event';
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+    });
+    
     function loadSampleData() {
         const samplePosts = [
             { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚' },
@@ -976,7 +1295,7 @@
             { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️' },
             { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦' },
             { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖' },
-            { id: 6, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', date: '2026-01-05', image: '🏫' },
+            { id: 6, title: '🗓️ End Term 2 Assessment Test', category: 'calendar', content: 'End Term 2 Assessment Test from July 20th to July 25th, 2026. 8:00 AM - 5:00 PM daily.', date: '2026-07-20', image: '📝' },
         ];
         
         const sampleEvents = [
@@ -1146,6 +1465,8 @@
         
         renderSchedule();
         fetchPostsFromSupabase();
+        fetchVideos();
+        fetchGallery();
         
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', () => {
@@ -1175,9 +1496,12 @@
     window.startVoiceCall = startVoiceCall;
     window.endCall = endCall;
     window.handleContactForm = handleContactForm;
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
     
     console.log('🚀 Moi Forces Academy website loaded successfully!');
     console.log('📊 Connected to Supabase PostgreSQL');
+    console.log('🎬 Video Library and Gallery features enabled');
     console.log('🔑 Supabase URL:', SUPABASE_URL);
     console.log('🎥 Video/Voice call functionality ready');
 </script>
