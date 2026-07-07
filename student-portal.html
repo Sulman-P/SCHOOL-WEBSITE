@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Portal — Moi Forces Academy</title>
+    <meta name="description" content="Student portal for Moi Forces Academy Nairobi. Access grades, assignments, and school resources." />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kdf-red': '#B22222',
+                        'kdf-navy': '#0a1a3a',
+                        'kdf-light-blue': '#4A90D9',
+                        'kdf-gold': '#D4A017',
+                        'kdf-white': '#FFFFFF',
+                        'kdf-gray': '#F5F5F5',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
+        
+        .bg-kdf-red { background-color: #B22222; }
+        .bg-kdf-navy { background-color: #0a1a3a; }
+        .bg-kdf-gold { background-color: #D4A017; }
+        .text-kdf-red { color: #B22222; }
+        .text-kdf-navy { color: #0a1a3a; }
+        .text-kdf-gold { color: #D4A017; }
+        .border-kdf-gold { border-color: #D4A017; }
+        
+        .portal-hero {
+            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D4A017;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after { width: 100%; }
+        .nav-link:hover { color: #D4A017; }
+        
+        .mobile-menu {
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.open { max-height: 500px; opacity: 1; }
+        
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D4A017;
+            color: #0a1a3a;
+            padding: 12px 24px;
+            z-index: 9999;
+            font-weight: 700;
+            border-radius: 0 0 8px 8px;
+            transition: top 0.3s ease;
+        }
+        .skip-link:focus { top: 0; }
+        
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        
+        .grade-card {
+            transition: all 0.3s ease;
+        }
+        .grade-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        
+        .admin-btn {
+            background: #D4A017;
+            color: #0a1a3a;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-btn:hover {
+            background: #FCD34D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
+        }
+        
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 36px;
+            max-width: 420px;
+            width: 100%;
+        }
+        .login-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        .login-input::placeholder { color: rgba(255,255,255,0.5); }
+        .login-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.1);
+        }
+        .login-input.error { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #D4A017;
+            color: #0a1a3a;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover { background: #FCD34D; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212, 160, 23, 0.3); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .login-error.show { display: block; }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            padding: 14px 24px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .toast.success { background: #0a1a3a; border-left: 4px solid #D4A017; }
+        .toast.error { background: #7f1d1d; border-left: 4px solid #ef4444; }
+        
+        .subject-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .subject-badge.math { background: #dbeafe; color: #1e40af; }
+        .subject-badge.english { background: #fef3c7; color: #92400e; }
+        .subject-badge.science { background: #d1fae5; color: #065f46; }
+        .subject-badge.kiswahili { background: #ede9fe; color: #5b21b6; }
+        .subject-badge.social { background: #fce7f3; color: #be185d; }
+        
+        @media (max-width: 640px) {
+            .login-box { padding: 28px 20px; margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Skip Link -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Navigation -->
+<nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">MFA</div>
+                <div>
+                    <h1 class="text-white font-display font-bold text-lg leading-tight">
+                        Moi Forces Academy
+                        <span class="block text-xs font-body font-normal text-kdf-gold">Student Portal</span>
+                    </h1>
+                </div>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
+                <a href="staff-portal.html" class="nav-link text-gray-300 hover:text-white font-medium">Staff</a>
+                <a href="student-portal.html" class="nav-link active text-white font-medium">Students</a>
+                <a href="parent-portal.html" class="nav-link text-gray-300 hover:text-white font-medium">Parents</a>
+                <a href="contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
+                <a href="admin.html" class="admin-btn px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                    <i class="fas fa-user-shield"></i> Admin
+                </a>
+            </div>
+            
+            <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-expanded="false" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
+        <div class="flex flex-col gap-3 pt-4">
+            <a href="index.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
+            <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
+            <a href="staff-portal.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Staff</a>
+            <a href="student-portal.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Students</a>
+            <a href="parent-portal.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Parents</a>
+            <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
+            <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
+                <i class="fas fa-user-shield"></i> Admin Dashboard
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center bg-kdf-navy/5 p-4">
+    <div class="login-box">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 rounded-full bg-kdf-light-blue flex items-center justify-center text-white text-3xl font-bold border-3 border-kdf-gold mx-auto mb-4">🎓</div>
+            <h2 class="text-white font-display text-2xl font-bold">Student Portal</h2>
+            <p class="text-gray-400 text-sm mt-1">Access your grades and assignments</p>
+        </div>
+        
+        <div id="loginError" class="login-error">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span id="loginErrorMessage">Invalid credentials. Please try again.</span>
+        </div>
+        
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="mb-4">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Student ID / Email</label>
+                <input type="text" id="loginId" class="login-input" placeholder="S001 or student@moiforces.ac.ke" value="S001" required />
+            </div>
+            <div class="mb-5">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Password</label>
+                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" value="Student@2026" required />
+            </div>
+            <button type="submit" id="loginBtn" class="login-btn">
+                <i class="fas fa-lock mr-2"></i> Sign In
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <p class="text-xs text-gray-500">🔒 Secured by Moi Forces Academy</p>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboardScreen" style="display:none;">
+    <div class="bg-kdf-navy/5 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            
+            <!-- Header -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="text-3xl font-display font-bold text-kdf-navy">🎓 Student Dashboard</h1>
+                    <p class="text-gray-600">Welcome back, <span id="studentName" class="font-semibold text-kdf-light-blue">Student</span></p>
+                </div>
+                <button onclick="handleLogout()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-red-800 transition flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-gold">⭐</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Average</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="avgGrade">0</p>
+                    <p class="text-sm text-gray-500">Average Grade</p>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-light-blue">📚</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Subjects</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="subjectCount">0</p>
+                    <p class="text-sm text-gray-500">Enrolled Subjects</p>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-red">📝</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Pending</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="pendingAssignments">0</p>
+                    <p class="text-sm text-gray-500">Pending Assignments</p>
+                </div>
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl text-kdf-gold">🏆</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Rank</span>
+                    </div>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="classRank">#1</p>
+                    <p class="text-sm text-gray-500">Class Rank</p>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                <div class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-download text-xl text-kdf-gold"></i>
+                    <span class="font-medium">Download Resources</span>
+                </div>
+                <div class="bg-kdf-light-blue text-white p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-calendar-check text-xl text-kdf-gold"></i>
+                    <span class="font-medium">View Timetable</span>
+                </div>
+                <div class="bg-kdf-gray text-kdf-navy p-4 rounded-xl hover:bg-gray-200 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-upload text-xl text-kdf-gold"></i>
+                    <span class="font-medium">Submit Assignment</span>
+                </div>
+            </div>
+            
+            <!-- Grades & Assignments -->
+            <div class="grid lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="font-bold text-kdf-navy">📊 My Grades</h3>
+                    </div>
+                    <div id="gradesList" class="divide-y divide-gray-100">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="font-bold text-kdf-navy">📋 Assignments</h3>
+                        <span class="text-xs text-gray-500" id="assignmentStatus">Due Soon</span>
+                    </div>
+                    <div id="assignmentsList" class="divide-y divide-gray-100">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timetable -->
+            <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="font-bold text-kdf-navy">📅 Weekly Timetable</h3>
+                </div>
+                <div id="timetableList" class="overflow-x-auto">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // ────────────────────────────────────────────────
+    // STUDENT DATA
+    // ────────────────────────────────────────────────
+    const studentData = {
+        students: [
+            { id: 'S001', name: 'John Mwangi', class: 'Grade 8A', email: 'student@moiforces.ac.ke' },
+            { id: 'S002', name: 'Mary Wanjiru', class: 'Grade 7B', email: 'mary.wanjiru@moiforces.ac.ke' },
+        ],
+        grades: [
+            { subject: 'Mathematics', score: 87, grade: 'A', teacher: 'Mr. Ochieng' },
+            { subject: 'English', score: 75, grade: 'B+', teacher: 'Ms. Wanjiru' },
+            { subject: 'Science', score: 92, grade: 'A', teacher: 'Dr. Akinyi' },
+            { subject: 'Kiswahili', score: 68, grade: 'B', teacher: 'Mr. Kiprop' },
+            { subject: 'Social Studies', score: 80, grade: 'A-', teacher: 'Ms. Muthoni' },
+        ],
+        assignments: [
+            { title: 'Algebra Quiz', subject: 'Mathematics', due: 'Jan 22', status: 'submitted' },
+            { title: 'Fractions Test', subject: 'Mathematics', due: 'Jan 24', status: 'pending' },
+            { title: 'Essay Writing', subject: 'English', due: 'Jan 26', status: 'pending' },
+            { title: 'Science Project', subject: 'Science', due: 'Feb 1', status: 'submitted' },
+            { title: 'Kiswahili Composition', subject: 'Kiswahili', due: 'Jan 28', status: 'pending' },
+        ],
+        timetable: [
+            { time: '8:00 - 8:40', mon: 'Mathematics', tue: 'English', wed: 'Science', thu: 'Kiswahili', fri: 'Social Studies' },
+            { time: '8:45 - 9:25', mon: 'English', tue: 'Mathematics', wed: 'Kiswahili', thu: 'Science', fri: 'Mathematics' },
+            { time: '9:30 - 10:10', mon: 'Science', tue: 'Kiswahili', wed: 'Mathematics', thu: 'English', fri: 'Science' },
+            { time: '10:30 - 11:10', mon: 'Kiswahili', tue: 'Science', wed: 'English', thu: 'Mathematics', fri: 'English' },
+            { time: '11:15 - 11:55', mon: 'Social Studies', tue: 'Social Studies', wed: 'Social Studies', thu: 'Social Studies', fri: 'Kiswahili' },
+        ]
+    };
+
+    // ────────────────────────────────────────────────
+    // SESSION MANAGEMENT
+    // ────────────────────────────────────────────────
+    const STUDENT_CREDENTIALS = { id: 'S001', password: 'Student@2026' };
+
+    let currentStudent = null;
+
+    function getStudentSession() {
+        const session = sessionStorage.getItem('mfa_student_session');
+        if (!session) return null;
+        try { return JSON.parse(session); } catch { return null; }
+    }
+
+    function setStudentSession(user) {
+        const session = { user, loginTime: Date.now(), expiresAt: Date.now() + 3600000 };
+        sessionStorage.setItem('mfa_student_session', JSON.stringify(session));
+        return session;
+    }
+
+    function clearStudentSession() { sessionStorage.removeItem('mfa_student_session'); }
+
+    function isStudentSessionValid() {
+        const session = getStudentSession();
+        if (!session) return false;
+        if (Date.now() > session.expiresAt) { clearStudentSession(); return false; }
+        return true;
+    }
+
+    // ────────────────────────────────────────────────
+    // AUTHENTICATION
+    // ────────────────────────────────────────────────
+    function handleLogin(e) {
+        e.preventDefault();
+        const id = document.getElementById('loginId').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorEl = document.getElementById('loginError');
+        const errorMsg = document.getElementById('loginErrorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        errorEl.classList.remove('show');
+        document.getElementById('loginId').classList.remove('error');
+        document.getElementById('loginPassword').classList.remove('error');
+        
+        if (!id || !password) {
+            errorMsg.textContent = 'Please enter both Student ID and password.';
+            errorEl.classList.add('show'); return;
+        }
+        
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing in...';
+        
+        setTimeout(() => {
+            if (id === STUDENT_CREDENTIALS.id && password === STUDENT_CREDENTIALS.password) {
+                const student = studentData.students.find(s => s.id === id);
+                currentStudent = student || { name: 'Student', id: id, class: 'Grade 8A' };
+                setStudentSession(currentStudent);
+                showToast('✅ Welcome, ' + currentStudent.name + '!', 'success');
+                showDashboard();
+            } else {
+                errorMsg.textContent = 'Invalid Student ID or password.';
+                errorEl.classList.add('show');
+                document.getElementById('loginPassword').classList.add('error');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+            }
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Sign In';
+        }, 800);
+    }
+
+    function showDashboard() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+        document.getElementById('studentName').textContent = currentStudent?.name || 'Student';
+        renderDashboard();
+    }
+
+    function handleLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            clearStudentSession();
+            currentStudent = null;
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+            showToast('🔒 Logged out successfully.', 'success');
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // RENDER DASHBOARD
+    // ────────────────────────────────────────────────
+    function renderDashboard() {
+        // Stats
+        const avg = studentData.grades.reduce((sum, g) => sum + g.score, 0) / studentData.grades.length;
+        document.getElementById('avgGrade').textContent = avg.toFixed(1) + '%';
+        document.getElementById('subjectCount').textContent = studentData.grades.length;
+        document.getElementById('pendingAssignments').textContent = studentData.assignments.filter(a => a.status === 'pending').length;
+        document.getElementById('classRank').textContent = '#1';
+        
+        // Grades
+        const gradesContainer = document.getElementById('gradesList');
+        gradesContainer.innerHTML = studentData.grades.map(g => `
+            <div class="flex flex-wrap items-center justify-between px-6 py-3 hover:bg-gray-50 transition">
+                <div>
+                    <span class="subject-badge ${g.subject.toLowerCase().replace(' ', '')}">${g.subject}</span>
+                    <span class="text-xs text-gray-500 ml-2">${g.teacher}</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="font-bold text-kdf-navy">${g.score}%</span>
+                    <span class="text-sm font-semibold ${g.grade.startsWith('A') ? 'text-green-600' : g.grade.startsWith('B') ? 'text-blue-600' : 'text-amber-600'}">${g.grade}</span>
+                </div>
+            </div>
+        `).join('');
+        
+        // Assignments
+        const assignmentsContainer = document.getElementById('assignmentsList');
+        assignmentsContainer.innerHTML = studentData.assignments.map(a => `
+            <div class="flex flex-wrap items-center justify-between px-6 py-3 hover:bg-gray-50 transition">
+                <div>
+                    <p class="font-medium text-kdf-navy">${a.title}</p>
+                    <p class="text-xs text-gray-500">${a.subject} • Due: ${a.due}</p>
+                </div>
+                <span class="text-sm ${a.status === 'submitted' ? 'text-green-600' : 'text-amber-600'}">
+                    ${a.status === 'submitted' ? '✅ Submitted' : '⏳ Pending'}
+                </span>
+            </div>
+        `).join('');
+        
+        // Timetable
+        const timetableContainer = document.getElementById('timetableList');
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        timetableContainer.innerHTML = `
+            <table class="w-full text-sm">
+                <thead class="bg-kdf-gray">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-gray-600">Time</th>
+                        ${days.map(d => `<th class="px-4 py-3 text-left text-gray-600">${d}</th>`).join('')}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${studentData.timetable.map(row => `
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                            <td class="px-4 py-3 font-medium text-kdf-navy">${row.time}</td>
+                            <td class="px-4 py-3">${row.mon}</td>
+                            <td class="px-4 py-3">${row.tue}</td>
+                            <td class="px-4 py-3">${row.wed}</td>
+                            <td class="px-4 py-3">${row.thu}</td>
+                            <td class="px-4 py-3">${row.fri}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    // ────────────────────────────────────────────────
+    // TOAST
+    // ────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // ────────────────────────────────────────────────
+    // MOBILE MENU
+    // ────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+        if (isStudentSessionValid()) {
+            const session = getStudentSession();
+            currentStudent = session.user;
+            showDashboard();
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
+        }
+        
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                const isOpen = mobileMenu.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', isOpen);
+                menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+    });
+
+    window.handleLogin = handleLogin;
+    window.handleLogout = handleLogout;
+    window.showToast = showToast;
+
+    console.log('🎓 Student Portal loaded successfully!');
+</script>
+
+</body>
+</html>
