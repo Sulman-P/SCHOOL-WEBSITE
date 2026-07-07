@@ -44,20 +44,6 @@
         .text-kdf-gold { color: #D4A017; }
         .border-kdf-gold { border-color: #D4A017; }
         
-        .portal-hero {
-            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .portal-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            background-size: 80px 80px;
-            pointer-events: none;
-        }
-        
         .nav-link {
             position: relative;
             transition: color 0.3s ease;
@@ -73,9 +59,7 @@
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
+        .nav-link.active::after { width: 100%; }
         .nav-link:hover { color: #D4A017; }
         
         .mobile-menu {
@@ -84,10 +68,7 @@
             opacity: 0;
             overflow: hidden;
         }
-        .mobile-menu.open {
-            max-height: 500px;
-            opacity: 1;
-        }
+        .mobile-menu.open { max-height: 500px; opacity: 1; }
         
         .skip-link {
             position: absolute;
@@ -110,14 +91,6 @@
         .stat-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
-        
-        .task-card {
-            transition: all 0.3s ease;
-        }
-        .task-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         }
         
         .admin-btn {
@@ -159,10 +132,7 @@
             background: rgba(255,255,255,0.12);
             box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.1);
         }
-        .login-input.error {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-        }
+        .login-input.error { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
         .login-btn {
             width: 100%;
             padding: 12px;
@@ -175,11 +145,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .login-btn:hover {
-            background: #FCD34D;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(212, 160, 23, 0.3);
-        }
+        .login-btn:hover { background: #FCD34D; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212, 160, 23, 0.3); }
         .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .login-error {
             background: rgba(239, 68, 68, 0.15);
@@ -208,16 +174,75 @@
             transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
             pointer-events: none;
         }
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
         .toast.success { background: #0a1a3a; border-left: 4px solid #D4A017; }
         .toast.error { background: #7f1d1d; border-left: 4px solid #ef4444; }
         
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 560px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 28px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(16px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .user-card {
+            transition: all 0.3s ease;
+        }
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        
+        .tab-btn {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn:hover { color: #0a1a3a; }
+        .tab-btn.active {
+            border-bottom-color: #D4A017;
+            color: #0a1a3a;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.12);
+        }
+        
         @media (max-width: 640px) {
             .login-box { padding: 28px 20px; margin: 10px; }
+            .modal-box { padding: 20px; margin: 10px; }
         }
     </style>
 </head>
@@ -279,7 +304,7 @@
         <div class="text-center mb-8">
             <div class="w-20 h-20 rounded-full bg-kdf-red flex items-center justify-center text-white text-3xl font-bold border-3 border-kdf-gold mx-auto mb-4">👨‍🏫</div>
             <h2 class="text-white font-display text-2xl font-bold">Staff Portal</h2>
-            <p class="text-gray-400 text-sm mt-1">Secure access for MFA staff members</p>
+            <p class="text-gray-400 text-sm mt-1">Sign in or create your staff account</p>
         </div>
         
         <div id="loginError" class="login-error">
@@ -287,18 +312,53 @@
             <span id="loginErrorMessage">Invalid credentials. Please try again.</span>
         </div>
         
+        <!-- Login/Register Tabs -->
+        <div class="flex gap-2 mb-6">
+            <button onclick="switchAuthTab('login')" id="loginTab" class="tab-btn active flex-1 py-2 text-center text-white/70 hover:text-white transition text-sm font-medium">Sign In</button>
+            <button onclick="switchAuthTab('register')" id="registerTab" class="tab-btn flex-1 py-2 text-center text-white/70 hover:text-white transition text-sm font-medium">Create Account</button>
+        </div>
+        
+        <!-- Login Form -->
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="mb-4">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Staff Email</label>
-                <input type="email" id="loginEmail" class="login-input" placeholder="staff@moiforces.ac.ke" value="staff@moiforces.ac.ke" required />
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Email Address</label>
+                <input type="email" id="loginEmail" class="login-input" placeholder="staff@moiforces.ac.ke" required />
             </div>
             <div class="mb-5">
                 <label class="block text-white/70 text-sm font-medium mb-1.5">Password</label>
-                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" value="Staff@2026" required />
+                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" required />
             </div>
             <button type="submit" id="loginBtn" class="login-btn">
                 <i class="fas fa-lock mr-2"></i> Sign In
             </button>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+            <div class="mb-3">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Full Name <span class="text-kdf-red">*</span></label>
+                <input type="text" id="regName" class="login-input" placeholder="Enter your full name" required />
+            </div>
+            <div class="mb-3">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Email Address <span class="text-kdf-red">*</span></label>
+                <input type="email" id="regEmail" class="login-input" placeholder="staff@moiforces.ac.ke" required />
+            </div>
+            <div class="mb-3">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Subject/Specialization <span class="text-kdf-red">*</span></label>
+                <input type="text" id="regSubject" class="login-input" placeholder="e.g. Mathematics, English, Science" required />
+            </div>
+            <div class="mb-3">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Password <span class="text-kdf-red">*</span></label>
+                <input type="password" id="regPassword" class="login-input" placeholder="Min 6 characters" required minlength="6" />
+            </div>
+            <div class="mb-4">
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Confirm Password <span class="text-kdf-red">*</span></label>
+                <input type="password" id="regConfirmPassword" class="login-input" placeholder="Confirm your password" required />
+            </div>
+            <button type="submit" id="registerBtn" class="login-btn">
+                <i class="fas fa-user-plus mr-2"></i> Create Account
+            </button>
+            <p class="text-xs text-gray-500 mt-3 text-center">By creating an account, you agree to our terms and conditions.</p>
         </form>
         
         <div class="text-center mt-4">
@@ -317,10 +377,16 @@
                 <div>
                     <h1 class="text-3xl font-display font-bold text-kdf-navy">👨‍🏫 Staff Dashboard</h1>
                     <p class="text-gray-600">Welcome back, <span id="staffName" class="font-semibold text-kdf-red">Staff Member</span></p>
+                    <p class="text-sm text-gray-500"><span id="staffSubject" class="font-medium text-kdf-navy">Mathematics</span> • <span id="staffEmail" class="text-gray-400"></span></p>
                 </div>
-                <button onclick="handleLogout()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-red-800 transition flex items-center gap-2">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
+                <div class="flex gap-3">
+                    <button onclick="openUserManagement()" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-lg font-semibold hover:bg-yellow-400 transition flex items-center gap-2">
+                        <i class="fas fa-users-cog"></i> Manage Users
+                    </button>
+                    <button onclick="handleLogout()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-red-800 transition flex items-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
             </div>
             
             <!-- Stats -->
@@ -361,15 +427,15 @@
             
             <!-- Quick Actions -->
             <div class="grid sm:grid-cols-3 gap-4 mb-8">
-                <div class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3 cursor-pointer">
+                <div onclick="showToast('📝 Create Assignment feature coming soon!', 'success')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3 cursor-pointer">
                     <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
                     <span class="font-medium">Create Assignment</span>
                 </div>
-                <div class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3 cursor-pointer">
+                <div onclick="showToast('📅 View Schedule feature coming soon!', 'success')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3 cursor-pointer">
                     <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
                     <span class="font-medium">View Schedule</span>
                 </div>
-                <div class="bg-kdf-gray text-kdf-navy p-4 rounded-xl hover:bg-gray-200 transition flex items-center gap-3 cursor-pointer">
+                <div onclick="showToast('📤 Upload Resources feature coming soon!', 'success')" class="bg-kdf-gray text-kdf-navy p-4 rounded-xl hover:bg-gray-200 transition flex items-center gap-3 cursor-pointer">
                     <i class="fas fa-upload text-xl text-kdf-gold"></i>
                     <span class="font-medium">Upload Resources</span>
                 </div>
@@ -399,22 +465,22 @@
             <div class="mt-8 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <h3 class="font-bold text-kdf-navy mb-4">📚 Teaching Resources</h3>
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                    <div onclick="showToast('📄 Lesson Plans feature coming soon!', 'success')" class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
                         <i class="fas fa-file-pdf text-2xl text-kdf-red"></i>
                         <p class="font-medium text-kdf-navy mt-2 text-sm">Lesson Plans</p>
                         <p class="text-xs text-gray-500">12 files</p>
                     </div>
-                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                    <div onclick="showToast('📄 Past Papers feature coming soon!', 'success')" class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
                         <i class="fas fa-file-alt text-2xl text-kdf-light-blue"></i>
                         <p class="font-medium text-kdf-navy mt-2 text-sm">Past Papers</p>
                         <p class="text-xs text-gray-500">8 files</p>
                     </div>
-                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                    <div onclick="showToast('🎥 Video Lessons feature coming soon!', 'success')" class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
                         <i class="fas fa-video text-2xl text-kdf-gold"></i>
                         <p class="font-medium text-kdf-navy mt-2 text-sm">Video Lessons</p>
                         <p class="text-xs text-gray-500">6 files</p>
                     </div>
-                    <div class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
+                    <div onclick="showToast('📝 Exam Papers feature coming soon!', 'success')" class="bg-kdf-gray rounded-xl p-4 hover:shadow-md transition cursor-pointer">
                         <i class="fas fa-edit text-2xl text-kdf-red"></i>
                         <p class="font-medium text-kdf-navy mt-2 text-sm">Exam Papers</p>
                         <p class="text-xs text-gray-500">4 files</p>
@@ -425,6 +491,103 @@
     </div>
 </div>
 
+<!-- User Management Modal -->
+<div id="userManagementModal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-kdf-navy">👥 Manage Staff Users</h3>
+            <button onclick="closeUserManagement()" class="text-gray-400 hover:text-gray-600 text-2xl transition">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- User Management Tabs -->
+        <div class="flex gap-2 mb-4 border-b border-gray-200">
+            <button onclick="switchUserTab('list')" id="userListTab" class="tab-btn active px-4 py-2 text-sm font-medium text-gray-600 hover:text-kdf-navy transition">All Users</button>
+            <button onclick="switchUserTab('add')" id="userAddTab" class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-kdf-navy transition">Add User</button>
+        </div>
+        
+        <!-- User List -->
+        <div id="userListContent">
+            <div id="userList" class="space-y-3 max-h-96 overflow-y-auto">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+        
+        <!-- Add User Form -->
+        <div id="userAddContent" style="display:none;">
+            <form id="addUserForm" onsubmit="handleAddUser(event)">
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-kdf-red">*</span></label>
+                    <input type="text" id="addName" class="form-input" placeholder="Enter full name" required />
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-kdf-red">*</span></label>
+                    <input type="email" id="addEmail" class="form-input" placeholder="staff@moiforces.ac.ke" required />
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Subject/Specialization <span class="text-kdf-red">*</span></label>
+                    <input type="text" id="addSubject" class="form-input" placeholder="e.g. Mathematics" required />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                    <select id="addRole" class="form-input">
+                        <option value="staff">Staff</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-kdf-gold text-kdf-navy py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                    <i class="fas fa-user-plus mr-2"></i> Add Staff Member
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="editUserModal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-kdf-navy">✏️ Edit Staff Member</h3>
+            <button onclick="closeEditUser()" class="text-gray-400 hover:text-gray-600 text-2xl transition">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form id="editUserForm" onsubmit="handleEditUser(event)">
+            <input type="hidden" id="editUserId" />
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-kdf-red">*</span></label>
+                <input type="text" id="editName" class="form-input" required />
+            </div>
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-kdf-red">*</span></label>
+                <input type="email" id="editEmail" class="form-input" required />
+            </div>
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Subject/Specialization <span class="text-kdf-red">*</span></label>
+                <input type="text" id="editSubject" class="form-input" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <select id="editRole" class="form-input">
+                    <option value="staff">Staff</option>
+                    <option value="admin">Admin</option>
+                    <option value="manager">Manager</option>
+                </select>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="flex-1 bg-kdf-gold text-kdf-navy py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                    <i class="fas fa-save mr-2"></i> Update
+                </button>
+                <button type="button" onclick="closeEditUser()" class="flex-1 border-2 border-gray-300 text-gray-600 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Toast -->
 <div id="toast" class="toast"></div>
 
@@ -432,42 +595,35 @@
     // ────────────────────────────────────────────────
     // STAFF DATA (Simulates Supabase)
     // ────────────────────────────────────────────────
-    const staffData = {
-        staff: [
-            { id: 1, name: 'Mr. David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', classes: ['Grade 7A', 'Grade 8B'] },
-            { id: 2, name: 'Ms. Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', classes: ['Grade 7B', 'Grade 9A'] },
-            { id: 3, name: 'Dr. Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', classes: ['Grade 8A', 'Grade 8B'] },
-        ],
-        schedule: [
-            { time: '8:00 - 8:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
-            { time: '8:45 - 9:25', subject: 'Mathematics', class: 'Grade 8B', room: 'Rm 102' },
-            { time: '9:30 - 10:10', subject: 'Mathematics', class: 'Grade 7B', room: 'Rm 101' },
-            { time: '10:30 - 11:10', subject: 'Mathematics', class: 'Grade 8A', room: 'Rm 103' },
-            { time: '11:15 - 11:55', subject: 'Mathematics', class: 'Grade 9A', room: 'Rm 102' },
-            { time: '12:00 - 12:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
-        ],
-        announcements: [
-            { title: 'Staff Meeting', date: 'Today 3:00 PM', priority: 'high' },
-            { title: 'New CBC Resources Available', date: 'Jan 20, 2026', priority: 'medium' },
-            { title: 'KJSEA Exam Prep', date: 'Jan 25, 2026', priority: 'high' },
-            { title: 'Holiday Notice', date: 'Jan 30, 2026', priority: 'low' },
-        ],
-        assignments: [
-            { title: 'Algebra Quiz', class: 'Grade 7A', due: 'Jan 22', submitted: 28, total: 32 },
-            { title: 'Fractions Test', class: 'Grade 8B', due: 'Jan 24', submitted: 30, total: 30 },
-            { title: 'Geometry Exercise', class: 'Grade 9A', due: 'Jan 26', submitted: 0, total: 28 },
-        ]
-    };
+    let staffUsers = [
+        { id: 1, name: 'David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', role: 'staff', classes: ['Grade 7A', 'Grade 8B'], createdAt: '2026-01-01' },
+        { id: 2, name: 'Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', role: 'staff', classes: ['Grade 7B', 'Grade 9A'], createdAt: '2026-01-05' },
+        { id: 3, name: 'Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', role: 'admin', classes: ['Grade 8A', 'Grade 8B'], createdAt: '2026-01-10' },
+        { id: 4, name: 'Samuel Kiprop', email: 'samuel.kiprop@moiforces.ac.ke', subject: 'History', role: 'staff', classes: ['Grade 7A', 'Grade 9B'], createdAt: '2026-01-12' },
+        { id: 5, name: 'Peter Mwangi', email: 'peter.mwangi@moiforces.ac.ke', subject: 'Physics', role: 'manager', classes: ['Grade 8B', 'Grade 9A'], createdAt: '2026-01-15' },
+    ];
+
+    const scheduleData = [
+        { time: '8:00 - 8:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
+        { time: '8:45 - 9:25', subject: 'Mathematics', class: 'Grade 8B', room: 'Rm 102' },
+        { time: '9:30 - 10:10', subject: 'Mathematics', class: 'Grade 7B', room: 'Rm 101' },
+        { time: '10:30 - 11:10', subject: 'Mathematics', class: 'Grade 8A', room: 'Rm 103' },
+        { time: '11:15 - 11:55', subject: 'Mathematics', class: 'Grade 9A', room: 'Rm 102' },
+        { time: '12:00 - 12:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
+    ];
+
+    const announcementsData = [
+        { title: 'Staff Meeting', date: 'Today 3:00 PM', priority: 'high' },
+        { title: 'New CBC Resources Available', date: 'Jan 20, 2026', priority: 'medium' },
+        { title: 'KJSEA Exam Prep', date: 'Jan 25, 2026', priority: 'high' },
+        { title: 'Holiday Notice', date: 'Jan 30, 2026', priority: 'low' },
+    ];
 
     // ────────────────────────────────────────────────
     // SESSION MANAGEMENT
     // ────────────────────────────────────────────────
-    const STAFF_CREDENTIALS = {
-        email: 'staff@moiforces.ac.ke',
-        password: 'Staff@2026'
-    };
-
     let currentStaff = null;
+    let editingUserId = null;
 
     function getStaffSession() {
         const session = sessionStorage.getItem('mfa_staff_session');
@@ -476,35 +632,45 @@
     }
 
     function setStaffSession(user) {
-        const session = {
-            user: user,
-            loginTime: Date.now(),
-            expiresAt: Date.now() + 3600000
-        };
+        const session = { user, loginTime: Date.now(), expiresAt: Date.now() + 3600000 };
         sessionStorage.setItem('mfa_staff_session', JSON.stringify(session));
         return session;
     }
 
-    function clearStaffSession() {
-        sessionStorage.removeItem('mfa_staff_session');
-    }
+    function clearStaffSession() { sessionStorage.removeItem('mfa_staff_session'); }
 
     function isStaffSessionValid() {
         const session = getStaffSession();
         if (!session) return false;
-        if (Date.now() > session.expiresAt) {
-            clearStaffSession();
-            return false;
-        }
+        if (Date.now() > session.expiresAt) { clearStaffSession(); return false; }
         return true;
     }
 
     // ────────────────────────────────────────────────
     // AUTHENTICATION
     // ────────────────────────────────────────────────
+    function switchAuthTab(tab) {
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        
+        if (tab === 'login') {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        } else {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.style.display = 'block';
+            loginForm.style.display = 'none';
+        }
+        document.getElementById('loginError').classList.remove('show');
+    }
+
     function handleLogin(e) {
         e.preventDefault();
-        
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value.trim();
         const errorEl = document.getElementById('loginError');
@@ -512,8 +678,6 @@
         const loginBtn = document.getElementById('loginBtn');
         
         errorEl.classList.remove('show');
-        document.getElementById('loginEmail').classList.remove('error');
-        document.getElementById('loginPassword').classList.remove('error');
         
         if (!email || !password) {
             errorMsg.textContent = 'Please enter both email and password.';
@@ -525,28 +689,93 @@
         loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing in...';
         
         setTimeout(() => {
-            if (email === STAFF_CREDENTIALS.email && password === STAFF_CREDENTIALS.password) {
-                const staff = staffData.staff.find(s => s.email === email);
-                currentStaff = staff || { name: 'Staff Member', email: email };
-                setStaffSession(currentStaff);
-                showToast('✅ Welcome back, ' + currentStaff.name + '!', 'success');
+            const user = staffUsers.find(s => s.email.toLowerCase() === email.toLowerCase());
+            if (user && password === 'Staff@2026') {
+                currentStaff = user;
+                setStaffSession(user);
+                showToast('✅ Welcome back, ' + user.name + '!', 'success');
                 showDashboard();
-            } else {
-                errorMsg.textContent = 'Invalid email or password. Please try again.';
+            } else if (user && password !== 'Staff@2026') {
+                errorMsg.textContent = 'Incorrect password. Please try again.';
                 errorEl.classList.add('show');
-                document.getElementById('loginPassword').classList.add('error');
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginPassword').focus();
+            } else {
+                errorMsg.textContent = 'Account not found. Please sign up first.';
+                errorEl.classList.add('show');
+                switchAuthTab('register');
             }
             loginBtn.disabled = false;
             loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Sign In';
         }, 800);
     }
 
+    function handleRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const subject = document.getElementById('regSubject').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const confirm = document.getElementById('regConfirmPassword').value;
+        const errorEl = document.getElementById('loginError');
+        const errorMsg = document.getElementById('loginErrorMessage');
+        const regBtn = document.getElementById('registerBtn');
+        
+        errorEl.classList.remove('show');
+        
+        if (!name || !email || !subject || !password || !confirm) {
+            errorMsg.textContent = 'Please fill in all required fields.';
+            errorEl.classList.add('show');
+            return;
+        }
+        
+        if (password.length < 6) {
+            errorMsg.textContent = 'Password must be at least 6 characters.';
+            errorEl.classList.add('show');
+            return;
+        }
+        
+        if (password !== confirm) {
+            errorMsg.textContent = 'Passwords do not match.';
+            errorEl.classList.add('show');
+            return;
+        }
+        
+        if (staffUsers.some(s => s.email.toLowerCase() === email.toLowerCase())) {
+            errorMsg.textContent = 'Email already registered. Please sign in.';
+            errorEl.classList.add('show');
+            return;
+        }
+        
+        regBtn.disabled = true;
+        regBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creating account...';
+        
+        setTimeout(() => {
+            const newUser = {
+                id: staffUsers.length + 1,
+                name: name,
+                email: email,
+                subject: subject,
+                role: 'staff',
+                classes: ['Grade 7A', 'Grade 8B'],
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+            staffUsers.push(newUser);
+            currentStaff = newUser;
+            setStaffSession(newUser);
+            showToast('✅ Account created successfully! Welcome, ' + name + '!', 'success');
+            showDashboard();
+            regBtn.disabled = false;
+            regBtn.innerHTML = '<i class="fas fa-user-plus mr-2"></i> Create Account';
+        }, 1000);
+    }
+
     function showDashboard() {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashboardScreen').style.display = 'block';
         document.getElementById('staffName').textContent = currentStaff?.name || 'Staff Member';
+        document.getElementById('staffSubject').textContent = currentStaff?.subject || 'General';
+        document.getElementById('staffEmail').textContent = currentStaff?.email || '';
         renderDashboard();
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
@@ -567,16 +796,14 @@
     // RENDER DASHBOARD
     // ────────────────────────────────────────────────
     function renderDashboard() {
-        // Stats
         const classCount = currentStaff?.classes?.length || 0;
         document.getElementById('classCount').textContent = classCount;
         document.getElementById('studentCount').textContent = classCount * 32;
-        document.getElementById('assignmentCount').textContent = staffData.assignments.filter(a => a.submitted < a.total).length;
-        document.getElementById('todayClasses').textContent = staffData.schedule.length;
+        document.getElementById('assignmentCount').textContent = 3;
+        document.getElementById('todayClasses').textContent = scheduleData.length;
         
-        // Schedule
         const scheduleContainer = document.getElementById('scheduleList');
-        scheduleContainer.innerHTML = staffData.schedule.map(item => `
+        scheduleContainer.innerHTML = scheduleData.map(item => `
             <div class="flex flex-wrap items-center justify-between px-6 py-3 hover:bg-gray-50 transition">
                 <div class="flex items-center gap-4">
                     <span class="font-medium text-kdf-navy">${item.time}</span>
@@ -589,9 +816,8 @@
             </div>
         `).join('');
         
-        // Announcements
         const announcementsContainer = document.getElementById('announcementsList');
-        announcementsContainer.innerHTML = staffData.announcements.map(a => `
+        announcementsContainer.innerHTML = announcementsData.map(a => `
             <div class="flex items-start gap-3 p-3 bg-kdf-gray rounded-lg">
                 <span class="${a.priority === 'high' ? 'text-kdf-red' : a.priority === 'medium' ? 'text-kdf-gold' : 'text-kdf-light-blue'}">
                     <i class="fas ${a.priority === 'high' ? 'fa-exclamation-circle' : a.priority === 'medium' ? 'fa-info-circle' : 'fa-check-circle'}"></i>
@@ -602,6 +828,151 @@
                 </div>
             </div>
         `).join('');
+    }
+
+    // ────────────────────────────────────────────────
+    // USER MANAGEMENT
+    // ────────────────────────────────────────────────
+    function openUserManagement() {
+        document.getElementById('userManagementModal').classList.add('open');
+        renderUserList();
+        switchUserTab('list');
+    }
+
+    function closeUserManagement() {
+        document.getElementById('userManagementModal').classList.remove('open');
+    }
+
+    function switchUserTab(tab) {
+        const listTab = document.getElementById('userListTab');
+        const addTab = document.getElementById('userAddTab');
+        const listContent = document.getElementById('userListContent');
+        const addContent = document.getElementById('userAddContent');
+        
+        if (tab === 'list') {
+            listTab.classList.add('active');
+            addTab.classList.remove('active');
+            listContent.style.display = 'block';
+            addContent.style.display = 'none';
+            renderUserList();
+        } else {
+            addTab.classList.add('active');
+            listTab.classList.remove('active');
+            addContent.style.display = 'block';
+            listContent.style.display = 'none';
+        }
+    }
+
+    function renderUserList() {
+        const container = document.getElementById('userList');
+        container.innerHTML = staffUsers.map(user => `
+            <div class="user-card bg-kdf-gray rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-kdf-red/10 flex items-center justify-center text-kdf-red font-bold text-sm">
+                        ${user.name.charAt(0)}
+                    </div>
+                    <div>
+                        <p class="font-medium text-kdf-navy">${user.name}</p>
+                        <p class="text-xs text-gray-500">${user.email} • ${user.subject}</p>
+                        <span class="text-xs ${user.role === 'admin' ? 'text-kdf-red font-semibold' : user.role === 'manager' ? 'text-kdf-gold font-semibold' : 'text-gray-500'}">
+                            ${user.role || 'staff'}
+                        </span>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="openEditUser(${user.id})" class="text-kdf-gold hover:text-kdf-red transition text-sm px-3 py-1.5 border border-kdf-gold rounded-lg">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button onclick="deleteUser(${user.id})" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function handleAddUser(e) {
+        e.preventDefault();
+        const name = document.getElementById('addName').value.trim();
+        const email = document.getElementById('addEmail').value.trim();
+        const subject = document.getElementById('addSubject').value.trim();
+        const role = document.getElementById('addRole').value;
+        
+        if (!name || !email || !subject) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        if (staffUsers.some(s => s.email.toLowerCase() === email.toLowerCase())) {
+            showToast('Email already registered.', 'error');
+            return;
+        }
+        
+        const newUser = {
+            id: staffUsers.length + 1,
+            name: name,
+            email: email,
+            subject: subject,
+            role: role,
+            classes: ['Grade 7A', 'Grade 8B'],
+            createdAt: new Date().toISOString().split('T')[0]
+        };
+        staffUsers.push(newUser);
+        renderUserList();
+        document.getElementById('addUserForm').reset();
+        showToast('✅ User added successfully!', 'success');
+    }
+
+    function openEditUser(id) {
+        const user = staffUsers.find(u => u.id === id);
+        if (!user) return;
+        editingUserId = id;
+        document.getElementById('editUserId').value = id;
+        document.getElementById('editName').value = user.name;
+        document.getElementById('editEmail').value = user.email;
+        document.getElementById('editSubject').value = user.subject;
+        document.getElementById('editRole').value = user.role || 'staff';
+        document.getElementById('editUserModal').classList.add('open');
+    }
+
+    function closeEditUser() {
+        document.getElementById('editUserModal').classList.remove('open');
+        editingUserId = null;
+    }
+
+    function handleEditUser(e) {
+        e.preventDefault();
+        const id = parseInt(document.getElementById('editUserId').value);
+        const user = staffUsers.find(u => u.id === id);
+        if (!user) return;
+        
+        user.name = document.getElementById('editName').value.trim();
+        user.email = document.getElementById('editEmail').value.trim();
+        user.subject = document.getElementById('editSubject').value.trim();
+        user.role = document.getElementById('editRole').value;
+        
+        closeEditUser();
+        renderUserList();
+        showToast('✅ User updated successfully!', 'success');
+        
+        // Update dashboard if current user was edited
+        if (currentStaff && currentStaff.id === id) {
+            currentStaff = user;
+            document.getElementById('staffName').textContent = user.name;
+            document.getElementById('staffSubject').textContent = user.subject;
+            document.getElementById('staffEmail').textContent = user.email;
+        }
+    }
+
+    function deleteUser(id) {
+        if (id === currentStaff?.id) {
+            showToast('❌ You cannot delete your own account.', 'error');
+            return;
+        }
+        if (!confirm('Are you sure you want to delete this staff member?')) return;
+        staffUsers = staffUsers.filter(u => u.id !== id);
+        renderUserList();
+        showToast('✅ User deleted successfully.', 'success');
     }
 
     // ────────────────────────────────────────────────
@@ -620,7 +991,6 @@
     // MOBILE MENU
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
-        // Check session
         if (isStaffSessionValid()) {
             const session = getStaffSession();
             currentStaff = session.user;
@@ -632,7 +1002,6 @@
         
         const menuToggle = document.getElementById('menuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
-
         if (menuToggle && mobileMenu) {
             menuToggle.addEventListener('click', function() {
                 const isOpen = mobileMenu.classList.toggle('open');
@@ -640,7 +1009,6 @@
                 menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
             });
         }
-
         document.querySelectorAll('#mobileMenu a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.remove('open');
@@ -650,11 +1018,22 @@
         });
     });
 
+    window.switchAuthTab = switchAuthTab;
     window.handleLogin = handleLogin;
+    window.handleRegister = handleRegister;
     window.handleLogout = handleLogout;
+    window.openUserManagement = openUserManagement;
+    window.closeUserManagement = closeUserManagement;
+    window.switchUserTab = switchUserTab;
+    window.handleAddUser = handleAddUser;
+    window.openEditUser = openEditUser;
+    window.closeEditUser = closeEditUser;
+    window.handleEditUser = handleEditUser;
+    window.deleteUser = deleteUser;
     window.showToast = showToast;
 
-    console.log('👨‍🏫 Staff Portal loaded successfully!');
+    console.log('👨‍🏫 Staff Portal with User Management loaded successfully!');
+    console.log('📊 Total staff users:', staffUsers.length);
 </script>
 
 </body>
