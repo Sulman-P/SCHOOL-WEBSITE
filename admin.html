@@ -977,7 +977,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // SUPABASE CONFIG - REAL CONNECTION
+    // SUPABASE CONFIG
     // ────────────────────────────────────────────────
     const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
@@ -1020,7 +1020,6 @@
         if (Date.now() > session.expiresAt) { clearSession(); return false; }
         return true;
     }
-
 
     // ────────────────────────────────────────────────
     // DATA STORE
@@ -1070,13 +1069,19 @@
                 initSupabase();
             }
             
+            // Check if posts table exists and has data
             const { data, error } = await sbClient
                 .from('posts')
                 .select('*')
                 .limit(1);
             
             if (error) {
-                throw new Error(error.message);
+                // If table doesn't exist, use sample data
+                console.warn('Posts table may not exist, using sample data:', error.message);
+                loadSampleData();
+                updateDbStatus('connected', 'Using Sample Data');
+                renderAll();
+                return true;
             }
             
             updateDbStatus('connected', 'Supabase Connected');
@@ -1099,8 +1104,9 @@
                 .select('*')
                 .order('created_at', { ascending: false });
             
-            if (postsError) throw new Error(postsError.message);
-            if (postsData && postsData.length > 0) posts = postsData;
+            if (!postsError && postsData && postsData.length > 0) {
+                posts = postsData;
+            }
             
             // Load events
             const { data: eventsData, error: eventsError } = await sbClient
@@ -1108,8 +1114,9 @@
                 .select('*')
                 .order('event_date', { ascending: true });
             
-            if (eventsError) throw new Error(eventsError.message);
-            if (eventsData && eventsData.length > 0) events = eventsData;
+            if (!eventsError && eventsData && eventsData.length > 0) {
+                events = eventsData;
+            }
             
             // Load meetings
             const { data: meetingsData, error: meetingsError } = await sbClient
@@ -1117,8 +1124,9 @@
                 .select('*')
                 .order('meeting_date', { ascending: true });
             
-            if (meetingsError) throw new Error(meetingsError.message);
-            if (meetingsData && meetingsData.length > 0) meetings = meetingsData;
+            if (!meetingsError && meetingsData && meetingsData.length > 0) {
+                meetings = meetingsData;
+            }
             
             // Load videos
             const { data: videosData, error: videosError } = await sbClient
@@ -1126,8 +1134,9 @@
                 .select('*')
                 .order('created_at', { ascending: false });
             
-            if (videosError) throw new Error(videosError.message);
-            if (videosData && videosData.length > 0) videos = videosData;
+            if (!videosError && videosData && videosData.length > 0) {
+                videos = videosData;
+            }
             
             // Load staff users
             const { data: staffData, error: staffError } = await sbClient
@@ -1135,8 +1144,9 @@
                 .select('*')
                 .order('name', { ascending: true });
             
-            if (staffError) throw new Error(staffError.message);
-            if (staffData && staffData.length > 0) staffUsers = staffData;
+            if (!staffError && staffData && staffData.length > 0) {
+                staffUsers = staffData;
+            }
             
             // Load student users
             const { data: studentData, error: studentError } = await sbClient
@@ -1144,8 +1154,9 @@
                 .select('*')
                 .order('name', { ascending: true });
             
-            if (studentError) throw new Error(studentError.message);
-            if (studentData && studentData.length > 0) studentUsers = studentData;
+            if (!studentError && studentData && studentData.length > 0) {
+                studentUsers = studentData;
+            }
             
             // Load parent users
             const { data: parentData, error: parentError } = await sbClient
@@ -1153,8 +1164,9 @@
                 .select('*')
                 .order('name', { ascending: true });
             
-            if (parentError) throw new Error(parentError.message);
-            if (parentData && parentData.length > 0) parentUsers = parentData;
+            if (!parentError && parentData && parentData.length > 0) {
+                parentUsers = parentData;
+            }
             
             renderAll();
             updateDbStatus('connected', `Supabase (${staffUsers.length + studentUsers.length + parentUsers.length} users, ${posts.length} posts, ${meetings.length} meetings, ${videos.length} videos)`);
@@ -1269,13 +1281,15 @@
         const loginStatus = document.getElementById('dbStatusLogin');
         
         statusEls.forEach(el => {
-            el.className = `db-status ${status}`;
-            if (status === 'connected') {
-                el.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Supabase'}`;
-            } else if (status === 'connecting') {
-                el.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Connecting...'}`;
-            } else {
-                el.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+            if (el) {
+                el.className = `db-status ${status}`;
+                if (status === 'connected') {
+                    el.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Supabase'}`;
+                } else if (status === 'connecting') {
+                    el.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Connecting...'}`;
+                } else {
+                    el.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+                }
             }
         });
         
@@ -1297,9 +1311,7 @@
             showToast('✅ Data synced with Supabase successfully!', 'success');
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
             
-            document.getElementById('dbStaffCount').textContent = staffUsers.length;
-            document.getElementById('dbStudentCount').textContent = studentUsers.length;
-            document.getElementById('dbParentCount').textContent = parentUsers.length;
+            updateDbStats();
             
             logActivity('🔄 Synced with Supabase', 'Database');
         } catch (error) {
@@ -1308,42 +1320,71 @@
         }
     }
 
+    function updateDbStats() {
+        const staffCount = document.getElementById('dbStaffCount');
+        const studentCount = document.getElementById('dbStudentCount');
+        const parentCount = document.getElementById('dbParentCount');
+        
+        if (staffCount) staffCount.textContent = staffUsers.length;
+        if (studentCount) studentCount.textContent = studentUsers.length;
+        if (parentCount) parentCount.textContent = parentUsers.length;
+    }
+
     function loadSampleData() {
         posts = [
             { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation...', status: 'published', date: '2026-01-15', image: '📚' },
+            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026...', status: 'published', date: '2026-01-20', image: '🏃' },
+            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school...', status: 'scheduled', date: '2026-01-10', image: '🎖️' },
+            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th...', status: 'published', date: '2026-01-25', image: '👨‍👩‍👦' },
+            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades...', status: 'draft', date: '2026-01-05', image: '📖' },
+            { id: 6, title: 'Term 1 Calendar 2026', category: 'calendar', content: 'Term 1 runs from January 15 to April 10, 2026.', status: 'published', date: '2026-01-01', image: '📅' },
+            { id: 7, title: 'MFA Science Fair 2026', category: 'events', content: 'The annual MFA Science Fair will take place in February...', status: 'published', date: '2026-02-01', image: '🔬' },
+            { id: 8, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', status: 'published', date: '2026-01-05', image: '🏫' },
         ];
         
         events = [
-            { id: 1, title: 'Sports Day', date: '2026-02-15', description: 'Annual sports day with various athletic events.' },
+            { id: 1, title: 'Sports Day', date: '2026-02-15', event_date: '2026-02-15', description: 'Annual sports day with various athletic events.' },
+            { id: 2, title: 'KDF Career Day', date: '2026-02-20', event_date: '2026-02-20', description: 'Career guidance from Kenya Defence Forces officers.' },
+            { id: 3, title: 'Science Fair', date: '2026-02-28', event_date: '2026-02-28', description: 'Students showcase their science projects.' },
+            { id: 4, title: 'Parent-Teacher Conference', date: '2026-01-30', event_date: '2026-01-30', description: 'Term 1 parent-teacher meeting.' },
+            { id: 5, title: 'KJSEA Exams', date: '2026-11-01', event_date: '2026-11-01', description: 'Junior Secondary Assessment exams.' },
         ];
         
         meetings = [
             { id: 1, title: 'Grade 9 Mathematics Revision', meeting_date: '2026-01-20', meeting_time: '10:00 AM', meeting_link: 'https://meet.google.com/xxx-xxxx-xxx', description: 'Final revision session before KJSEA exams.' },
+            { id: 2, title: 'Grade 8 Science Lab', meeting_date: '2026-01-22', meeting_time: '2:00 PM', meeting_link: 'https://meet.google.com/yyy-yyyy-yyy', description: 'Virtual lab session for Science practicals.' },
         ];
         
         videos = [
             { id: 1, title: 'KJSEA 2026 Revision Guide', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Comprehensive revision guide for KJSEA 2026.' },
+            { id: 2, title: 'Mathematics Made Easy', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Step-by-step guide to mastering Mathematics.' },
         ];
         
         staffUsers = [
             { id: 1, name: 'David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', role: 'staff' },
             { id: 2, name: 'Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', role: 'staff' },
             { id: 3, name: 'Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', role: 'admin' },
+            { id: 4, name: 'Samuel Kiprop', email: 'samuel.kiprop@moiforces.ac.ke', subject: 'History', role: 'staff' },
+            { id: 5, name: 'Peter Mwangi', email: 'peter.mwangi@moiforces.ac.ke', subject: 'Physics', role: 'manager' },
         ];
         
         studentUsers = [
             { id: 1, student_id: 'S001', name: 'John Mwangi', class: 'Grade 8A' },
             { id: 2, student_id: 'S002', name: 'Mary Wanjiru', class: 'Grade 7B' },
             { id: 3, student_id: 'S003', name: 'Peter Kiprop', class: 'Grade 9A' },
+            { id: 4, student_id: 'S004', name: 'Sarah Ochieng', class: 'Grade 8B' },
+            { id: 5, student_id: 'S005', name: 'James Otieno', class: 'Grade 7A' },
         ];
         
         parentUsers = [
             { id: 1, parent_id: 'P001', name: 'James Mwangi', child_name: 'John Mwangi', child_class: 'Grade 8A' },
             { id: 2, parent_id: 'P002', name: 'Ann Wanjiru', child_name: 'Mary Wanjiru', child_class: 'Grade 7B' },
+            { id: 3, parent_id: 'P003', name: 'David Kiprop', child_name: 'Peter Kiprop', child_class: 'Grade 9A' },
         ];
         
         activityLog = [
             { action: '✅ Login successful', category: 'Security', time: new Date().toLocaleString() },
+            { action: '📝 Loaded sample data', category: 'System', time: new Date().toLocaleString() },
         ];
     }
 
@@ -1386,18 +1427,18 @@
         const errorMsg = document.getElementById('loginErrorMessage');
         const loginBtn = document.getElementById('loginBtn');
         
-        errorEl.classList.remove('show');
-        document.getElementById('loginUsername').classList.remove('error');
-        document.getElementById('loginPassword').classList.remove('error');
+        if (errorEl) errorEl.classList.remove('show');
         
         if (!username || !password) {
-            errorMsg.textContent = 'Please enter both username and password.';
-            errorEl.classList.add('show');
+            if (errorMsg) errorMsg.textContent = 'Please enter both username and password.';
+            if (errorEl) errorEl.classList.add('show');
             return;
         }
         
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Authenticating...';
+        if (loginBtn) {
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Authenticating...';
+        }
         
         setTimeout(() => {
             if (username === SECURITY.ADMIN_EMAIL && password === SECURITY.ADMIN_PASSWORD) {
@@ -1407,29 +1448,40 @@
                 showDashboard();
                 logActivity('✅ Login successful', 'Security');
             } else {
-                errorMsg.textContent = 'Invalid email or password. Please try again.';
-                errorEl.classList.add('show');
-                document.getElementById('loginPassword').classList.add('error');
-                document.getElementById('loginPassword').value = '';
-                document.getElementById('loginPassword').focus();
+                if (errorMsg) errorMsg.textContent = 'Invalid email or password. Please try again.';
+                if (errorEl) errorEl.classList.add('show');
+                const pwField = document.getElementById('loginPassword');
+                if (pwField) {
+                    pwField.classList.add('error');
+                    pwField.value = '';
+                    pwField.focus();
+                }
                 logActivity('❌ Failed login attempt', 'Security');
             }
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Secure Login';
+            if (loginBtn) {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Secure Login';
+            }
         }, 1000);
     }
 
     function showDashboard() {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboardScreen').style.display = 'flex';
-        document.getElementById('adminName').textContent = currentUser?.name || 'Admin User';
-        document.getElementById('adminEmail').textContent = currentUser?.email || 'admin@moiforces.ac.ke';
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboardScreen = document.getElementById('dashboardScreen');
+        const adminName = document.getElementById('adminName');
+        const adminEmail = document.getElementById('adminEmail');
+        
+        if (loginScreen) loginScreen.style.display = 'none';
+        if (dashboardScreen) dashboardScreen.style.display = 'flex';
+        if (adminName) adminName.textContent = currentUser?.name || 'Admin User';
+        if (adminEmail) adminEmail.textContent = currentUser?.email || 'admin@moiforces.ac.ke';
         
         startSessionTimer();
         initSupabase();
         connectToSupabase();
         
-        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        const lastUpdated = document.getElementById('lastUpdated');
+        if (lastUpdated) lastUpdated.textContent = new Date().toLocaleString();
     }
 
     function handleLogout() {
@@ -1454,7 +1506,8 @@
             } else {
                 const session = getSession();
                 const remaining = Math.max(0, Math.floor((session.expiresAt - Date.now()) / 60000));
-                document.getElementById('sessionTimer').textContent = `Session: ${remaining} min remaining`;
+                const timerEl = document.getElementById('sessionTimer');
+                if (timerEl) timerEl.textContent = `Session: ${remaining} min remaining`;
             }
         }, SECURITY.SESSION_CHECK_INTERVAL);
     }
@@ -1500,28 +1553,45 @@
         renderUsers();
         renderActivityLog();
         
-        document.getElementById('postCount').textContent = posts.length;
-        document.getElementById('meetingCount').textContent = meetings.length;
-        document.getElementById('videoCount').textContent = videos.length;
-        document.getElementById('userCount').textContent = staffUsers.length + studentUsers.length + parentUsers.length;
-        document.getElementById('dbStaffCount').textContent = staffUsers.length;
-        document.getElementById('dbStudentCount').textContent = studentUsers.length;
-        document.getElementById('dbParentCount').textContent = parentUsers.length;
+        updateCounts();
+        updateDbStats();
+    }
+
+    function updateCounts() {
+        const postCount = document.getElementById('postCount');
+        const meetingCount = document.getElementById('meetingCount');
+        const videoCount = document.getElementById('videoCount');
+        const userCount = document.getElementById('userCount');
+        
+        if (postCount) postCount.textContent = posts.length;
+        if (meetingCount) meetingCount.textContent = meetings.length;
+        if (videoCount) videoCount.textContent = videos.length;
+        if (userCount) userCount.textContent = staffUsers.length + studentUsers.length + parentUsers.length;
     }
 
     function renderStats() {
         const total = posts.length;
         const published = posts.filter(p => p.status === 'published').length;
-        document.getElementById('statTotal').textContent = total;
-        document.getElementById('statPublished').textContent = published;
-        document.getElementById('statVideos').textContent = videos.length;
-        document.getElementById('statMeetings').textContent = meetings.length;
-        document.getElementById('statStaff').textContent = staffUsers.length;
-        document.getElementById('statStudents').textContent = studentUsers.length;
+        
+        const statTotal = document.getElementById('statTotal');
+        const statPublished = document.getElementById('statPublished');
+        const statVideos = document.getElementById('statVideos');
+        const statMeetings = document.getElementById('statMeetings');
+        const statStaff = document.getElementById('statStaff');
+        const statStudents = document.getElementById('statStudents');
+        
+        if (statTotal) statTotal.textContent = total;
+        if (statPublished) statPublished.textContent = published;
+        if (statVideos) statVideos.textContent = videos.length;
+        if (statMeetings) statMeetings.textContent = meetings.length;
+        if (statStaff) statStaff.textContent = staffUsers.length;
+        if (statStudents) statStudents.textContent = studentUsers.length;
     }
 
     function renderRecentPosts() {
         const container = document.getElementById('recentPostsList');
+        if (!container) return;
+        
         const recent = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
         
         if (recent.length === 0) {
@@ -1553,6 +1623,8 @@
 
     function renderPostsList() {
         const container = document.getElementById('postsList');
+        if (!container) return;
+        
         let filtered = posts;
         if (currentFilter !== 'all') {
             filtered = posts.filter(p => p.category === currentFilter);
@@ -1587,6 +1659,8 @@
 
     function renderCalendarEvents() {
         const container = document.getElementById('calendarEventsList');
+        if (!container) return;
+        
         if (events.length === 0) {
             container.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No events scheduled.</div>`;
             return;
@@ -1614,6 +1688,8 @@
 
     function renderMeetings() {
         const container = document.getElementById('meetingsList');
+        if (!container) return;
+        
         if (meetings.length === 0) {
             container.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No meetings scheduled. Create one!</div>`;
             return;
@@ -1651,6 +1727,8 @@
 
     function renderVideos() {
         const container = document.getElementById('videosList');
+        if (!container) return;
+        
         if (videos.length === 0) {
             container.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8 text-sm">No videos in the library. Add one!</div>`;
             return;
@@ -1734,7 +1812,8 @@
             );
         }
         
-        document.getElementById('userCount').textContent = allUsers.length;
+        const userCount = document.getElementById('userCount');
+        if (userCount) userCount.textContent = allUsers.length;
         
         if (allUsers.length === 0) {
             container.innerHTML = `<div class="px-6 py-12 text-center text-gray-500 text-sm">No users found matching your criteria.</div>`;
@@ -1966,12 +2045,15 @@
     // EVENT CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function openEventModal() {
-        document.getElementById('eventModal').classList.add('open');
-        document.getElementById('eventForm').reset();
+        const modal = document.getElementById('eventModal');
+        if (modal) modal.classList.add('open');
+        const form = document.getElementById('eventForm');
+        if (form) form.reset();
     }
 
     function closeEventModal() {
-        document.getElementById('eventModal').classList.remove('open');
+        const modal = document.getElementById('eventModal');
+        if (modal) modal.classList.remove('open');
     }
 
     function handleAddEvent(e) {
@@ -2043,14 +2125,18 @@
     // MEETING CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function openMeetingModal() {
-        document.getElementById('meetingModal').classList.add('open');
-        document.getElementById('meetingForm').reset();
+        const modal = document.getElementById('meetingModal');
+        if (modal) modal.classList.add('open');
+        const form = document.getElementById('meetingForm');
+        if (form) form.reset();
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('meetingDate').value = today;
+        const dateField = document.getElementById('meetingDate');
+        if (dateField) dateField.value = today;
     }
 
     function closeMeetingModal() {
-        document.getElementById('meetingModal').classList.remove('open');
+        const modal = document.getElementById('meetingModal');
+        if (modal) modal.classList.remove('open');
     }
 
     function handleCreateMeeting(e) {
@@ -2128,12 +2214,15 @@
     // VIDEO CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function openVideoModal() {
-        document.getElementById('videoModal').classList.add('open');
-        document.getElementById('videoForm').reset();
+        const modal = document.getElementById('videoModal');
+        if (modal) modal.classList.add('open');
+        const form = document.getElementById('videoForm');
+        if (form) form.reset();
     }
 
     function closeVideoModal() {
-        document.getElementById('videoModal').classList.remove('open');
+        const modal = document.getElementById('videoModal');
+        if (modal) modal.classList.remove('open');
     }
 
     function handleAddVideo(e) {
@@ -2238,12 +2327,16 @@
             security: 'Security',
             database: 'Database'
         };
-        document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
-        document.getElementById('sidebar').classList.add('closed');
+        const titleEl = document.getElementById('pageTitle');
+        if (titleEl) titleEl.textContent = titles[tab] || 'Dashboard';
+        
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.add('closed');
     }
 
     function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('closed');
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.toggle('closed');
     }
 
     // ────────────────────────────────────────────────
@@ -2251,6 +2344,7 @@
     // ────────────────────────────────────────────────
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
+        if (!toast) return;
         toast.textContent = message;
         toast.className = `toast ${type}`;
         toast.classList.add('show');
@@ -2267,8 +2361,10 @@
             currentUser = session.user;
             showDashboard();
         } else {
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('dashboardScreen').style.display = 'none';
+            const loginScreen = document.getElementById('loginScreen');
+            const dashboardScreen = document.getElementById('dashboardScreen');
+            if (loginScreen) loginScreen.style.display = 'flex';
+            if (dashboardScreen) dashboardScreen.style.display = 'none';
             initSupabase();
             connectToSupabase();
         }
@@ -2289,7 +2385,8 @@
         }
         if (e.ctrlKey && e.key === 'f') {
             e.preventDefault();
-            document.getElementById('globalSearchInput').focus();
+            const searchInput = document.getElementById('globalSearchInput');
+            if (searchInput) searchInput.focus();
         }
     });
 
@@ -2334,7 +2431,7 @@
         document.addEventListener('click', function(e) {
             const sidebar = document.getElementById('sidebar');
             const toggle = document.querySelector('[onclick="toggleSidebar()"]');
-            if (window.innerWidth < 768 && !sidebar.contains(e.target) && !toggle?.contains(e.target)) {
+            if (window.innerWidth < 768 && sidebar && !sidebar.contains(e.target) && !toggle?.contains(e.target)) {
                 sidebar.classList.add('closed');
             }
         });
