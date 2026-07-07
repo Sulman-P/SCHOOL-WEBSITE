@@ -77,6 +77,19 @@
         }
         .nav-link:hover { color: #D4A017; }
         
+        .portal-nav-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .portal-nav-link:hover {
+            border-left-color: #D4A017;
+            background: rgba(212, 160, 23, 0.08);
+        }
+        .portal-nav-link.active {
+            border-left-color: #D4A017;
+            background: rgba(212, 160, 23, 0.12);
+        }
+        
         .stat-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -368,6 +381,7 @@
             </div>
             
             <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <!-- Main Admin Links -->
                 <a href="#" onclick="switchTab('dashboard')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="dashboard">
                     <i class="fas fa-chart-pie w-5 text-center"></i>
                     <span>Dashboard</span>
@@ -389,18 +403,43 @@
                     <i class="fas fa-tags w-5 text-center"></i>
                     <span>Categories</span>
                 </a>
-                <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
-                    <i class="fas fa-cog w-5 text-center"></i>
-                    <span>Settings</span>
-                </a>
-                <a href="#" onclick="switchTab('security')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="security">
-                    <i class="fas fa-shield-alt w-5 text-center"></i>
-                    <span>Security</span>
-                </a>
-                <a href="#" onclick="switchTab('database')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="database">
-                    <i class="fas fa-database w-5 text-center"></i>
-                    <span>Database</span>
-                </a>
+                
+                <!-- Portal Management Section -->
+                <div class="mt-4 pt-4 border-t border-kdf-gold/20">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider px-4 mb-2 font-semibold">Portals</p>
+                    
+                    <a href="staff-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-chalkboard-teacher w-5 text-center text-kdf-gold"></i>
+                        <span>Staff Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                    <a href="student-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-user-graduate w-5 text-center text-kdf-light-blue"></i>
+                        <span>Student Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                    <a href="parent-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-users w-5 text-center text-kdf-red"></i>
+                        <span>Parent Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                </div>
+                
+                <!-- Settings -->
+                <div class="mt-4 pt-4 border-t border-kdf-gold/20">
+                    <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" onclick="switchTab('security')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="security">
+                        <i class="fas fa-shield-alt w-5 text-center"></i>
+                        <span>Security</span>
+                    </a>
+                    <a href="#" onclick="switchTab('database')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="database">
+                        <i class="fas fa-database w-5 text-center"></i>
+                        <span>Database</span>
+                    </a>
+                </div>
             </nav>
             
             <div class="px-4 py-4 border-t border-kdf-gold/20 flex-shrink-0">
@@ -439,6 +478,18 @@
                         <button onclick="syncWithSupabase()" class="text-kdf-gold hover:text-kdf-red transition" title="Sync with Supabase">
                             <i class="fas fa-sync-alt text-lg"></i>
                         </button>
+                        <!-- Quick Portal Access -->
+                        <div class="hidden md:flex gap-2">
+                            <a href="staff-portal.html" target="_blank" class="text-xs bg-kdf-navy text-white px-3 py-1.5 rounded-full hover:bg-kdf-navy/80 transition flex items-center gap-1">
+                                <i class="fas fa-chalkboard-teacher"></i> Staff
+                            </a>
+                            <a href="student-portal.html" target="_blank" class="text-xs bg-kdf-light-blue text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition flex items-center gap-1">
+                                <i class="fas fa-user-graduate"></i> Student
+                            </a>
+                            <a href="parent-portal.html" target="_blank" class="text-xs bg-kdf-red text-white px-3 py-1.5 rounded-full hover:bg-red-800 transition flex items-center gap-1">
+                                <i class="fas fa-users"></i> Parent
+                            </a>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -747,7 +798,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // SUPABASE CONFIG - REAL CONNECTION
+    // SUPABASE CONFIG
     // ────────────────────────────────────────────────
     const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
@@ -832,7 +883,6 @@
                 initSupabase();
             }
             
-            // Test connection by fetching 1 post
             const { data, error } = await sbClient
                 .from('posts')
                 .select('*')
@@ -843,10 +893,7 @@
             }
             
             updateDbStatus('connected', 'Supabase Connected');
-            
-            // Load all data
             await loadAllFromSupabase();
-            
             return true;
         } catch (error) {
             console.error('Supabase connection error:', error);
@@ -859,7 +906,6 @@
 
     async function loadAllFromSupabase() {
         try {
-            // Load posts
             const { data: postsData, error: postsError } = await sbClient
                 .from('posts')
                 .select('*')
@@ -871,7 +917,6 @@
                 posts = postsData;
             }
             
-            // Load events
             const { data: eventsData, error: eventsError } = await sbClient
                 .from('events')
                 .select('*')
@@ -949,22 +994,6 @@
         } catch (error) {
             console.error('Error deleting event from Supabase:', error);
             return false;
-        }
-    }
-
-    async function updatePostInSupabase(id, updates) {
-        try {
-            const { data, error } = await sbClient
-                .from('posts')
-                .update(updates)
-                .eq('id', id)
-                .select();
-            
-            if (error) throw new Error(error.message);
-            return data ? data[0] : null;
-        } catch (error) {
-            console.error('Error updating post in Supabase:', error);
-            return null;
         }
     }
 
@@ -1294,7 +1323,7 @@
     }
 
     // ────────────────────────────────────────────────
-    // POST CRUD OPERATIONS - WITH SUPABASE SAVE
+    // POST CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function handleCreatePost(e) {
         e.preventDefault();
@@ -1321,10 +1350,8 @@
             created_at: new Date().toISOString()
         };
         
-        // Save to Supabase first
         savePostToSupabase(postData).then(result => {
             if (result) {
-                // Add the saved post to local state with the ID from Supabase
                 const savedPost = { ...postData, id: result.id };
                 posts.unshift(savedPost);
                 renderAll();
@@ -1335,7 +1362,6 @@
                 showToast(`✅ Post "${title}" published and synced to Supabase!`, 'success');
                 switchTab('posts');
             } else {
-                // Fallback: save locally
                 const newPost = { ...postData, id: Date.now() };
                 posts.unshift(newPost);
                 renderAll();
@@ -1364,7 +1390,6 @@
         if (!confirm('Are you sure you want to delete this post?')) return;
         const post = posts.find(p => p.id === id);
         
-        // Delete from Supabase
         deletePostFromSupabase(id).then(success => {
             if (success) {
                 posts = posts.filter(p => p.id !== id);
@@ -1372,7 +1397,6 @@
                 logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
                 showToast(`Post "${post?.title}" deleted from Supabase.`, 'success');
             } else {
-                // Remove locally anyway
                 posts = posts.filter(p => p.id !== id);
                 renderAll();
                 logActivity(`🗑️ Deleted post: "${post?.title}" (local only)`, 'Content');
@@ -1398,7 +1422,7 @@
     }
 
     // ────────────────────────────────────────────────
-    // EVENT CRUD OPERATIONS - WITH SUPABASE SAVE
+    // EVENT CRUD OPERATIONS
     // ────────────────────────────────────────────────
     function openEventModal() {
         document.getElementById('eventModal').classList.add('open');
@@ -1428,7 +1452,6 @@
             created_at: new Date().toISOString()
         };
         
-        // Save to Supabase first
         saveEventToSupabase(eventData).then(result => {
             if (result) {
                 const savedEvent = { ...eventData, id: result.id };
@@ -1438,7 +1461,6 @@
                 logActivity(`📅 Added event: "${title}"`, 'Calendar');
                 showToast(`✅ Event "${title}" added and synced to Supabase!`, 'success');
             } else {
-                // Fallback: save locally
                 const newEvent = { ...eventData, id: Date.now() };
                 events.push(newEvent);
                 renderAll();
