@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>School Updates — Moi Forces Academy</title>
-    <meta name="description" content="Stay updated with the latest news, announcements, and events from Moi Forces Academy Nairobi." />
-    <meta name="keywords" content="Moi Forces Academy, school updates, news, announcements, Nairobi, KDF" />
+    <title>MFA Admin Dashboard — Supabase</title>
+    <meta name="description" content="Secure administration dashboard for Moi Forces Academy Nairobi with Supabase PostgreSQL." />
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
             theme: {
@@ -35,7 +34,7 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; background: #f5f7fa; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
         
         .bg-kdf-red { background-color: #B22222; }
         .bg-kdf-navy { background-color: #0a1a3a; }
@@ -43,105 +42,137 @@
         .text-kdf-red { color: #B22222; }
         .text-kdf-navy { color: #0a1a3a; }
         .text-kdf-gold { color: #D4A017; }
-        .border-kdf-red { border-color: #B22222; }
         .border-kdf-gold { border-color: #D4A017; }
         
-        .hero-gradient {
-            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
-            position: relative;
-            overflow: hidden;
+        .sidebar {
+            transition: transform 0.3s ease;
         }
-        .hero-gradient::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.03'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            background-size: 80px 80px;
-            pointer-events: none;
+        .sidebar.closed {
+            transform: translateX(-100%);
         }
-        
-        .update-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        .update-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        @media (min-width: 768px) {
+            .sidebar.closed {
+                transform: translateX(0);
+            }
         }
         
         .nav-link {
+            transition: all 0.3s ease;
             position: relative;
-            transition: color 0.3s ease;
         }
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
+            bottom: 0;
+            left: 50%;
             width: 0;
             height: 2px;
             background: #D4A017;
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
         .nav-link:hover::after,
         .nav-link.active::after {
-            width: 100%;
+            width: 60%;
         }
         .nav-link:hover { color: #D4A017; }
         
-        .mobile-menu {
-            transition: max-height 0.4s ease, opacity 0.3s ease;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
+        .portal-nav-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
         }
-        .mobile-menu.open {
-            max-height: 500px;
-            opacity: 1;
+        .portal-nav-link:hover {
+            border-left-color: #D4A017;
+            background: rgba(212, 160, 23, 0.08);
         }
         
-        .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #D4A017;
-            color: #0a1a3a;
-            padding: 12px 24px;
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.12);
+        }
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #fff;
+            transition: border-color 0.3s ease;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.12);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 28px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(16px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
             z-index: 9999;
-            font-weight: 700;
-            border-radius: 0 0 8px 8px;
-            transition: top 0.3s ease;
+            padding: 14px 24px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            pointer-events: none;
         }
-        .skip-link:focus { top: 0; }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #B22222; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #8B1A1A; }
-        
-        .filter-btn {
-            transition: all 0.3s ease;
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: #D4A017;
-            color: #0a1a3a;
-            border-color: #D4A017;
-        }
-        
-        .pagination-btn {
-            transition: all 0.3s ease;
-        }
-        .pagination-btn:hover:not(:disabled) {
-            background: #D4A017;
-            color: #0a1a3a;
-            border-color: #D4A017;
-        }
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .toast.success { background: #0a1a3a; border-left: 4px solid #D4A017; }
+        .toast.error { background: #7f1d1d; border-left: 4px solid #ef4444; }
         
         .category-badge {
             display: inline-block;
@@ -155,72 +186,114 @@
         .category-badge.updates { background: #fef3c7; color: #92400e; }
         .category-badge.events { background: #d1fae5; color: #065f46; }
         .category-badge.calendar { background: #ede9fe; color: #5b21b6; }
-        .category-badge.career { background: #d1fae5; color: #065f46; }
-        .category-badge.parents { background: #ede9fe; color: #5b21b6; }
-        .category-badge.resources { background: #fce7f3; color: #be185d; }
-        .category-badge.science { background: #ccfbf1; color: #0d9488; }
-        .category-badge.default { background: #e5e7eb; color: #374151; }
+        .category-badge.meeting { background: #fce7f3; color: #be185d; }
+        .category-badge.video { background: #dbeafe; color: #1e40af; }
         
-        .article-content {
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-        .article-content p { margin-bottom: 1rem; }
-        .article-content ul, .article-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
-        .article-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #0a1a3a; }
-        .article-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #0a1a3a; }
-        
-        .form-input {
-            width: 100%;
-            padding: 10px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #D4A017;
-            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
-        }
-        
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal-box {
-            background: #fff;
-            border-radius: 16px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 32px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.3);
-            animation: modalIn 0.3s ease;
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        .event-date-badge {
+        .status-badge {
             display: inline-block;
             padding: 2px 10px;
             border-radius: 9999px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            background: #B22222;
-            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
         }
+        .status-badge.published { background: #d1fae5; color: #065f46; }
+        .status-badge.scheduled { background: #fef3c7; color: #92400e; }
+        .status-badge.draft { background: #f3f4f6; color: #6b7280; }
+        .status-badge.live { background: #fee2e2; color: #991b1b; }
+        .status-badge.active { background: #dbeafe; color: #1e40af; }
+        .status-badge.inactive { background: #f3f4f6; color: #6b7280; }
+        
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .login-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFFFFF' fill-opacity='0.04'%3E%3Cpath d='M40 20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V24c0-2.2-1.8-4-4-4H40zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H40c-1.1 0-2-.9-2-2V24c0-1.1.9-2 2-2zM16 32c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24c2.2 0 4-1.8 4-4V36c0-2.2-1.8-4-4-4H16zm0 2h24c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2H16c-1.1 0-2-.9-2-2V36c0-1.1.9-2 2-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            pointer-events: none;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .login-box .logo { text-align: center; margin-bottom: 32px; }
+        .login-box .logo .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #B22222;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            border: 3px solid #D4A017;
+            margin-bottom: 12px;
+        }
+        .login-box .logo h2 { color: white; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+        .login-box .logo p { color: #D4A017; font-size: 14px; font-weight: 500; }
+        .login-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .login-input::placeholder { color: rgba(255,255,255,0.5); }
+        .login-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
+        }
+        .login-input.error { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #D4A017;
+            color: #0a1a3a;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover { background: #FCD34D; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212, 160, 23, 0.3); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .login-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .login-error.show { display: block; }
+        .login-footer { text-align: center; margin-top: 24px; color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+        .session-timer { font-size: 0.7rem; color: #9ca3af; padding: 4px 12px; border-radius: 99px; background: rgba(255,255,255,0.05); }
         
         .db-status {
             display: inline-flex;
@@ -235,7 +308,22 @@
         .db-status.connecting { background: #fef3c7; color: #92400e; }
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
+        .user-card {
+            transition: all 0.3s ease;
+        }
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        
+        .search-highlight {
+            background: #FEF3C7;
+            padding: 0 4px;
+            border-radius: 2px;
+        }
+        
         @media (max-width: 640px) {
+            .login-box { padding: 32px 24px; margin: 10px; }
             .modal-box { padding: 20px; margin: 10px; }
         }
     </style>
@@ -243,253 +331,646 @@
 <body>
 
 <!-- ════════════════════════════════════════ -->
-<!-- SKIP LINK -->
+<!-- APP CONTAINER -->
 <!-- ════════════════════════════════════════ -->
-<a href="#main-content" class="skip-link">Skip to main content</a>
-
-<!-- ════════════════════════════════════════ -->
-<!-- NAVIGATION -->
-<!-- ════════════════════════════════════════ -->
-<nav class="bg-kdf-navy border-b-4 border-kdf-gold sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
-            <a href="index.html" class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">
-                    MFA
-                </div>
-                <div>
-                    <h1 class="text-white font-display font-bold text-lg leading-tight">
-                        Moi Forces Academy
-                        <span class="block text-xs font-body font-normal text-kdf-gold">Primary &amp; Junior School</span>
-                    </h1>
-                </div>
-            </a>
-            
-            <div class="hidden md:flex items-center gap-6">
-                <a href="index.html" class="nav-link text-gray-300 hover:text-white font-medium">Home</a>
-                <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
-                <a href="#academics" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
-                <a href="updates.html" class="nav-link active text-white font-medium">Updates</a>
-                <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Classroom</a>
-                <a href="#contact" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
-                <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2">
-                    <i class="fas fa-user-shield"></i> Admin
-                </a>
-            </div>
-            
-            <button id="menuToggle" class="md:hidden text-white text-2xl focus:outline-none" aria-expanded="false" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </div>
+<div id="app">
     
-    <div id="mobileMenu" class="mobile-menu md:hidden bg-kdf-navy border-t border-kdf-gold/20 px-4 pb-6">
-        <div class="flex flex-col gap-3 pt-4">
-            <a href="index.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Home</a>
-            <a href="#about" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
-            <a href="#academics" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
-            <a href="updates.html" class="text-white font-medium py-2 hover:text-kdf-gold transition">Updates</a>
-            <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
-            <a href="#contact" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
-            <a href="admin.html" class="bg-kdf-gold text-kdf-navy px-5 py-3 rounded-full font-bold text-center hover:bg-yellow-400 transition flex items-center justify-center gap-2">
-                <i class="fas fa-user-shield"></i> Admin Dashboard
-            </a>
-        </div>
-    </div>
-</nav>
-
-<!-- ════════════════════════════════════════ -->
-<!-- HERO SECTION -->
-<!-- ════════════════════════════════════════ -->
-<section class="hero-gradient py-20 relative" aria-label="Updates page header">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center">
-            <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 text-kdf-gold text-sm font-medium mb-4">
-                <i class="fas fa-newspaper"></i> Stay Informed
-            </span>
-            <h1 class="text-4xl md:text-5xl font-display font-bold text-white">School Updates &amp; News</h1>
-            <p class="text-gray-300 text-lg mt-4 max-w-2xl mx-auto">
-                Stay up-to-date with the latest announcements, events, and news from Moi Forces Academy Nairobi.
-            </p>
-            <div class="mt-4 flex justify-center gap-3 flex-wrap">
-                <span id="dbStatusUpdates" class="db-status connecting">
-                    <i class="fas fa-spinner fa-spin"></i> Loading...
-                </span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- MAIN CONTENT -->
-<!-- ════════════════════════════════════════ -->
-<main id="main-content" class="py-12 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <!-- Filter & Search Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div class="flex flex-wrap gap-2">
-                <button class="filter-btn active px-4 py-2 border-2 border-kdf-navy text-kdf-navy rounded-full font-semibold text-sm transition" data-filter="all">
-                    All
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="news">
-                    📰 News
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="updates">
-                    📌 Updates
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="events">
-                    🎉 Events
-                </button>
-                <button class="filter-btn px-4 py-2 border-2 border-gray-300 text-gray-600 rounded-full font-semibold text-sm transition" data-filter="calendar">
-                    📅 Calendar
-                </button>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-page">
+        <div class="login-box">
+            <div class="logo">
+                <div class="icon">MFA</div>
+                <h2>Moi Forces Academy</h2>
+                <p>Secure Admin Portal</p>
+                <div class="mt-3 flex justify-center">
+                    <span id="dbStatusLogin" class="db-status connecting">
+                        <i class="fas fa-spinner fa-spin"></i> Connecting to Supabase...
+                    </span>
+                </div>
             </div>
             
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <div class="relative flex-1 sm:flex-none">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" id="searchInput" placeholder="Search updates..." 
-                           class="pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-full w-full sm:w-64 focus:border-kdf-gold focus:outline-none transition" />
-                </div>
-                <select id="sortSelect" class="px-4 py-2.5 border-2 border-gray-200 rounded-full bg-white focus:border-kdf-gold focus:outline-none transition">
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                </select>
+            <div id="loginError" class="login-error">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="loginErrorMessage">Invalid credentials. Please try again.</span>
             </div>
-        </div>
-        
-        <!-- Results Count -->
-        <div class="flex justify-between items-center mb-6">
-            <p class="text-gray-600 text-sm">
-                Showing <span id="resultCount">0</span> updates
-            </p>
-            <span class="text-xs text-kdf-gold"><i class="fas fa-database mr-1"></i> Live from Supabase</span>
-        </div>
-        
-        <!-- Updates Grid -->
-        <div id="updatesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Cards rendered by JavaScript -->
-        </div>
-        
-        <!-- Pagination -->
-        <div class="flex justify-center items-center gap-4 mt-10 pt-8 border-t border-gray-200">
-            <button id="prevPage" class="pagination-btn px-5 py-2.5 border-2 border-gray-300 rounded-lg font-semibold text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed">
-                <i class="fas fa-chevron-left mr-2"></i> Previous
-            </button>
-            <span id="pageInfo" class="text-gray-600 font-medium">Page 1 of 1</span>
-            <button id="nextPage" class="pagination-btn px-5 py-2.5 border-2 border-gray-300 rounded-lg font-semibold text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed">
-                Next <i class="fas fa-chevron-right ml-2"></i>
-            </button>
-        </div>
-        
-        <!-- Event Notice -->
-        <div class="mt-8 bg-kdf-gray rounded-2xl p-4 text-center border-l-4 border-kdf-red">
-            <p class="text-sm text-gray-600">
-                <i class="fas fa-calendar-alt text-kdf-red mr-2"></i>
-                <strong>Events from the Calendar Manager</strong> automatically appear here with the "Events" category.
-            </p>
-        </div>
-        
-        <!-- Subscribe Section -->
-        <div class="mt-12 bg-kdf-gray rounded-2xl p-8 text-center">
-            <h3 class="text-2xl font-display font-bold text-kdf-navy">Never Miss an Update</h3>
-            <p class="text-gray-600 mt-2 max-w-lg mx-auto">
-                Subscribe to our newsletter to receive the latest school news and announcements directly in your inbox.
-            </p>
-            <form id="subscribeForm" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mt-6" onsubmit="handleSubscribe(event)">
-                <input type="email" placeholder="Enter your email" class="form-input flex-1" required />
-                <button type="submit" class="bg-kdf-red text-white px-6 py-3 rounded-lg font-bold hover:bg-red-800 transition whitespace-nowrap">
-                    Subscribe <i class="fas fa-arrow-right ml-2"></i>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-white/70 text-sm font-medium mb-1.5">Email / Username</label>
+                    <input type="text" id="loginUsername" class="login-input" placeholder="admin@moiforces.ac.ke" value="admin@moiforces.ac.ke" required />
+                </div>
+                <div class="mb-5">
+                    <label class="block text-white/70 text-sm font-medium mb-1.5">Password</label>
+                    <input type="password" id="loginPassword" class="login-input" placeholder="Enter your secure password" value="Admin@2026" required />
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center gap-2 text-white/60 text-sm cursor-pointer">
+                        <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded border-white/20 bg-white/5 text-kdf-gold focus:ring-kdf-gold focus:ring-offset-0" />
+                        Remember me
+                    </label>
+                    <a href="#" class="text-kdf-gold text-sm hover:text-yellow-400 transition">Forgot password?</a>
+                </div>
+                <button type="submit" id="loginBtn" class="login-btn">
+                    <i class="fas fa-lock mr-2"></i> Secure Login
                 </button>
             </form>
-            <div id="subscribeFeedback" class="mt-3 hidden"></div>
-        </div>
-        
-    </div>
-</main>
-
-<!-- ════════════════════════════════════════ -->
-<!-- ARTICLE DETAIL MODAL -->
-<!-- ════════════════════════════════════════ -->
-<div id="articleModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-box">
-        <div class="flex justify-between items-start mb-4">
-            <div>
-                <span id="modalCategory" class="category-badge default text-xs">Category</span>
-                <h2 id="modalTitle" class="text-2xl font-display font-bold text-kdf-navy mt-2">Article Title</h2>
-                <p id="modalDate" class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> Date</p>
+            
+            <div class="login-footer">
+                <p>🔒 Powered by <strong class="text-white/70">Supabase PostgreSQL</strong></p>
+                <p class="mt-1">&copy; 2026 Moi Forces Academy</p>
             </div>
-            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl transition" aria-label="Close article">
-                <i class="fas fa-times"></i>
-            </button>
         </div>
-        <div id="modalImage" class="aspect-video rounded-xl overflow-hidden bg-kdf-gray mb-4 flex items-center justify-center text-6xl">
-            📄
-        </div>
-        <div id="modalContent" class="article-content text-gray-700">
-            Article content goes here...
-        </div>
-        <div class="flex flex-wrap gap-3 mt-6 pt-6 border-t border-gray-200">
-            <button onclick="closeModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition">
-                Close
-            </button>
-            <button class="px-6 py-2.5 bg-kdf-gold text-kdf-navy rounded-lg font-semibold hover:bg-yellow-400 transition flex items-center gap-2">
-                <i class="fas fa-share-alt"></i> Share
-            </button>
-        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardScreen" class="min-h-screen flex" style="display:none;">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar fixed md:static inset-y-0 left-0 z-50 w-64 bg-kdf-navy text-white flex flex-col h-screen overflow-y-auto transition-transform duration-300">
+            <div class="flex items-center gap-3 px-6 h-20 border-b border-kdf-gold/20 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-sm border-2 border-kdf-gold">MFA</div>
+                <div>
+                    <h1 class="font-display font-bold text-lg leading-tight">Moi Forces Academy</h1>
+                    <p class="text-xs text-kdf-gold">Admin Dashboard</p>
+                </div>
+            </div>
+            
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <!-- Main Admin Links -->
+                <a href="#" onclick="switchTab('dashboard')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="dashboard">
+                    <i class="fas fa-chart-pie w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="switchTab('users')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="users">
+                    <i class="fas fa-users w-5 text-center"></i>
+                    <span>User Management</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="userCount">0</span>
+                </a>
+                <a href="#" onclick="switchTab('posts')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="posts">
+                    <i class="fas fa-newspaper w-5 text-center"></i>
+                    <span>All Posts</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="postCount">0</span>
+                </a>
+                <a href="#" onclick="switchTab('create')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="create">
+                    <i class="fas fa-plus-circle w-5 text-center"></i>
+                    <span>Create Post</span>
+                </a>
+                <a href="#" onclick="switchTab('calendar')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="calendar">
+                    <i class="fas fa-calendar-alt w-5 text-center"></i>
+                    <span>Calendar Manager</span>
+                </a>
+                <a href="#" onclick="switchTab('meetings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="meetings">
+                    <i class="fas fa-video w-5 text-center"></i>
+                    <span>Virtual Meetings</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="meetingCount">0</span>
+                </a>
+                <a href="#" onclick="switchTab('videos')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="videos">
+                    <i class="fas fa-youtube w-5 text-center"></i>
+                    <span>Video Library</span>
+                    <span class="ml-auto bg-kdf-gold text-white text-xs px-2 py-0.5 rounded-full" id="videoCount">0</span>
+                </a>
+                <a href="#" onclick="switchTab('categories')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="categories">
+                    <i class="fas fa-tags w-5 text-center"></i>
+                    <span>Categories</span>
+                </a>
+                
+                <!-- Portal Management Section -->
+                <div class="mt-4 pt-4 border-t border-kdf-gold/20">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider px-4 mb-2 font-semibold">Portals</p>
+                    
+                    <a href="staff-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-chalkboard-teacher w-5 text-center text-kdf-gold"></i>
+                        <span>Staff Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                    <a href="student-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-user-graduate w-5 text-center text-kdf-light-blue"></i>
+                        <span>Student Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                    <a href="parent-portal.html" target="_blank" class="portal-nav-link flex items-center gap-3 px-4 py-2.5 rounded-r-lg text-gray-300 hover:text-white transition">
+                        <i class="fas fa-users w-5 text-center text-kdf-red"></i>
+                        <span>Parent Portal</span>
+                        <span class="ml-auto text-[10px] bg-kdf-gold/20 text-kdf-gold px-2 py-0.5 rounded-full">Open</span>
+                    </a>
+                </div>
+                
+                <!-- Settings -->
+                <div class="mt-4 pt-4 border-t border-kdf-gold/20">
+                    <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" onclick="switchTab('security')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="security">
+                        <i class="fas fa-shield-alt w-5 text-center"></i>
+                        <span>Security</span>
+                    </a>
+                    <a href="#" onclick="switchTab('database')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="database">
+                        <i class="fas fa-database w-5 text-center"></i>
+                        <span>Database</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="px-4 py-4 border-t border-kdf-gold/20 flex-shrink-0">
+                <div class="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5">
+                    <div class="w-8 h-8 rounded-full bg-kdf-gold flex items-center justify-center text-kdf-navy font-bold text-sm">A</div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium" id="adminName">Admin User</p>
+                        <p class="text-xs text-gray-400" id="adminEmail">admin@moiforces.ac.ke</p>
+                    </div>
+                    <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                <div class="mt-2 flex items-center justify-between">
+                    <span class="session-timer" id="sessionTimer">Session: Active</span>
+                    <span id="dbStatus" class="db-status connected">
+                        <i class="fas fa-check-circle"></i> Supabase
+                    </span>
+                </div>
+                <a href="index.html" class="mt-2 block text-center text-xs text-gray-500 hover:text-kdf-gold transition">
+                    <i class="fas fa-home mr-1"></i> Back to School Homepage
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0">
+            
+            <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+                <div class="flex items-center justify-between px-4 sm:px-6 h-16">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-xl">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h2 id="pageTitle" class="text-lg font-bold text-kdf-navy">Dashboard</h2>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <!-- Global Search Bar -->
+                        <div class="relative hidden md:block">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="globalSearchInput" placeholder="Search staff, students, posts..." 
+                                   class="pl-9 pr-4 py-2 w-64 border-2 border-gray-200 rounded-full text-sm focus:border-kdf-gold focus:outline-none transition"
+                                   oninput="globalSearch(this.value)" />
+                        </div>
+                        <button onclick="document.getElementById('globalSearchInput').focus()" class="md:hidden text-gray-500 hover:text-kdf-navy transition">
+                            <i class="fas fa-search text-lg"></i>
+                        </button>
+                        <span class="text-xs text-gray-400 hidden sm:inline">Last updated: <span id="lastUpdated">Just now</span></span>
+                        <button onclick="syncWithSupabase()" class="text-kdf-gold hover:text-kdf-red transition" title="Sync with Supabase">
+                            <i class="fas fa-sync-alt text-lg"></i>
+                        </button>
+                        <div class="hidden md:flex gap-2">
+                            <a href="staff-portal.html" target="_blank" class="text-xs bg-kdf-navy text-white px-3 py-1.5 rounded-full hover:bg-kdf-navy/80 transition flex items-center gap-1">
+                                <i class="fas fa-chalkboard-teacher"></i> Staff
+                            </a>
+                            <a href="student-portal.html" target="_blank" class="text-xs bg-kdf-light-blue text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition flex items-center gap-1">
+                                <i class="fas fa-user-graduate"></i> Student
+                            </a>
+                            <a href="parent-portal.html" target="_blank" class="text-xs bg-kdf-red text-white px-3 py-1.5 rounded-full hover:bg-red-800 transition flex items-center gap-1">
+                                <i class="fas fa-users"></i> Parent
+                            </a>
+                        </div>
+                        <a href="index.html" class="text-xs bg-kdf-gold text-kdf-navy px-3 py-1.5 rounded-full hover:bg-yellow-400 transition flex items-center gap-1" title="Go to Homepage">
+                            <i class="fas fa-home"></i>
+                            <span class="hidden sm:inline">Home</span>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-4 sm:p-6">
+
+                <!-- Dashboard Tab -->
+                <div id="tab-dashboard" class="tab-content">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-red">📰</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Total</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statTotal">0</p>
+                            <p class="text-sm text-gray-500">Total Posts</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-light-blue">👥</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Staff</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statStaff">0</p>
+                            <p class="text-sm text-gray-500">Staff Members</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-gold">🎓</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Students</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statStudents">0</p>
+                            <p class="text-sm text-gray-500">Active Students</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl text-kdf-red">📅</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Meetings</span>
+                            </div>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statMeetings">0</p>
+                            <p class="text-sm text-gray-500">Virtual Meetings</p>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-4 gap-4 mb-6">
+                        <button onclick="switchTab('users')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
+                            <i class="fas fa-users text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Manage Users</span>
+                        </button>
+                        <button onclick="switchTab('create')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3">
+                            <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
+                            <span class="font-medium">New Post</span>
+                        </button>
+                        <button onclick="switchTab('calendar')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3">
+                            <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Add Event</span>
+                        </button>
+                        <button onclick="openMeetingModal()" class="bg-kdf-light-blue text-white p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3">
+                            <i class="fas fa-video text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Create Meeting</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                            <h3 class="font-bold text-kdf-navy">Recent Posts</h3>
+                            <button onclick="switchTab('posts')" class="text-sm text-kdf-gold hover:text-kdf-red transition">View All</button>
+                        </div>
+                        <div id="recentPostsList" class="divide-y divide-gray-100"></div>
+                    </div>
+                </div>
+
+                <!-- User Management Tab -->
+                <div id="tab-users" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                            <h3 class="font-bold text-kdf-navy">👥 User Management</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="filterUsers('all')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition active" data-filter="all">All</button>
+                                <button onclick="filterUsers('staff')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="staff">👨‍🏫 Staff</button>
+                                <button onclick="filterUsers('student')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="student">🎓 Students</button>
+                                <button onclick="filterUsers('parent')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="parent">👨‍👩‍👦 Parents</button>
+                            </div>
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="userSearchInput" placeholder="Search users..." 
+                                       class="pl-8 pr-4 py-1.5 border-2 border-gray-200 rounded-full text-sm focus:border-kdf-gold focus:outline-none transition w-48"
+                                       oninput="searchUsers(this.value)" />
+                            </div>
+                        </div>
+                        <div id="usersList" class="divide-y divide-gray-100">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts Tab -->
+                <div id="tab-posts" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                            <h3 class="font-bold text-kdf-navy">All Posts</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="filterPosts('all')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition active" data-filter="all">All</button>
+                                <button onclick="filterPosts('news')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="news">News</button>
+                                <button onclick="filterPosts('updates')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="updates">Updates</button>
+                                <button onclick="filterPosts('events')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="events">Events</button>
+                                <button onclick="filterPosts('calendar')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="calendar">Calendar</button>
+                            </div>
+                        </div>
+                        <div id="postsList" class="divide-y divide-gray-100"></div>
+                    </div>
+                </div>
+
+                <!-- Create Post Tab -->
+                <div id="tab-create" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-3xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-6">Create New Post</h3>
+                        <form id="postForm" onsubmit="handleCreatePost(event)">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-kdf-red">*</span></label>
+                                <input type="text" id="postTitle" class="form-input" placeholder="Enter post title" required />
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-kdf-red">*</span></label>
+                                <select id="postCategory" class="form-select" required>
+                                    <option value="news">📰 News</option>
+                                    <option value="updates">📌 Updates</option>
+                                    <option value="events">🎉 Events</option>
+                                    <option value="calendar">📅 Calendar</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Content <span class="text-kdf-red">*</span></label>
+                                <textarea id="postContent" rows="6" class="form-input" placeholder="Write your post content here..." required></textarea>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <select id="postStatus" class="form-select">
+                                        <option value="published">Published</option>
+                                        <option value="scheduled">Scheduled</option>
+                                        <option value="draft">Draft</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Schedule Date</label>
+                                    <input type="datetime-local" id="postSchedule" class="form-input" />
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
+                                <input type="url" id="postImage" class="form-input" placeholder="https://example.com/image.jpg" />
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit" class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                                    <i class="fas fa-paper-plane mr-2"></i> Publish Post
+                                </button>
+                                <button type="reset" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Calendar Tab -->
+                <div id="tab-calendar" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <h3 class="text-xl font-bold text-kdf-navy">📅 Calendar Manager</h3>
+                            <button onclick="openEventModal()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-bold hover:bg-red-800 transition">
+                                <i class="fas fa-plus mr-2"></i> Add Event
+                            </button>
+                        </div>
+                        <div id="calendarEventsList" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- Meetings Tab -->
+                <div id="tab-meetings" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <h3 class="text-xl font-bold text-kdf-navy">🎥 Virtual Meetings</h3>
+                            <button onclick="openMeetingModal()" class="bg-kdf-light-blue text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-600 transition">
+                                <i class="fas fa-plus mr-2"></i> Create Meeting
+                            </button>
+                        </div>
+                        <div id="meetingsList" class="space-y-4"></div>
+                    </div>
+                </div>
+
+                <!-- Videos Tab -->
+                <div id="tab-videos" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                            <h3 class="text-xl font-bold text-kdf-navy">🎬 Video Library</h3>
+                            <button onclick="openVideoModal()" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                                <i class="fas fa-plus mr-2"></i> Add Video
+                            </button>
+                        </div>
+                        <div id="videosList" class="grid md:grid-cols-2 gap-6"></div>
+                    </div>
+                </div>
+
+                <!-- Categories Tab -->
+                <div id="tab-categories" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🏷️ Manage Categories</h3>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">📰</span>
+                                    <div><h4 class="font-bold text-kdf-navy">News</h4><p class="text-sm text-gray-500">School achievements, policy changes</p></div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">📌</span>
+                                    <div><h4 class="font-bold text-kdf-navy">Updates</h4><p class="text-sm text-gray-500">Announcements, important notices</p></div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">🎉</span>
+                                    <div><h4 class="font-bold text-kdf-navy">Events</h4><p class="text-sm text-gray-500">Sports, ceremonies, activities</p></div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">📅</span>
+                                    <div><h4 class="font-bold text-kdf-navy">Calendar</h4><p class="text-sm text-gray-500">Holidays, exam schedules, term dates</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="tab-settings" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">⚙️ Settings</h3>
+                        <div class="space-y-4">
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">School Name</label><input type="text" value="Moi Forces Academy" class="form-input" /></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Contact Email</label><input type="email" value="info@moiforcesacademy.ac.ke" class="form-input" /></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label><input type="tel" value="+254 700 123 456" class="form-input" /></div>
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">School Address</label><input type="text" value="Nairobi, Kenya" class="form-input" /></div>
+                            <button class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div id="tab-security" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🔒 Security Settings</h3>
+                        <div class="space-y-4">
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                                    <div><p class="font-semibold text-green-800">Secure Session Active</p><p class="text-sm text-green-600">Protected with 256-bit encryption</p></div>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Change Password</h4>
+                                <div class="space-y-3">
+                                    <input type="password" placeholder="Current Password" class="form-input" />
+                                    <input type="password" placeholder="New Password" class="form-input" />
+                                    <input type="password" placeholder="Confirm New Password" class="form-input" />
+                                    <button class="bg-kdf-red text-white px-6 py-2.5 rounded-lg font-bold hover:bg-red-800 transition">Update Password</button>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Activity Log</h4>
+                                <div id="activityLogList" class="space-y-2 text-sm max-h-48 overflow-y-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database Tab -->
+                <div id="tab-database" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-3xl">
+                        <h3 class="text-xl font-bold text-kdf-navy mb-4">🗄️ Supabase Database Management</h3>
+                        <div class="space-y-4">
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="bg-kdf-gray rounded-xl p-4">
+                                    <p class="text-sm text-gray-500">Database Status</p>
+                                    <p class="font-bold text-green-600"><i class="fas fa-check-circle mr-1"></i> Connected</p>
+                                </div>
+                                <div class="bg-kdf-gray rounded-xl p-4">
+                                    <p class="text-sm text-gray-500">Tables</p>
+                                    <p class="font-bold text-kdf-navy">users, posts, events, meetings, videos, categories</p>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Quick Actions</h4>
+                                <div class="flex flex-wrap gap-3">
+                                    <button onclick="syncWithSupabase()" class="bg-kdf-gold text-kdf-navy px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition">
+                                        <i class="fas fa-sync-alt mr-1"></i> Sync All Data
+                                    </button>
+                                    <button onclick="exportData()" class="bg-kdf-navy text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-kdf-navy/80 transition">
+                                        <i class="fas fa-download mr-1"></i> Export CSV
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-kdf-gray rounded-xl p-4">
+                                <h4 class="font-bold text-kdf-navy mb-2">Table Records</h4>
+                                <div class="grid grid-cols-3 gap-4 text-sm">
+                                    <div><span class="text-gray-500">Users:</span> <span id="dbUserCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Posts:</span> <span id="dbPostCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Meetings:</span> <span id="dbMeetingCount" class="font-bold">0</span></div>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-2">
+                                <p>🔗 Connected to: <strong class="text-kdf-navy">Supabase PostgreSQL</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 </div>
 
 <!-- ════════════════════════════════════════ -->
-<!-- FOOTER -->
+<!-- MEETING MODAL -->
 <!-- ════════════════════════════════════════ -->
-<footer class="bg-kdf-navy text-white py-12 border-t-4 border-kdf-gold" role="contentinfo">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-4 gap-8">
-            <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold">MFA</div>
-                    <span class="font-display font-bold text-lg">Moi Forces Academy</span>
+<div id="meetingModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 class="text-xl font-bold text-kdf-navy mb-4">🎥 Create Virtual Meeting</h3>
+        <form id="meetingForm" onsubmit="handleCreateMeeting(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Title <span class="text-kdf-red">*</span></label>
+                <input type="text" id="meetingTitle" class="form-input" placeholder="e.g. Grade 9 Mathematics Session" required />
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date <span class="text-kdf-red">*</span></label>
+                    <input type="date" id="meetingDate" class="form-input" required />
                 </div>
-                <p class="text-gray-400 text-sm">Sponsored by the Kenya Defence Forces. Excellence Our Commitment.</p>
-                <a href="admin.html" class="inline-block mt-4 bg-kdf-gold text-kdf-navy px-4 py-2 rounded-lg font-semibold text-sm hover:bg-yellow-400 transition">
-                    <i class="fas fa-user-shield mr-2"></i> Admin Dashboard
-                </a>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Time <span class="text-kdf-red">*</span></label>
+                    <input type="time" id="meetingTime" class="form-input" required />
+                </div>
             </div>
-            <div>
-                <h4 class="font-bold text-kdf-gold mb-4">Quick Links</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="index.html" class="hover:text-kdf-gold transition">Home</a></li>
-                    <li><a href="#about" class="hover:text-kdf-gold transition">About</a></li>
-                    <li><a href="#academics" class="hover:text-kdf-gold transition">Academics</a></li>
-                    <li><a href="updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
-                </ul>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Link <span class="text-kdf-red">*</span></label>
+                <input type="url" id="meetingLink" class="form-input" placeholder="https://meet.google.com/xxx-xxxx-xxx" required />
+                <p class="text-xs text-gray-500 mt-1">Paste your Google Meet, Zoom, or Teams link here</p>
             </div>
-            <div>
-                <h4 class="font-bold text-kdf-gold mb-4">Resources</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-kdf-gold transition">School Calendar</a></li>
-                    <li><a href="#" class="hover:text-kdf-gold transition">Student Portal</a></li>
-                    <li><a href="#" class="hover:text-kdf-gold transition">Staff Portal</a></li>
-                    <li><a href="#" class="hover:text-kdf-gold transition">Parent Portal</a></li>
-                </ul>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="meetingDescription" rows="3" class="form-input" placeholder="Meeting agenda or additional information"></textarea>
             </div>
-            <div>
-                <h4 class="font-bold text-kdf-gold mb-4">Contact</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><i class="fas fa-phone mr-2 text-kdf-gold"></i> +254 700 123 456</li>
-                    <li><i class="fas fa-envelope mr-2 text-kdf-gold"></i> info@moiforcesacademy.ac.ke</li>
-                    <li><i class="fas fa-map-marker-alt mr-2 text-kdf-gold"></i> Nairobi, Kenya</li>
-                </ul>
+            <div class="flex gap-3">
+                <button type="submit" class="bg-kdf-light-blue text-white px-6 py-2.5 rounded-lg font-bold hover:bg-blue-600 transition">
+                    <i class="fas fa-save mr-2"></i> Create Meeting
+                </button>
+                <button type="button" onclick="closeMeetingModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Cancel</button>
             </div>
-        </div>
-        <div class="border-t border-white/10 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2026 Moi Forces Academy Comprehensive School. All rights reserved.</p>
-            <p class="mt-1">Sponsored by the Kenya Defence Forces</p>
-        </div>
+        </form>
     </div>
-</footer>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VIDEO MODAL -->
+<!-- ════════════════════════════════════════ -->
+<div id="videoModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 class="text-xl font-bold text-kdf-navy mb-4">🎬 Add Video to Library</h3>
+        <form id="videoForm" onsubmit="handleAddVideo(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Video Title <span class="text-kdf-red">*</span></label>
+                <input type="text" id="videoTitle" class="form-input" placeholder="e.g. KJSEA 2026 Revision" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">YouTube URL <span class="text-kdf-red">*</span></label>
+                <input type="url" id="videoUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=xxxxxxx" required />
+                <p class="text-xs text-gray-500 mt-1">Paste a YouTube video link. Videos will be embedded on the page.</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <select id="videoCategory" class="form-select">
+                    <option value="academic">📚 Academic</option>
+                    <option value="sports">🏃 Sports</option>
+                    <option value="events">🎉 Events</option>
+                    <option value="announcements">📢 Announcements</option>
+                    <option value="other">📌 Other</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="videoDescription" rows="3" class="form-input" placeholder="Brief description of the video"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="bg-kdf-gold text-kdf-navy px-6 py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
+                    <i class="fas fa-save mr-2"></i> Add Video
+                </button>
+                <button type="button" onclick="closeVideoModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- EVENT MODAL -->
+<!-- ════════════════════════════════════════ -->
+<div id="eventModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 class="text-xl font-bold text-kdf-navy mb-4">📅 Add Calendar Event</h3>
+        <form id="eventForm" onsubmit="handleAddEvent(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Event Title <span class="text-kdf-red">*</span></label>
+                <input type="text" id="eventTitle" class="form-input" placeholder="Enter event title" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Date <span class="text-kdf-red">*</span></label>
+                <input type="date" id="eventDate" class="form-input" required />
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="eventDescription" rows="3" class="form-input" placeholder="Event description"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="bg-kdf-red text-white px-6 py-2.5 rounded-lg font-bold hover:bg-red-800 transition">
+                    <i class="fas fa-save mr-2"></i> Add Event
+                </button>
+                <button type="button" onclick="closeEventModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- TOAST NOTIFICATION -->
+<!-- ════════════════════════════════════════ -->
+<div id="toast" class="toast"></div>
 
 <!-- ════════════════════════════════════════ -->
 <!-- JAVASCRIPT -->
@@ -503,14 +984,65 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
 
     // ────────────────────────────────────────────────
-    // STATE
+    // SECURITY CONFIG
     // ────────────────────────────────────────────────
-    let allItems = [];
-    let filteredData = [];
-    let currentPage = 1;
-    const itemsPerPage = 6;
+    const SECURITY = {
+        ADMIN_EMAIL: 'admin@moiforces.ac.ke',
+        ADMIN_PASSWORD: 'Admin@2026',
+        SESSION_DURATION: 3600000,
+        SESSION_CHECK_INTERVAL: 60000,
+    };
+
+    // ────────────────────────────────────────────────
+    // SESSION MANAGEMENT
+    // ────────────────────────────────────────────────
+    function getSession() {
+        const session = sessionStorage.getItem('mfa_admin_session');
+        if (!session) return null;
+        try { return JSON.parse(session); } catch { return null; }
+    }
+
+    function setSession(user) {
+        const session = {
+            user: user,
+            loginTime: Date.now(),
+            expiresAt: Date.now() + SECURITY.SESSION_DURATION,
+            sessionId: 'sess_' + Math.random().toString(36).substring(2, 10)
+        };
+        sessionStorage.setItem('mfa_admin_session', JSON.stringify(session));
+        return session;
+    }
+
+    function clearSession() { sessionStorage.removeItem('mfa_admin_session'); }
+
+    function isSessionValid() {
+        const session = getSession();
+        if (!session) return false;
+        if (Date.now() > session.expiresAt) { clearSession(); return false; }
+        return true;
+    }
+
+    // ────────────────────────────────────────────────
+    // DATA STORE
+    // ────────────────────────────────────────────────
+    let posts = [];
+    let events = [];
+    let meetings = [];
+    let videos = [];
+    let staffUsers = [];
+    let studentUsers = [];
+    let parentUsers = [];
+    let currentUserFilter = 'all';
+    let userSearchTerm = '';
+    let categories = [
+        { id: 1, name: 'News', slug: 'news', icon: '📰' },
+        { id: 2, name: 'Updates', slug: 'updates', icon: '📌' },
+        { id: 3, name: 'Events', slug: 'events', icon: '🎉' },
+        { id: 4, name: 'Calendar', slug: 'calendar', icon: '📅' }
+    ];
     let currentFilter = 'all';
-    let searchTerm = '';
+    let currentUser = null;
+    let sessionTimerInterval = null;
     let sbClient = null;
 
     // ────────────────────────────────────────────────
@@ -527,194 +1059,620 @@
         }
     }
 
-    function updateDbStatus(status, message) {
-        const statusEl = document.getElementById('dbStatusUpdates');
-        if (!statusEl) return;
-        
-        statusEl.className = `db-status ${status}`;
-        if (status === 'connected') {
-            statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Supabase'}`;
-        } else if (status === 'connecting') {
-            statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Loading...'}`;
-        } else {
-            statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+    // ────────────────────────────────────────────────
+    // SUPABASE DATABASE OPERATIONS
+    // ────────────────────────────────────────────────
+    async function connectToSupabase() {
+        try {
+            updateDbStatus('connecting', 'Connecting to Supabase...');
+            
+            if (!sbClient) {
+                initSupabase();
+            }
+            
+            const { data, error } = await sbClient
+                .from('posts')
+                .select('*')
+                .limit(1);
+            
+            if (error) {
+                throw new Error(error.message);
+            }
+            
+            updateDbStatus('connected', 'Supabase Connected');
+            await loadAllFromSupabase();
+            return true;
+        } catch (error) {
+            console.error('Supabase connection error:', error);
+            updateDbStatus('error', 'Connection Failed - Using Local Data');
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+            return false;
         }
     }
 
-    // ────────────────────────────────────────────────
-    // FETCH FROM SUPABASE
-    // ────────────────────────────────────────────────
-    async function fetchPostsFromSupabase() {
+    async function loadAllFromSupabase() {
         try {
-            updateDbStatus('connecting', 'Fetching from Supabase...');
-            
-            if (!sbClient) initSupabase();
-            
-            // Fetch posts from Supabase
+            // Load posts
             const { data: postsData, error: postsError } = await sbClient
                 .from('posts')
                 .select('*')
                 .order('created_at', { ascending: false });
             
             if (postsError) throw new Error(postsError.message);
+            if (postsData && postsData.length > 0) posts = postsData;
             
-            console.log('📊 Posts fetched from Supabase:', postsData?.length || 0);
-            
-            // Fetch events from Supabase
+            // Load events
             const { data: eventsData, error: eventsError } = await sbClient
                 .from('events')
                 .select('*')
                 .order('event_date', { ascending: true });
             
             if (eventsError) throw new Error(eventsError.message);
+            if (eventsData && eventsData.length > 0) events = eventsData;
             
-            console.log('📅 Events fetched from Supabase:', eventsData?.length || 0);
+            // Load meetings
+            const { data: meetingsData, error: meetingsError } = await sbClient
+                .from('meetings')
+                .select('*')
+                .order('meeting_date', { ascending: true });
             
-            // Convert events to post format
-            const eventPosts = (eventsData || []).map(e => ({
-                id: `evt_${e.id}`,
-                title: `📅 ${e.title}`,
-                category: 'events',
-                content: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`,
-                date: e.date || e.event_date || new Date().toISOString().split('T')[0],
-                image: '📅',
-                isEvent: true,
-                eventDate: e.date || e.event_date,
-                summary: e.description || `Event on ${new Date(e.date || e.event_date).toLocaleDateString()}`
-            }));
+            if (meetingsError) throw new Error(meetingsError.message);
+            if (meetingsData && meetingsData.length > 0) meetings = meetingsData;
             
-            // Convert posts
-            const postItems = (postsData || []).map(p => ({
-                ...p,
-                isEvent: false,
-                summary: p.content ? p.content.substring(0, 150) + '...' : 'No description',
-                image: p.image || '📄'
-            }));
+            // Load videos
+            const { data: videosData, error: videosError } = await sbClient
+                .from('videos')
+                .select('*')
+                .order('created_at', { ascending: false });
             
-            // Combine and sort by date (newest first)
-            allItems = [...postItems, ...eventPosts];
-            allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (videosError) throw new Error(videosError.message);
+            if (videosData && videosData.length > 0) videos = videosData;
             
-            updateDbStatus('connected', `Supabase (${allItems.length} items)`);
+            // Load staff users
+            const { data: staffData, error: staffError } = await sbClient
+                .from('staff_users')
+                .select('*')
+                .order('name', { ascending: true });
             
-            // Apply filters and render
-            applyFiltersAndRender();
+            if (staffError) throw new Error(staffError.message);
+            if (staffData && staffData.length > 0) staffUsers = staffData;
             
+            // Load student users
+            const { data: studentData, error: studentError } = await sbClient
+                .from('students')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (studentError) throw new Error(studentError.message);
+            if (studentData && studentData.length > 0) studentUsers = studentData;
+            
+            // Load parent users
+            const { data: parentData, error: parentError } = await sbClient
+                .from('parents')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (parentError) throw new Error(parentError.message);
+            if (parentData && parentData.length > 0) parentUsers = parentData;
+            
+            renderAll();
+            updateDbStatus('connected', `Supabase (${staffUsers.length + studentUsers.length + parentUsers.length} users, ${posts.length} posts, ${meetings.length} meetings, ${videos.length} videos)`);
         } catch (error) {
-            console.error('Error fetching from Supabase:', error);
-            updateDbStatus('error', 'Failed to fetch data');
-            // Fallback to sample data
-            loadSampleData();
+            console.error('Error loading from Supabase:', error);
+            if (posts.length === 0) loadSampleData();
+            renderAll();
+        }
+    }
+
+    async function savePostToSupabase(postData) {
+        try {
+            const { data, error } = await sbClient.from('posts').insert([postData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving post to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function saveEventToSupabase(eventData) {
+        try {
+            const { data, error } = await sbClient.from('events').insert([eventData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving event to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function saveMeetingToSupabase(meetingData) {
+        try {
+            const { data, error } = await sbClient.from('meetings').insert([meetingData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving meeting to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function saveVideoToSupabase(videoData) {
+        try {
+            const { data, error } = await sbClient.from('videos').insert([videoData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving video to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function deletePostFromSupabase(id) {
+        try {
+            const { error } = await sbClient.from('posts').delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting post from Supabase:', error);
+            return false;
+        }
+    }
+
+    async function deleteEventFromSupabase(id) {
+        try {
+            const { error } = await sbClient.from('events').delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting event from Supabase:', error);
+            return false;
+        }
+    }
+
+    async function deleteMeetingFromSupabase(id) {
+        try {
+            const { error } = await sbClient.from('meetings').delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting meeting from Supabase:', error);
+            return false;
+        }
+    }
+
+    async function deleteVideoFromSupabase(id) {
+        try {
+            const { error } = await sbClient.from('videos').delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting video from Supabase:', error);
+            return false;
+        }
+    }
+
+    function updateDbStatus(status, message) {
+        const statusEls = document.querySelectorAll('.db-status');
+        const loginStatus = document.getElementById('dbStatusLogin');
+        
+        statusEls.forEach(el => {
+            el.className = `db-status ${status}`;
+            if (status === 'connected') {
+                el.innerHTML = `<i class="fas fa-check-circle"></i> ${message || 'Supabase'}`;
+            } else if (status === 'connecting') {
+                el.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message || 'Connecting...'}`;
+            } else {
+                el.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message || 'Error'}`;
+            }
+        });
+        
+        if (loginStatus) {
+            loginStatus.className = `db-status ${status}`;
+            loginStatus.innerHTML = status === 'connected' 
+                ? `<i class="fas fa-check-circle"></i> Supabase Ready`
+                : `<i class="fas fa-spinner fa-spin"></i> Connecting to Supabase...`;
+        }
+    }
+
+    async function syncWithSupabase() {
+        showToast('🔄 Syncing with Supabase...', 'success');
+        updateDbStatus('connecting', 'Syncing...');
+        
+        try {
+            await loadAllFromSupabase();
+            updateDbStatus('connected', 'Sync Complete');
+            showToast('✅ Data synced with Supabase successfully!', 'success');
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+            
+            document.getElementById('dbPostCount').textContent = posts.length;
+            document.getElementById('dbMeetingCount').textContent = meetings.length;
+            document.getElementById('dbUserCount').textContent = staffUsers.length + studentUsers.length + parentUsers.length;
+            
+            logActivity('🔄 Synced with Supabase', 'Database');
+        } catch (error) {
+            updateDbStatus('error', 'Sync Failed');
+            showToast('❌ Failed to sync with Supabase: ' + error.message, 'error');
         }
     }
 
     function loadSampleData() {
-        const samplePosts = [
-            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚', summary: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.' },
-            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃', summary: 'Our annual sports day is scheduled for February 2026.' },
-            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️', summary: 'Kenya Defence Forces will host a career day at our school.' },
-            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦', summary: 'The term 1 parent-teacher conference will be held on January 30th.' },
-            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖', summary: 'We have updated our CBC resources for all grades.' },
-            { id: 6, title: 'School Reopens for Term 1', category: 'updates', content: 'School reopens on January 15, 2026 for Term 1.', date: '2026-01-05', image: '🏫', summary: 'School reopens on January 15, 2026 for Term 1.' },
-            { id: 7, title: 'MFA Science Fair 2026', category: 'events', content: 'The annual MFA Science Fair will take place in February.', date: '2026-02-01', image: '🔬', summary: 'The annual MFA Science Fair will take place in February.' },
-            { id: 8, title: 'KJSEA Achieves 100% Pass Rate', category: 'news', content: 'Moi Forces Academy has achieved a 100% pass rate in the KJSEA examinations.', date: '2026-01-02', image: '🏆', summary: 'Moi Forces Academy has achieved a 100% pass rate in the KJSEA examinations.' },
+        posts = [
+            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation...', status: 'published', date: '2026-01-15', image: '📚' },
         ];
         
-        allItems = samplePosts;
-        updateDbStatus('connected', 'Sample Data');
-        applyFiltersAndRender();
+        events = [
+            { id: 1, title: 'Sports Day', date: '2026-02-15', description: 'Annual sports day with various athletic events.' },
+        ];
+        
+        meetings = [
+            { id: 1, title: 'Grade 9 Mathematics Revision', meeting_date: '2026-01-20', meeting_time: '10:00 AM', meeting_link: 'https://meet.google.com/xxx-xxxx-xxx', description: 'Final revision session before KJSEA exams.' },
+        ];
+        
+        videos = [
+            { id: 1, title: 'KJSEA 2026 Revision Guide', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Comprehensive revision guide for KJSEA 2026.' },
+        ];
+        
+        staffUsers = [
+            { id: 1, name: 'David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', role: 'staff' },
+            { id: 2, name: 'Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', role: 'staff' },
+            { id: 3, name: 'Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', role: 'admin' },
+        ];
+        
+        studentUsers = [
+            { id: 1, student_id: 'S001', name: 'John Mwangi', class: 'Grade 8A' },
+            { id: 2, student_id: 'S002', name: 'Mary Wanjiru', class: 'Grade 7B' },
+            { id: 3, student_id: 'S003', name: 'Peter Kiprop', class: 'Grade 9A' },
+        ];
+        
+        parentUsers = [
+            { id: 1, parent_id: 'P001', name: 'James Mwangi', child_name: 'John Mwangi', child_class: 'Grade 8A' },
+            { id: 2, parent_id: 'P002', name: 'Ann Wanjiru', child_name: 'Mary Wanjiru', child_class: 'Grade 7B' },
+        ];
+        
+        activityLog = [
+            { action: '✅ Login successful', category: 'Security', time: new Date().toLocaleString() },
+        ];
     }
 
     // ────────────────────────────────────────────────
-    // FILTER & RENDER
+    // EXPORT DATA
     // ────────────────────────────────────────────────
-    function applyFiltersAndRender() {
-        let data = [...allItems];
+    function exportData() {
+        const data = {
+            posts: posts,
+            events: events,
+            meetings: meetings,
+            videos: videos,
+            staff: staffUsers,
+            students: studentUsers,
+            parents: parentUsers,
+            categories: categories,
+            exportedAt: new Date().toISOString()
+        };
         
-        if (currentFilter !== 'all') {
-            data = data.filter(item => item.category?.toLowerCase() === currentFilter);
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `mfa_data_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('📊 Data exported successfully!', 'success');
+        logActivity('📊 Exported data', 'Database');
+    }
+
+    // ────────────────────────────────────────────────
+    // AUTHENTICATION FUNCTIONS
+    // ────────────────────────────────────────────────
+    function handleLogin(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorEl = document.getElementById('loginError');
+        const errorMsg = document.getElementById('loginErrorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        errorEl.classList.remove('show');
+        document.getElementById('loginUsername').classList.remove('error');
+        document.getElementById('loginPassword').classList.remove('error');
+        
+        if (!username || !password) {
+            errorMsg.textContent = 'Please enter both username and password.';
+            errorEl.classList.add('show');
+            return;
         }
         
-        if (searchTerm.trim()) {
-            const term = searchTerm.toLowerCase().trim();
-            data = data.filter(item => 
-                (item.title || '').toLowerCase().includes(term) ||
-                (item.summary || item.content || '').toLowerCase().includes(term) ||
-                (item.category || '').toLowerCase().includes(term)
-            );
-        }
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Authenticating...';
+        
+        setTimeout(() => {
+            if (username === SECURITY.ADMIN_EMAIL && password === SECURITY.ADMIN_PASSWORD) {
+                currentUser = { email: username, name: 'Admin User' };
+                setSession(currentUser);
+                showToast('🔐 Login successful! Welcome back.', 'success');
+                showDashboard();
+                logActivity('✅ Login successful', 'Security');
+            } else {
+                errorMsg.textContent = 'Invalid email or password. Please try again.';
+                errorEl.classList.add('show');
+                document.getElementById('loginPassword').classList.add('error');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+                logActivity('❌ Failed login attempt', 'Security');
+            }
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Secure Login';
+        }, 1000);
+    }
 
-        // Sort
-        const sortBy = document.getElementById('sortSelect').value;
-        if (sortBy === 'newest') {
-            data.sort((a, b) => new Date(b.date) - new Date(a.date));
-        } else if (sortBy === 'oldest') {
-            data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        }
+    function showDashboard() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'flex';
+        document.getElementById('adminName').textContent = currentUser?.name || 'Admin User';
+        document.getElementById('adminEmail').textContent = currentUser?.email || 'admin@moiforces.ac.ke';
+        
+        startSessionTimer();
+        initSupabase();
+        connectToSupabase();
+        
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+    }
 
-        filteredData = data;
-        renderUpdates();
+    function handleLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            logActivity('🚪 Logged out', 'Security');
+            clearSession();
+            currentUser = null;
+            stopSessionTimer();
+            window.location.href = 'index.html';
+        }
+    }
+
+    function startSessionTimer() {
+        stopSessionTimer();
+        sessionTimerInterval = setInterval(() => {
+            if (!isSessionValid()) {
+                showToast('⏰ Session expired. Redirecting to homepage...', 'error');
+                clearSession();
+                currentUser = null;
+                stopSessionTimer();
+                setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+            } else {
+                const session = getSession();
+                const remaining = Math.max(0, Math.floor((session.expiresAt - Date.now()) / 60000));
+                document.getElementById('sessionTimer').textContent = `Session: ${remaining} min remaining`;
+            }
+        }, SECURITY.SESSION_CHECK_INTERVAL);
+    }
+
+    function stopSessionTimer() {
+        if (sessionTimerInterval) {
+            clearInterval(sessionTimerInterval);
+            sessionTimerInterval = null;
+        }
+    }
+
+    let activityLog = [];
+
+    function logActivity(action, category = 'General') {
+        const entry = { action, category, time: new Date().toLocaleString() };
+        activityLog.unshift(entry);
+        if (activityLog.length > 50) activityLog.pop();
+        renderActivityLog();
+        console.log(`[${new Date().toISOString()}] [${category}] ${action}`);
+    }
+
+    function renderActivityLog() {
+        const container = document.getElementById('activityLogList');
+        if (!container) return;
+        container.innerHTML = activityLog.slice(0, 10).map(entry => `
+            <div class="flex justify-between text-gray-600 border-b border-gray-200 pb-2">
+                <span>${entry.action}</span>
+                <span class="text-xs text-gray-400">${entry.time}</span>
+            </div>
+        `).join('');
     }
 
     // ────────────────────────────────────────────────
     // RENDER FUNCTIONS
     // ────────────────────────────────────────────────
-    function renderUpdates() {
-        const container = document.getElementById('updatesGrid');
-        if (!container) return;
-
-        const totalItems = filteredData.length;
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+    function renderAll() {
+        renderStats();
+        renderRecentPosts();
+        renderPostsList();
+        renderCalendarEvents();
+        renderMeetings();
+        renderVideos();
+        renderUsers();
+        renderActivityLog();
         
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = Math.min(start + itemsPerPage, totalItems);
-        const pageItems = filteredData.slice(start, end);
+        document.getElementById('postCount').textContent = posts.length;
+        document.getElementById('meetingCount').textContent = meetings.length;
+        document.getElementById('videoCount').textContent = videos.length;
+        document.getElementById('userCount').textContent = staffUsers.length + studentUsers.length + parentUsers.length;
+        document.getElementById('dbPostCount').textContent = posts.length;
+        document.getElementById('dbMeetingCount').textContent = meetings.length;
+        document.getElementById('dbUserCount').textContent = staffUsers.length + studentUsers.length + parentUsers.length;
+    }
 
-        document.getElementById('resultCount').textContent = totalItems;
+    function renderStats() {
+        const total = posts.length;
+        const published = posts.filter(p => p.status === 'published').length;
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statPublished').textContent = published;
+        document.getElementById('statVideos').textContent = videos.length;
+        document.getElementById('statMeetings').textContent = meetings.length;
+        document.getElementById('statStaff').textContent = staffUsers.length;
+        document.getElementById('statStudents').textContent = studentUsers.length;
+    }
 
-        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.max(1, totalPages)}`;
-        document.getElementById('prevPage').disabled = currentPage === 1;
-        document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
-
-        if (totalItems === 0) {
-            container.innerHTML = `
-                <div class="col-span-full text-center py-16">
-                    <i class="fas fa-search text-5xl text-gray-300 mb-4 block"></i>
-                    <h3 class="text-xl font-bold text-gray-600">No updates found</h3>
-                    <p class="text-gray-400 mt-2">Try adjusting your filters or search terms</p>
-                    <button onclick="resetFilters()" class="mt-4 bg-kdf-gold text-kdf-navy px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 transition">
-                        Reset Filters
-                    </button>
-                </div>
-            `;
+    function renderRecentPosts() {
+        const container = document.getElementById('recentPostsList');
+        const recent = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+        
+        if (recent.length === 0) {
+            container.innerHTML = `<div class="px-6 py-8 text-center text-gray-500 text-sm">No posts yet. Create your first post!</div>`;
             return;
         }
+        
+        container.innerHTML = recent.map(p => `
+            <div class="flex items-center justify-between px-6 py-3 hover:bg-gray-50 transition">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">${p.image || '📄'}</span>
+                    <div>
+                        <p class="font-medium text-kdf-navy">${p.title}</p>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="category-badge ${p.category}">${p.category}</span>
+                            <span class="status-badge ${p.status}">${p.status}</span>
+                            <span class="text-xs text-gray-400">${p.date}</span>
+                            <span class="text-xs text-green-600">🟢 Live</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="editPost(${p.id})" class="text-kdf-gold hover:text-kdf-red transition text-sm" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button onclick="deletePost(${p.id})" class="text-red-500 hover:text-red-700 transition text-sm" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `).join('');
+    }
 
-        container.innerHTML = pageItems.map(item => {
-            const categoryClass = item.category || 'default';
-            const isEvent = item.isEvent || false;
-            const isLive = !item.isEvent && typeof item.id === 'number';
+    function renderPostsList() {
+        const container = document.getElementById('postsList');
+        let filtered = posts;
+        if (currentFilter !== 'all') {
+            filtered = posts.filter(p => p.category === currentFilter);
+        }
+        
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="px-6 py-12 text-center text-gray-500 text-sm">No posts found in this category.</div>`;
+            return;
+        }
+        
+        container.innerHTML = filtered.map(p => `
+            <div class="flex flex-wrap items-center justify-between px-6 py-4 hover:bg-gray-50 transition gap-3">
+                <div class="flex items-center gap-3 flex-1 min-w-[200px]">
+                    <span class="text-2xl">${p.image || '📄'}</span>
+                    <div>
+                        <p class="font-medium text-kdf-navy">${p.title}</p>
+                        <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                            <span class="category-badge ${p.category}">${p.category}</span>
+                            <span class="status-badge ${p.status}">${p.status}</span>
+                            <span class="text-xs text-gray-400">${p.date}</span>
+                            <span class="text-xs text-green-600">🟢 Supabase</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="editPost(${p.id})" class="text-kdf-gold hover:text-kdf-red transition text-sm" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button onclick="deletePost(${p.id})" class="text-red-500 hover:text-red-700 transition text-sm" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderCalendarEvents() {
+        const container = document.getElementById('calendarEventsList');
+        if (events.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No events scheduled.</div>`;
+            return;
+        }
+        
+        container.innerHTML = events.map(e => `
+            <div class="flex items-center justify-between p-4 bg-kdf-gray rounded-xl hover:shadow-sm transition">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-kdf-red/10 flex items-center justify-center text-2xl text-kdf-red">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-kdf-navy">${e.title}</p>
+                        <p class="text-sm text-gray-600">${new Date(e.date || e.event_date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p class="text-sm text-gray-500">${e.description || 'No description'}</p>
+                        <p class="text-xs text-green-600 mt-1">✅ Synced to Supabase</p>
+                    </div>
+                </div>
+                <button onclick="deleteEvent(${e.id})" class="text-red-500 hover:text-red-700 transition" title="Delete Event">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    function renderMeetings() {
+        const container = document.getElementById('meetingsList');
+        if (meetings.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No meetings scheduled. Create one!</div>`;
+            return;
+        }
+        
+        container.innerHTML = meetings.map(m => `
+            <div class="meeting-card bg-kdf-gray rounded-xl p-4 border-l-4 border-kdf-light-blue hover:shadow-md transition">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">🎥</span>
+                            <h4 class="font-bold text-kdf-navy">${m.title}</h4>
+                            <span class="status-badge ${new Date(m.meeting_date) >= new Date() ? 'live' : 'completed'} text-xs">
+                                ${new Date(m.meeting_date) >= new Date() ? '🟢 Upcoming' : '✅ Completed'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">
+                            <i class="far fa-calendar-alt mr-1"></i> ${new Date(m.meeting_date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })} 
+                            at ${m.meeting_time}
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">${m.description || 'No description'}</p>
+                        <a href="${m.meeting_link}" target="_blank" class="inline-block mt-2 text-kdf-light-blue hover:text-blue-600 transition text-sm font-medium">
+                            <i class="fas fa-external-link-alt mr-1"></i> Join Meeting
+                        </a>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="deleteMeeting(${m.id})" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderVideos() {
+        const container = document.getElementById('videosList');
+        if (videos.length === 0) {
+            container.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8 text-sm">No videos in the library. Add one!</div>`;
+            return;
+        }
+        
+        container.innerHTML = videos.map(v => {
+            let videoId = '';
+            if (v.video_url) {
+                const match = v.video_url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+                if (match) videoId = match[1];
+            }
             
             return `
-                <div class="update-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100" onclick="openArticle('${item.id}')" role="button" tabindex="0" aria-label="Read more about ${item.title}">
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="text-3xl">${item.image || '📄'}</span>
-                            <span class="category-badge ${categoryClass}">${item.category || 'General'}</span>
-                            ${isEvent ? `<span class="event-date-badge">📅 Event</span>` : ''}
-                            ${isLive ? `<span class="text-xs text-kdf-gold ml-auto">🟢 Live</span>` : ''}
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition">
+                    <div class="video-embed">
+                        ${videoId ? 
+                            `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>` :
+                            `<div class="flex items-center justify-center h-full bg-kdf-gray text-gray-400">🎬 Video unavailable</div>`
+                        }
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="category-badge ${v.category || 'other'}">${v.category || 'General'}</span>
+                            <span class="text-xs text-gray-400">${new Date(v.created_at).toLocaleDateString()}</span>
                         </div>
-                        <h3 class="text-lg font-bold text-kdf-navy line-clamp-2">${item.title}</h3>
-                        <p class="text-sm text-gray-500 mt-1"><i class="far fa-calendar-alt mr-1"></i> ${new Date(item.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        ${isEvent ? `<p class="text-xs text-kdf-red mt-1"><i class="fas fa-calendar-check mr-1"></i> Event on ${new Date(item.eventDate || item.date).toLocaleDateString()}</p>` : ''}
-                        <p class="text-gray-600 mt-3 text-sm leading-relaxed line-clamp-3">${item.summary || item.content || 'No description'}</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-kdf-gold font-semibold text-sm hover:text-kdf-red transition">
-                                Read More <i class="fas fa-arrow-right ml-1"></i>
-                            </span>
-                            <button class="text-gray-400 hover:text-kdf-red transition" onclick="event.stopPropagation(); shareArticle('${item.id}')" aria-label="Share this article">
-                                <i class="fas fa-share-alt"></i>
+                        <h4 class="font-bold text-kdf-navy">${v.title}</h4>
+                        <p class="text-sm text-gray-500 mt-1">${v.description || 'No description'}</p>
+                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                            <a href="${v.video_url}" target="_blank" class="text-kdf-red hover:text-red-700 transition text-sm font-medium">
+                                <i class="fab fa-youtube mr-1"></i> Watch on YouTube
+                            </a>
+                            <button onclick="deleteVideo(${v.id})" class="text-red-500 hover:text-red-700 transition text-sm">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </div>
@@ -724,233 +1682,667 @@
     }
 
     // ────────────────────────────────────────────────
-    // ARTICLE MODAL
+    // USER MANAGEMENT FUNCTIONS
     // ────────────────────────────────────────────────
-    function openArticle(id) {
-        const article = allItems.find(item => String(item.id) === String(id));
-        if (!article) return;
-
-        document.getElementById('modalCategory').textContent = article.category || 'General';
-        document.getElementById('modalCategory').className = `category-badge ${article.category || 'default'}`;
-        document.getElementById('modalTitle').textContent = article.title;
-        document.getElementById('modalDate').textContent = new Date(article.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' });
-        document.getElementById('modalImage').textContent = article.image || '📄';
+    function renderUsers() {
+        const container = document.getElementById('usersList');
+        if (!container) return;
         
-        let content = article.content || article.summary || 'No content available.';
-        if (article.isEvent) {
-            content += `<div class="mt-4 p-4 bg-kdf-red/10 rounded-lg border border-kdf-red/20">
-                <p class="text-sm font-semibold text-kdf-red"><i class="fas fa-calendar-check mr-2"></i> Event Date: ${new Date(article.eventDate || article.date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                <p class="text-sm text-gray-600 mt-1">This is a calendar event from the school administration.</p>
-            </div>`;
-        }
-        document.getElementById('modalContent').innerHTML = content;
+        let allUsers = [];
         
-        document.getElementById('articleModal').classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        document.getElementById('articleModal').classList.remove('open');
-        document.body.style.overflow = '';
-    }
-
-    function shareArticle(id) {
-        const article = allItems.find(item => String(item.id) === String(id));
-        if (!article) return;
-        
-        if (navigator.share) {
-            navigator.share({
-                title: article.title,
-                text: article.summary || article.content || '',
-                url: window.location.href + '?article=' + id
-            }).catch(() => {});
-        } else {
-            const url = window.location.href + '?article=' + id;
-            navigator.clipboard.writeText(url).then(() => {
-                showToast('Link copied to clipboard!', 'success');
-            }).catch(() => {
-                prompt('Copy this link to share:', url);
-            });
-        }
-    }
-
-    // ────────────────────────────────────────────────
-    // FILTERS & SEARCH
-    // ────────────────────────────────────────────────
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            currentFilter = this.dataset.filter;
-            currentPage = 1;
-            applyFiltersAndRender();
+        // Add staff users with type
+        staffUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'staff', icon: '👨‍🏫', displayName: u.name, details: u.subject || 'Staff' });
         });
-    });
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-        searchTerm = this.value;
-        currentPage = 1;
-        applyFiltersAndRender();
-    });
-
-    document.getElementById('sortSelect').addEventListener('change', function() {
-        currentPage = 1;
-        applyFiltersAndRender();
-    });
-
-    function resetFilters() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
-        document.getElementById('searchInput').value = '';
-        document.getElementById('sortSelect').value = 'newest';
-        currentFilter = 'all';
-        searchTerm = '';
-        currentPage = 1;
-        applyFiltersAndRender();
-    }
-
-    // ────────────────────────────────────────────────
-    // PAGINATION
-    // ────────────────────────────────────────────────
-    document.getElementById('prevPage').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            renderUpdates();
-            window.scrollTo({ top: document.getElementById('updatesGrid').offsetTop - 120, behavior: 'smooth' });
-        }
-    });
-
-    document.getElementById('nextPage').addEventListener('click', function() {
-        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderUpdates();
-            window.scrollTo({ top: document.getElementById('updatesGrid').offsetTop - 120, behavior: 'smooth' });
-        }
-    });
-
-    // ────────────────────────────────────────────────
-    // SUBSCRIBE FORM
-    // ────────────────────────────────────────────────
-    function handleSubscribe(event) {
-        event.preventDefault();
-        const form = event.target;
-        const email = form.querySelector('input[type="email"]').value.trim();
-        const feedback = document.getElementById('subscribeFeedback');
         
-        if (!email) {
-            feedback.className = 'mt-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm';
-            feedback.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i> Please enter a valid email address.';
-            feedback.classList.remove('hidden');
+        // Add student users with type
+        studentUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'student', icon: '🎓', displayName: u.name, details: u.class || 'Student' });
+        });
+        
+        // Add parent users with type
+        parentUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'parent', icon: '👨‍👩‍👦', displayName: u.name, details: u.child_name || 'Parent' });
+        });
+        
+        // Apply filters
+        if (currentUserFilter !== 'all') {
+            allUsers = allUsers.filter(u => u.type === currentUserFilter);
+        }
+        
+        // Apply search
+        if (userSearchTerm.trim()) {
+            const term = userSearchTerm.toLowerCase().trim();
+            allUsers = allUsers.filter(u => 
+                (u.name || '').toLowerCase().includes(term) ||
+                (u.email || '').toLowerCase().includes(term) ||
+                (u.subject || '').toLowerCase().includes(term) ||
+                (u.class || '').toLowerCase().includes(term) ||
+                (u.child_name || '').toLowerCase().includes(term) ||
+                (u.student_id || '').toLowerCase().includes(term)
+            );
+        }
+        
+        document.getElementById('userCount').textContent = allUsers.length;
+        
+        if (allUsers.length === 0) {
+            container.innerHTML = `<div class="px-6 py-12 text-center text-gray-500 text-sm">No users found matching your criteria.</div>`;
             return;
         }
-
-        feedback.className = 'mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm';
-        feedback.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Thank you for subscribing! You\'ll receive our latest updates.';
-        feedback.classList.remove('hidden');
-        form.reset();
         
-        setTimeout(() => feedback.classList.add('hidden'), 5000);
+        container.innerHTML = allUsers.map(u => `
+            <div class="user-card flex flex-wrap items-center justify-between px-6 py-4 hover:bg-gray-50 transition gap-3">
+                <div class="flex items-center gap-3 flex-1 min-w-[200px]">
+                    <div class="w-10 h-10 rounded-full ${u.type === 'staff' ? 'bg-kdf-navy' : u.type === 'student' ? 'bg-kdf-light-blue' : 'bg-kdf-red'} flex items-center justify-center text-white font-bold text-sm">
+                        ${u.name ? u.name.charAt(0).toUpperCase() : '?'}
+                    </div>
+                    <div>
+                        <p class="font-medium text-kdf-navy">${u.name || 'Unknown'}</p>
+                        <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                            <span class="text-xs px-2 py-0.5 rounded-full ${u.type === 'staff' ? 'bg-kdf-navy/10 text-kdf-navy' : u.type === 'student' ? 'bg-kdf-light-blue/10 text-kdf-light-blue' : 'bg-kdf-red/10 text-kdf-red'}">
+                                ${u.icon} ${u.type.charAt(0).toUpperCase() + u.type.slice(1)}
+                            </span>
+                            <span class="text-xs text-gray-500">${u.details || ''}</span>
+                            ${u.email ? `<span class="text-xs text-gray-400">${u.email}</span>` : ''}
+                            ${u.student_id ? `<span class="text-xs text-gray-400">ID: ${u.student_id}</span>` : ''}
+                            ${u.parent_id ? `<span class="text-xs text-gray-400">ID: ${u.parent_id}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="viewUser('${u.id}', '${u.type}')" class="text-kdf-gold hover:text-kdf-red transition text-sm px-3 py-1.5 border border-kdf-gold rounded-lg">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                    <button onclick="deleteUser('${u.id}', '${u.type}')" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterUsers(type) {
+        currentUserFilter = type;
+        document.querySelectorAll('#tab-users .filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === type);
+        });
+        renderUsers();
+    }
+
+    function searchUsers(term) {
+        userSearchTerm = term;
+        renderUsers();
+    }
+
+    function globalSearch(term) {
+        // Search across users, posts, meetings
+        const searchTerm = term.toLowerCase().trim();
+        
+        // Show results in a toast or switch to relevant tab
+        if (searchTerm.length > 0) {
+            let results = [];
+            
+            // Search staff
+            staffUsers.forEach(u => {
+                if ((u.name || '').toLowerCase().includes(searchTerm) || (u.email || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Staff', name: u.name, details: u.subject || 'Staff' });
+                }
+            });
+            
+            // Search students
+            studentUsers.forEach(u => {
+                if ((u.name || '').toLowerCase().includes(searchTerm) || (u.student_id || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Student', name: u.name, details: u.class || 'Student' });
+                }
+            });
+            
+            // Search posts
+            posts.forEach(p => {
+                if ((p.title || '').toLowerCase().includes(searchTerm) || (p.content || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Post', name: p.title, details: p.category || 'Post' });
+                }
+            });
+            
+            if (results.length > 0) {
+                const message = results.slice(0, 5).map(r => `${r.type}: ${r.name}`).join('\n');
+                showToast(`🔍 Found ${results.length} results:\n${message}`, 'success');
+                switchTab('users');
+            } else {
+                showToast('🔍 No results found for "' + term + '"', 'error');
+            }
+        }
+    }
+
+    function viewUser(id, type) {
+        let user;
+        if (type === 'staff') {
+            user = staffUsers.find(u => u.id == id);
+        } else if (type === 'student') {
+            user = studentUsers.find(u => u.id == id);
+        } else {
+            user = parentUsers.find(u => u.id == id);
+        }
+        
+        if (user) {
+            const details = Object.entries(user).map(([key, value]) => `${key}: ${value}`).join('\n');
+            showToast(`👤 User Details:\n${details}`, 'success');
+        }
+    }
+
+    async function deleteUser(id, type) {
+        if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+        
+        let table;
+        if (type === 'staff') table = 'staff_users';
+        else if (type === 'student') table = 'students';
+        else table = 'parents';
+        
+        try {
+            const { error } = await sbClient.from(table).delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            
+            if (type === 'staff') {
+                staffUsers = staffUsers.filter(u => u.id != id);
+            } else if (type === 'student') {
+                studentUsers = studentUsers.filter(u => u.id != id);
+            } else {
+                parentUsers = parentUsers.filter(u => u.id != id);
+            }
+            
+            renderUsers();
+            renderStats();
+            showToast(`✅ ${type} deleted successfully!`, 'success');
+            logActivity(`🗑️ Deleted ${type}: ${id}`, 'Users');
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            showToast('❌ Failed to delete user.', 'error');
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // POST CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    function handleCreatePost(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('postTitle').value.trim();
+        const category = document.getElementById('postCategory').value;
+        const content = document.getElementById('postContent').value.trim();
+        const status = document.getElementById('postStatus').value;
+        const scheduleDate = document.getElementById('postSchedule').value;
+        const image = document.getElementById('postImage').value.trim() || '📄';
+        
+        if (!title || !content) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        const postData = {
+            title,
+            category,
+            content,
+            status,
+            date: status === 'scheduled' ? scheduleDate || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            image,
+            created_at: new Date().toISOString()
+        };
+        
+        savePostToSupabase(postData).then(result => {
+            if (result) {
+                const savedPost = { ...postData, id: result.id };
+                posts.unshift(savedPost);
+                renderAll();
+                document.getElementById('postForm').reset();
+                document.getElementById('postImage').value = '';
+                
+                logActivity(`📝 Created post: "${title}"`, 'Content');
+                showToast(`✅ Post "${title}" published and synced to Supabase!`, 'success');
+                switchTab('posts');
+            } else {
+                const newPost = { ...postData, id: Date.now() };
+                posts.unshift(newPost);
+                renderAll();
+                document.getElementById('postForm').reset();
+                document.getElementById('postImage').value = '';
+                
+                logActivity(`📝 Created post: "${title}" (local only)`, 'Content');
+                showToast(`⚠️ Post "${title}" saved locally (Supabase sync failed)`, 'error');
+                switchTab('posts');
+            }
+        }).catch(err => {
+            console.error('Error saving to Supabase:', err);
+            const newPost = { ...postData, id: Date.now() };
+            posts.unshift(newPost);
+            renderAll();
+            document.getElementById('postForm').reset();
+            document.getElementById('postImage').value = '';
+            
+            logActivity(`📝 Created post: "${title}" (local only)`, 'Content');
+            showToast(`⚠️ Post "${title}" saved locally (Supabase sync failed)`, 'error');
+            switchTab('posts');
+        });
+    }
+
+    function deletePost(id) {
+        if (!confirm('Are you sure you want to delete this post?')) return;
+        const post = posts.find(p => p.id === id);
+        
+        deletePostFromSupabase(id).then(success => {
+            if (success) {
+                posts = posts.filter(p => p.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted post: "${post?.title}"`, 'Content');
+                showToast(`Post "${post?.title}" deleted from Supabase.`, 'success');
+            } else {
+                posts = posts.filter(p => p.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted post: "${post?.title}" (local only)`, 'Content');
+                showToast(`Post "${post?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
+    }
+
+    function editPost(id) {
+        const post = posts.find(p => p.id === id);
+        if (!post) return;
+        
+        document.getElementById('postTitle').value = post.title;
+        document.getElementById('postCategory').value = post.category;
+        document.getElementById('postContent').value = post.content;
+        document.getElementById('postStatus').value = post.status;
+        document.getElementById('postImage').value = post.image || '';
+        
+        switchTab('create');
+        showToast('Edit the post and click Publish to update.', 'success');
+        posts = posts.filter(p => p.id !== id);
+        renderAll();
+    }
+
+    // ────────────────────────────────────────────────
+    // EVENT CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    function openEventModal() {
+        document.getElementById('eventModal').classList.add('open');
+        document.getElementById('eventForm').reset();
+    }
+
+    function closeEventModal() {
+        document.getElementById('eventModal').classList.remove('open');
+    }
+
+    function handleAddEvent(e) {
+        e.preventDefault();
+        const title = document.getElementById('eventTitle').value.trim();
+        const date = document.getElementById('eventDate').value;
+        const description = document.getElementById('eventDescription').value.trim();
+        
+        if (!title || !date) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        const eventData = {
+            title,
+            date: date,
+            event_date: date,
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        saveEventToSupabase(eventData).then(result => {
+            if (result) {
+                const savedEvent = { ...eventData, id: result.id };
+                events.push(savedEvent);
+                renderAll();
+                closeEventModal();
+                logActivity(`📅 Added event: "${title}"`, 'Calendar');
+                showToast(`✅ Event "${title}" added and synced to Supabase!`, 'success');
+            } else {
+                const newEvent = { ...eventData, id: Date.now() };
+                events.push(newEvent);
+                renderAll();
+                closeEventModal();
+                logActivity(`📅 Added event: "${title}" (local only)`, 'Calendar');
+                showToast(`⚠️ Event "${title}" saved locally (Supabase sync failed)`, 'error');
+            }
+        }).catch(err => {
+            console.error('Error saving event to Supabase:', err);
+            const newEvent = { ...eventData, id: Date.now() };
+            events.push(newEvent);
+            renderAll();
+            closeEventModal();
+            logActivity(`📅 Added event: "${title}" (local only)`, 'Calendar');
+            showToast(`⚠️ Event "${title}" saved locally (Supabase sync failed)`, 'error');
+        });
+    }
+
+    function deleteEvent(id) {
+        if (!confirm('Are you sure you want to delete this event?')) return;
+        const event = events.find(e => e.id === id);
+        
+        deleteEventFromSupabase(id).then(success => {
+            if (success) {
+                events = events.filter(e => e.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted event: "${event?.title}"`, 'Calendar');
+                showToast(`Event "${event?.title}" deleted from Supabase.`, 'success');
+            } else {
+                events = events.filter(e => e.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted event: "${event?.title}" (local only)`, 'Calendar');
+                showToast(`Event "${event?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
+    }
+
+    // ────────────────────────────────────────────────
+    // MEETING CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    function openMeetingModal() {
+        document.getElementById('meetingModal').classList.add('open');
+        document.getElementById('meetingForm').reset();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('meetingDate').value = today;
+    }
+
+    function closeMeetingModal() {
+        document.getElementById('meetingModal').classList.remove('open');
+    }
+
+    function handleCreateMeeting(e) {
+        e.preventDefault();
+        const title = document.getElementById('meetingTitle').value.trim();
+        const date = document.getElementById('meetingDate').value;
+        const time = document.getElementById('meetingTime').value;
+        const link = document.getElementById('meetingLink').value.trim();
+        const description = document.getElementById('meetingDescription').value.trim();
+        
+        if (!title || !date || !time || !link) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        const meetingData = {
+            title,
+            meeting_date: date,
+            meeting_time: time,
+            meeting_link: link,
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        saveMeetingToSupabase(meetingData).then(result => {
+            if (result) {
+                const savedMeeting = { ...meetingData, id: result.id };
+                meetings.push(savedMeeting);
+                renderAll();
+                closeMeetingModal();
+                logActivity(`🎥 Created meeting: "${title}"`, 'Meetings');
+                showToast(`✅ Meeting "${title}" created and synced to Supabase!`, 'success');
+                switchTab('meetings');
+            } else {
+                const newMeeting = { ...meetingData, id: Date.now() };
+                meetings.push(newMeeting);
+                renderAll();
+                closeMeetingModal();
+                logActivity(`🎥 Created meeting: "${title}" (local only)`, 'Meetings');
+                showToast(`⚠️ Meeting "${title}" saved locally (Supabase sync failed)`, 'error');
+                switchTab('meetings');
+            }
+        }).catch(err => {
+            console.error('Error saving meeting to Supabase:', err);
+            const newMeeting = { ...meetingData, id: Date.now() };
+            meetings.push(newMeeting);
+            renderAll();
+            closeMeetingModal();
+            logActivity(`🎥 Created meeting: "${title}" (local only)`, 'Meetings');
+            showToast(`⚠️ Meeting "${title}" saved locally (Supabase sync failed)`, 'error');
+            switchTab('meetings');
+        });
+    }
+
+    function deleteMeeting(id) {
+        if (!confirm('Are you sure you want to delete this meeting?')) return;
+        const meeting = meetings.find(m => m.id === id);
+        
+        deleteMeetingFromSupabase(id).then(success => {
+            if (success) {
+                meetings = meetings.filter(m => m.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted meeting: "${meeting?.title}"`, 'Meetings');
+                showToast(`Meeting "${meeting?.title}" deleted from Supabase.`, 'success');
+            } else {
+                meetings = meetings.filter(m => m.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted meeting: "${meeting?.title}" (local only)`, 'Meetings');
+                showToast(`Meeting "${meeting?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
+    }
+
+    // ────────────────────────────────────────────────
+    // VIDEO CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    function openVideoModal() {
+        document.getElementById('videoModal').classList.add('open');
+        document.getElementById('videoForm').reset();
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').classList.remove('open');
+    }
+
+    function handleAddVideo(e) {
+        e.preventDefault();
+        const title = document.getElementById('videoTitle').value.trim();
+        const url = document.getElementById('videoUrl').value.trim();
+        const category = document.getElementById('videoCategory').value;
+        const description = document.getElementById('videoDescription').value.trim();
+        
+        if (!title || !url) {
+            showToast('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        const videoData = {
+            title,
+            video_url: url,
+            category,
+            description,
+            created_at: new Date().toISOString()
+        };
+        
+        saveVideoToSupabase(videoData).then(result => {
+            if (result) {
+                const savedVideo = { ...videoData, id: result.id };
+                videos.push(savedVideo);
+                renderAll();
+                closeVideoModal();
+                logActivity(`🎬 Added video: "${title}"`, 'Videos');
+                showToast(`✅ Video "${title}" added and synced to Supabase!`, 'success');
+                switchTab('videos');
+            } else {
+                const newVideo = { ...videoData, id: Date.now() };
+                videos.push(newVideo);
+                renderAll();
+                closeVideoModal();
+                logActivity(`🎬 Added video: "${title}" (local only)`, 'Videos');
+                showToast(`⚠️ Video "${title}" saved locally (Supabase sync failed)`, 'error');
+                switchTab('videos');
+            }
+        }).catch(err => {
+            console.error('Error saving video to Supabase:', err);
+            const newVideo = { ...videoData, id: Date.now() };
+            videos.push(newVideo);
+            renderAll();
+            closeVideoModal();
+            logActivity(`🎬 Added video: "${title}" (local only)`, 'Videos');
+            showToast(`⚠️ Video "${title}" saved locally (Supabase sync failed)`, 'error');
+            switchTab('videos');
+        });
+    }
+
+    function deleteVideo(id) {
+        if (!confirm('Are you sure you want to delete this video?')) return;
+        const video = videos.find(v => v.id === id);
+        
+        deleteVideoFromSupabase(id).then(success => {
+            if (success) {
+                videos = videos.filter(v => v.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted video: "${video?.title}"`, 'Videos');
+                showToast(`Video "${video?.title}" deleted from Supabase.`, 'success');
+            } else {
+                videos = videos.filter(v => v.id !== id);
+                renderAll();
+                logActivity(`🗑️ Deleted video: "${video?.title}" (local only)`, 'Videos');
+                showToast(`Video "${video?.title}" removed locally (Supabase delete failed)`, 'error');
+            }
+        });
+    }
+
+    // ────────────────────────────────────────────────
+    // FILTER & TAB MANAGEMENT
+    // ────────────────────────────────────────────────
+    function filterPosts(category) {
+        currentFilter = category;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === category);
+        });
+        renderPostsList();
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById(`tab-${tab}`);
+        if (target) target.classList.remove('hidden');
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.toggle('active', link.dataset.tab === tab);
+        });
+        
+        const titles = {
+            dashboard: 'Dashboard',
+            users: 'User Management',
+            posts: 'All Posts',
+            create: 'Create Post',
+            calendar: 'Calendar Manager',
+            meetings: 'Virtual Meetings',
+            videos: 'Video Library',
+            categories: 'Categories',
+            settings: 'Settings',
+            security: 'Security',
+            database: 'Database'
+        };
+        document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
+        document.getElementById('sidebar').classList.add('closed');
+    }
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('closed');
     }
 
     // ────────────────────────────────────────────────
     // TOAST NOTIFICATION
     // ────────────────────────────────────────────────
     function showToast(message, type = 'success') {
-        const existing = document.querySelector('.toast-notification');
-        if (existing) existing.remove();
-        
-        const toast = document.createElement('div');
-        toast.className = `toast-notification fixed bottom-6 right-6 z-50 px-6 py-3 rounded-xl text-white font-medium shadow-lg transition-all transform translate-y-20 opacity-0 ${type === 'success' ? 'bg-kdf-navy border-l-4 border-kdf-gold' : 'bg-red-700 border-l-4 border-red-500'}`;
-        toast.innerHTML = `
-            <div class="flex items-center gap-3">
-                <span>${type === 'success' ? '✅' : '❌'}</span>
-                <span>${message}</span>
-            </div>
-        `;
-        document.body.appendChild(toast);
-        
-        requestAnimationFrame(() => {
-            toast.classList.remove('translate-y-20', 'opacity-0');
-        });
-        
-        setTimeout(() => {
-            toast.classList.add('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.remove(), 400);
-        }, 4000);
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 5000);
     }
 
     // ────────────────────────────────────────────────
-    // KEYBOARD SUPPORT
+    // CHECK SESSION ON LOAD
+    // ────────────────────────────────────────────────
+    function checkSessionOnLoad() {
+        if (isSessionValid()) {
+            const session = getSession();
+            currentUser = session.user;
+            showDashboard();
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
+            initSupabase();
+            connectToSupabase();
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // KEYBOARD SHORTCUTS
     // ────────────────────────────────────────────────
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
+        if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+            e.preventDefault();
+            if (isSessionValid()) handleLogout();
         }
-        if (e.key === 'Enter' && document.activeElement?.classList.contains('update-card')) {
-            document.activeElement.click();
+        if (e.key === 'Escape') {
+            closeEventModal();
+            closeMeetingModal();
+            closeVideoModal();
+        }
+        if (e.ctrlKey && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('globalSearchInput').focus();
         }
     });
 
     // ────────────────────────────────────────────────
-    // MOBILE MENU
+    // EXPOSE TO GLOBAL
+    // ────────────────────────────────────────────────
+    window.switchTab = switchTab;
+    window.toggleSidebar = toggleSidebar;
+    window.filterPosts = filterPosts;
+    window.filterUsers = filterUsers;
+    window.searchUsers = searchUsers;
+    window.globalSearch = globalSearch;
+    window.viewUser = viewUser;
+    window.deleteUser = deleteUser;
+    window.handleCreatePost = handleCreatePost;
+    window.deletePost = deletePost;
+    window.editPost = editPost;
+    window.openEventModal = openEventModal;
+    window.closeEventModal = closeEventModal;
+    window.handleAddEvent = handleAddEvent;
+    window.deleteEvent = deleteEvent;
+    window.openMeetingModal = openMeetingModal;
+    window.closeMeetingModal = closeMeetingModal;
+    window.handleCreateMeeting = handleCreateMeeting;
+    window.deleteMeeting = deleteMeeting;
+    window.openVideoModal = openVideoModal;
+    window.closeVideoModal = closeVideoModal;
+    window.handleAddVideo = handleAddVideo;
+    window.deleteVideo = deleteVideo;
+    window.showToast = showToast;
+    window.handleLogin = handleLogin;
+    window.handleLogout = handleLogout;
+    window.syncWithSupabase = syncWithSupabase;
+    window.exportData = exportData;
+
+    // ────────────────────────────────────────────────
+    // INIT
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
-        initSupabase();
+        checkSessionOnLoad();
         
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        if (menuToggle && mobileMenu) {
-            menuToggle.addEventListener('click', function() {
-                const isOpen = mobileMenu.classList.toggle('open');
-                menuToggle.setAttribute('aria-expanded', isOpen);
-                menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-            });
-        }
-
-        document.querySelectorAll('#mobileMenu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            });
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('[onclick="toggleSidebar()"]');
+            if (window.innerWidth < 768 && !sidebar.contains(e.target) && !toggle?.contains(e.target)) {
+                sidebar.classList.add('closed');
+            }
         });
-
-        document.getElementById('articleModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        // Fetch data from Supabase
-        fetchPostsFromSupabase();
-
-        // Handle URL params for direct article links
-        const params = new URLSearchParams(window.location.search);
-        const articleId = params.get('article');
-        if (articleId) {
-            setTimeout(() => {
-                const id = articleId;
-                if (allItems.some(item => String(item.id) === String(id))) {
-                    openArticle(id);
-                }
-            }, 1000);
-        }
     });
 
-    // ────────────────────────────────────────────────
-    // EXPOSE FUNCTIONS TO GLOBAL SCOPE
-    // ────────────────────────────────────────────────
-    window.openArticle = openArticle;
-    window.closeModal = closeModal;
-    window.shareArticle = shareArticle;
-    window.resetFilters = resetFilters;
-    window.handleSubscribe = handleSubscribe;
-    window.showToast = showToast;
-
-    console.log('📰 Updates page loaded successfully!');
+    console.log('🔒 MFA Admin Dashboard with Supabase loaded successfully!');
     console.log('📊 Connected to Supabase PostgreSQL');
-    console.log('🔑 Supabase URL:', SUPABASE_URL);
-    console.log('♿ Accessibility features enabled');
+    console.log('👥 User Management: Staff, Students, Parents');
+    console.log('🎥 Virtual Meeting and Video Library features enabled');
+    console.log('🔍 Global Search: Ctrl+F to search users and content');
+    console.log('🛡️ Security features: Session management, activity logging');
+    console.log('🏠 Logout redirects to Moi Forces Academy homepage');
 </script>
 </body>
 </html>
