@@ -51,15 +51,16 @@
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
+            bottom: 0;
+            left: 50%;
             width: 0;
             height: 2px;
             background: #D4A017;
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
         .nav-link:hover::after,
-        .nav-link.active::after { width: 100%; }
+        .nav-link.active::after { width: 60%; }
         .nav-link:hover { color: #D4A017; }
         
         .mobile-menu {
@@ -91,6 +92,14 @@
         .stat-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        
+        .task-card {
+            transition: all 0.3s ease;
+        }
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         }
         
         .admin-btn {
@@ -206,23 +215,54 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         
-        .user-card {
+        .category-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .category-badge.news { background: #dbeafe; color: #1e40af; }
+        .category-badge.updates { background: #fef3c7; color: #92400e; }
+        .category-badge.events { background: #d1fae5; color: #065f46; }
+        .category-badge.calendar { background: #ede9fe; color: #5b21b6; }
+        .category-badge.meeting { background: #fce7f3; color: #be185d; }
+        .category-badge.video { background: #dbeafe; color: #1e40af; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .status-badge.published { background: #d1fae5; color: #065f46; }
+        .status-badge.scheduled { background: #fef3c7; color: #92400e; }
+        .status-badge.draft { background: #f3f4f6; color: #6b7280; }
+        .status-badge.live { background: #fee2e2; color: #991b1b; }
+        
+        .meeting-card {
             transition: all 0.3s ease;
         }
-        .user-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        .meeting-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
         
-        .tab-btn {
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
+        .video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
         }
-        .tab-btn:hover { color: #0a1a3a; }
-        .tab-btn.active {
-            border-bottom-color: #D4A017;
-            color: #0a1a3a;
-            font-weight: 600;
+        .video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
         
         .form-input {
@@ -235,6 +275,20 @@
             background: #fff;
         }
         .form-input:focus {
+            outline: none;
+            border-color: #D4A017;
+            box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.12);
+        }
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #fff;
+            transition: border-color 0.3s ease;
+        }
+        .form-select:focus {
             outline: none;
             border-color: #D4A017;
             box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.12);
@@ -304,7 +358,7 @@
         <div class="text-center mb-8">
             <div class="w-20 h-20 rounded-full bg-kdf-red flex items-center justify-center text-white text-3xl font-bold border-3 border-kdf-gold mx-auto mb-4">👨‍🏫</div>
             <h2 class="text-white font-display text-2xl font-bold">Staff Portal</h2>
-            <p class="text-gray-400 text-sm mt-1">Sign in or create your staff account</p>
+            <p class="text-gray-400 text-sm mt-1">Secure access for MFA staff members</p>
         </div>
         
         <div id="loginError" class="login-error">
@@ -312,53 +366,18 @@
             <span id="loginErrorMessage">Invalid credentials. Please try again.</span>
         </div>
         
-        <!-- Login/Register Tabs -->
-        <div class="flex gap-2 mb-6">
-            <button onclick="switchAuthTab('login')" id="loginTab" class="tab-btn active flex-1 py-2 text-center text-white/70 hover:text-white transition text-sm font-medium">Sign In</button>
-            <button onclick="switchAuthTab('register')" id="registerTab" class="tab-btn flex-1 py-2 text-center text-white/70 hover:text-white transition text-sm font-medium">Create Account</button>
-        </div>
-        
-        <!-- Login Form -->
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="mb-4">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Email Address</label>
-                <input type="email" id="loginEmail" class="login-input" placeholder="staff@moiforces.ac.ke" required />
+                <label class="block text-white/70 text-sm font-medium mb-1.5">Staff Email</label>
+                <input type="email" id="loginEmail" class="login-input" placeholder="staff@moiforces.ac.ke" value="staff@moiforces.ac.ke" required />
             </div>
             <div class="mb-5">
                 <label class="block text-white/70 text-sm font-medium mb-1.5">Password</label>
-                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" required />
+                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" value="Staff@2026" required />
             </div>
             <button type="submit" id="loginBtn" class="login-btn">
                 <i class="fas fa-lock mr-2"></i> Sign In
             </button>
-        </form>
-        
-        <!-- Register Form -->
-        <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
-            <div class="mb-3">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Full Name <span class="text-kdf-red">*</span></label>
-                <input type="text" id="regName" class="login-input" placeholder="Enter your full name" required />
-            </div>
-            <div class="mb-3">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Email Address <span class="text-kdf-red">*</span></label>
-                <input type="email" id="regEmail" class="login-input" placeholder="staff@moiforces.ac.ke" required />
-            </div>
-            <div class="mb-3">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Subject/Specialization <span class="text-kdf-red">*</span></label>
-                <input type="text" id="regSubject" class="login-input" placeholder="e.g. Mathematics, English, Science" required />
-            </div>
-            <div class="mb-3">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Password <span class="text-kdf-red">*</span></label>
-                <input type="password" id="regPassword" class="login-input" placeholder="Min 6 characters" required minlength="6" />
-            </div>
-            <div class="mb-4">
-                <label class="block text-white/70 text-sm font-medium mb-1.5">Confirm Password <span class="text-kdf-red">*</span></label>
-                <input type="password" id="regConfirmPassword" class="login-input" placeholder="Confirm your password" required />
-            </div>
-            <button type="submit" id="registerBtn" class="login-btn">
-                <i class="fas fa-user-plus mr-2"></i> Create Account
-            </button>
-            <p class="text-xs text-gray-500 mt-3 text-center">By creating an account, you agree to our terms and conditions.</p>
         </form>
         
         <div class="text-center mt-4">
@@ -380,8 +399,8 @@
                     <p class="text-sm text-gray-500"><span id="staffSubject" class="font-medium text-kdf-navy">Mathematics</span> • <span id="staffEmail" class="text-gray-400"></span></p>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="openUserManagement()" class="bg-kdf-gold text-kdf-navy px-5 py-2.5 rounded-lg font-semibold hover:bg-yellow-400 transition flex items-center gap-2">
-                        <i class="fas fa-users-cog"></i> Manage Users
+                    <button onclick="openMeetingModal()" class="bg-kdf-light-blue text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition flex items-center gap-2">
+                        <i class="fas fa-video"></i> Create Meeting
                     </button>
                     <button onclick="handleLogout()" class="bg-kdf-red text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-red-800 transition flex items-center gap-2">
                         <i class="fas fa-sign-out-alt"></i> Logout
@@ -409,11 +428,11 @@
                 </div>
                 <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
-                        <span class="text-2xl text-kdf-red">📝</span>
-                        <span class="text-xs text-kdf-gold font-semibold">Assignments</span>
+                        <span class="text-2xl text-kdf-light-blue">🎥</span>
+                        <span class="text-xs text-kdf-gold font-semibold">Meetings</span>
                     </div>
-                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="assignmentCount">0</p>
-                    <p class="text-sm text-gray-500">Pending Grading</p>
+                    <p class="text-2xl font-bold text-kdf-navy mt-2" id="meetingCount">0</p>
+                    <p class="text-sm text-gray-500">Virtual Meetings</p>
                 </div>
                 <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-200">
                     <div class="flex items-center justify-between">
@@ -426,12 +445,16 @@
             </div>
             
             <!-- Quick Actions -->
-            <div class="grid sm:grid-cols-3 gap-4 mb-8">
-                <div onclick="showToast('📝 Create Assignment feature coming soon!', 'success')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3 cursor-pointer">
-                    <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
-                    <span class="font-medium">Create Assignment</span>
+            <div class="grid sm:grid-cols-4 gap-4 mb-8">
+                <div onclick="openMeetingModal()" class="bg-kdf-light-blue text-white p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-video text-xl text-kdf-gold"></i>
+                    <span class="font-medium">Create Meeting</span>
                 </div>
-                <div onclick="showToast('📅 View Schedule feature coming soon!', 'success')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3 cursor-pointer">
+                <div onclick="switchTab('my-meetings')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3 cursor-pointer">
+                    <i class="fas fa-calendar-check text-xl text-kdf-gold"></i>
+                    <span class="font-medium">My Meetings</span>
+                </div>
+                <div onclick="switchTab('schedule')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3 cursor-pointer">
                     <i class="fas fa-calendar-plus text-xl text-kdf-gold"></i>
                     <span class="font-medium">View Schedule</span>
                 </div>
@@ -441,23 +464,42 @@
                 </div>
             </div>
             
-            <!-- Today's Schedule -->
+            <!-- Today's Schedule & Meetings -->
             <div class="grid lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <h3 class="font-bold text-kdf-navy">📋 Today's Schedule</h3>
                         <span class="text-xs text-gray-500" id="currentDate"></span>
                     </div>
-                    <div id="scheduleList" class="divide-y divide-gray-100">
-                        <!-- Rendered by JS -->
-                    </div>
+                    <div id="scheduleList" class="divide-y divide-gray-100"></div>
                 </div>
                 
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h3 class="font-bold text-kdf-navy mb-4">📢 Quick Announcements</h3>
-                    <div id="announcementsList" class="space-y-3">
-                        <!-- Rendered by JS -->
+                    <div id="announcementsList" class="space-y-3"></div>
+                </div>
+            </div>
+            
+            <!-- My Meetings Tab -->
+            <div id="tab-my-meetings" class="tab-content hidden mt-8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                        <h3 class="text-xl font-bold text-kdf-navy">🎥 My Virtual Meetings</h3>
+                        <button onclick="openMeetingModal()" class="bg-kdf-light-blue text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-600 transition">
+                            <i class="fas fa-plus mr-2"></i> Create Meeting
+                        </button>
                     </div>
+                    <div id="myMeetingsList" class="space-y-4"></div>
+                </div>
+            </div>
+            
+            <!-- Schedule Tab -->
+            <div id="tab-schedule" class="tab-content hidden mt-8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="font-bold text-kdf-navy">📅 Full Weekly Schedule</h3>
+                    </div>
+                    <div id="fullScheduleList" class="overflow-x-auto"></div>
                 </div>
             </div>
             
@@ -491,117 +533,83 @@
     </div>
 </div>
 
-<!-- User Management Modal -->
-<div id="userManagementModal" class="modal-overlay">
+<!-- ════════════════════════════════════════ -->
+<!-- MEETING MODAL -->
+<!-- ════════════════════════════════════════ -->
+<div id="meetingModal" class="modal-overlay">
     <div class="modal-box">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-kdf-navy">👥 Manage Staff Users</h3>
-            <button onclick="closeUserManagement()" class="text-gray-400 hover:text-gray-600 text-2xl transition">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <!-- User Management Tabs -->
-        <div class="flex gap-2 mb-4 border-b border-gray-200">
-            <button onclick="switchUserTab('list')" id="userListTab" class="tab-btn active px-4 py-2 text-sm font-medium text-gray-600 hover:text-kdf-navy transition">All Users</button>
-            <button onclick="switchUserTab('add')" id="userAddTab" class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-kdf-navy transition">Add User</button>
-        </div>
-        
-        <!-- User List -->
-        <div id="userListContent">
-            <div id="userList" class="space-y-3 max-h-96 overflow-y-auto">
-                <!-- Rendered by JS -->
+        <h3 class="text-xl font-bold text-kdf-navy mb-4">🎥 Create Virtual Meeting</h3>
+        <form id="meetingForm" onsubmit="handleCreateMeeting(event)">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Title <span class="text-kdf-red">*</span></label>
+                <input type="text" id="meetingTitle" class="form-input" placeholder="e.g. Grade 9 Mathematics Session" required />
             </div>
-        </div>
-        
-        <!-- Add User Form -->
-        <div id="userAddContent" style="display:none;">
-            <form id="addUserForm" onsubmit="handleAddUser(event)">
-                <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-kdf-red">*</span></label>
-                    <input type="text" id="addName" class="form-input" placeholder="Enter full name" required />
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date <span class="text-kdf-red">*</span></label>
+                    <input type="date" id="meetingDate" class="form-input" required />
                 </div>
-                <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-kdf-red">*</span></label>
-                    <input type="email" id="addEmail" class="form-input" placeholder="staff@moiforces.ac.ke" required />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Time <span class="text-kdf-red">*</span></label>
+                    <input type="time" id="meetingTime" class="form-input" required />
                 </div>
-                <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Subject/Specialization <span class="text-kdf-red">*</span></label>
-                    <input type="text" id="addSubject" class="form-input" placeholder="e.g. Mathematics" required />
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                    <select id="addRole" class="form-input">
-                        <option value="staff">Staff</option>
-                        <option value="admin">Admin</option>
-                        <option value="manager">Manager</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-kdf-gold text-kdf-navy py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
-                    <i class="fas fa-user-plus mr-2"></i> Add Staff Member
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Edit User Modal -->
-<div id="editUserModal" class="modal-overlay">
-    <div class="modal-box">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-kdf-navy">✏️ Edit Staff Member</h3>
-            <button onclick="closeEditUser()" class="text-gray-400 hover:text-gray-600 text-2xl transition">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <form id="editUserForm" onsubmit="handleEditUser(event)">
-            <input type="hidden" id="editUserId" />
-            <div class="mb-3">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-kdf-red">*</span></label>
-                <input type="text" id="editName" class="form-input" required />
-            </div>
-            <div class="mb-3">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-kdf-red">*</span></label>
-                <input type="email" id="editEmail" class="form-input" required />
-            </div>
-            <div class="mb-3">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Subject/Specialization <span class="text-kdf-red">*</span></label>
-                <input type="text" id="editSubject" class="form-input" required />
             </div>
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                <select id="editRole" class="form-input">
-                    <option value="staff">Staff</option>
-                    <option value="admin">Admin</option>
-                    <option value="manager">Manager</option>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Link <span class="text-kdf-red">*</span></label>
+                <input type="url" id="meetingLink" class="form-input" placeholder="https://meet.google.com/xxx-xxxx-xxx" required />
+                <p class="text-xs text-gray-500 mt-1">Paste your Google Meet, Zoom, or Teams link here</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Class / Target Audience</label>
+                <select id="meetingClass" class="form-select">
+                    <option value="Grade 7A">Grade 7A</option>
+                    <option value="Grade 7B">Grade 7B</option>
+                    <option value="Grade 8A">Grade 8A</option>
+                    <option value="Grade 8B">Grade 8B</option>
+                    <option value="Grade 9A">Grade 9A</option>
+                    <option value="Grade 9B">Grade 9B</option>
+                    <option value="All Grades">All Grades</option>
+                    <option value="Staff Only">Staff Only</option>
                 </select>
             </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="meetingDescription" rows="3" class="form-input" placeholder="Meeting agenda or additional information"></textarea>
+            </div>
             <div class="flex gap-3">
-                <button type="submit" class="flex-1 bg-kdf-gold text-kdf-navy py-2.5 rounded-lg font-bold hover:bg-yellow-400 transition">
-                    <i class="fas fa-save mr-2"></i> Update
+                <button type="submit" class="bg-kdf-light-blue text-white px-6 py-2.5 rounded-lg font-bold hover:bg-blue-600 transition">
+                    <i class="fas fa-save mr-2"></i> Create Meeting
                 </button>
-                <button type="button" onclick="closeEditUser()" class="flex-1 border-2 border-gray-300 text-gray-600 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition">
-                    Cancel
-                </button>
+                <button type="button" onclick="closeMeetingModal()" class="px-6 py-2.5 border-2 border-gray-300 rounded-lg font-medium text-gray-600 hover:bg-gray-50 transition">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Toast -->
+<!-- ════════════════════════════════════════ -->
+<!-- TOAST NOTIFICATION -->
+<!-- ════════════════════════════════════════ -->
 <div id="toast" class="toast"></div>
 
+<!-- ════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
+<!-- ════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
     // ────────────────────────────────────────────────
-    // STAFF DATA (Simulates Supabase)
+    // SUPABASE CONFIG
     // ────────────────────────────────────────────────
-    let staffUsers = [
-        { id: 1, name: 'David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', role: 'staff', classes: ['Grade 7A', 'Grade 8B'], createdAt: '2026-01-01' },
-        { id: 2, name: 'Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', role: 'staff', classes: ['Grade 7B', 'Grade 9A'], createdAt: '2026-01-05' },
-        { id: 3, name: 'Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', role: 'admin', classes: ['Grade 8A', 'Grade 8B'], createdAt: '2026-01-10' },
-        { id: 4, name: 'Samuel Kiprop', email: 'samuel.kiprop@moiforces.ac.ke', subject: 'History', role: 'staff', classes: ['Grade 7A', 'Grade 9B'], createdAt: '2026-01-12' },
-        { id: 5, name: 'Peter Mwangi', email: 'peter.mwangi@moiforces.ac.ke', subject: 'Physics', role: 'manager', classes: ['Grade 8B', 'Grade 9A'], createdAt: '2026-01-15' },
-    ];
+    const SUPABASE_URL = 'https://pgrqbudiiuldyhhscffu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBncnFidWRpaXVsZHloaHNjZmZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTI4NTYsImV4cCI6MjA5ODkyODg1Nn0.UcIwnxfByZBgBWYdCqtODuITsucVAwBQ4GZa5Be_sJI';
+
+    // ────────────────────────────────────────────────
+    // STAFF DATA
+    // ────────────────────────────────────────────────
+    const STAFF_CREDENTIALS = { email: 'staff@moiforces.ac.ke', password: 'Staff@2026' };
+
+    let currentStaff = null;
+    let meetings = [];
+    let sbClient = null;
 
     const scheduleData = [
         { time: '8:00 - 8:40', subject: 'Mathematics', class: 'Grade 7A', room: 'Rm 101' },
@@ -622,9 +630,6 @@
     // ────────────────────────────────────────────────
     // SESSION MANAGEMENT
     // ────────────────────────────────────────────────
-    let currentStaff = null;
-    let editingUserId = null;
-
     function getStaffSession() {
         const session = sessionStorage.getItem('mfa_staff_session');
         if (!session) return null;
@@ -647,28 +652,65 @@
     }
 
     // ────────────────────────────────────────────────
-    // AUTHENTICATION
+    // SUPABASE INITIALIZATION
     // ────────────────────────────────────────────────
-    function switchAuthTab(tab) {
-        const loginTab = document.getElementById('loginTab');
-        const registerTab = document.getElementById('registerTab');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        
-        if (tab === 'login') {
-            loginTab.classList.add('active');
-            registerTab.classList.remove('active');
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-        } else {
-            registerTab.classList.add('active');
-            loginTab.classList.remove('active');
-            registerForm.style.display = 'block';
-            loginForm.style.display = 'none';
+    function initSupabase() {
+        try {
+            sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('✅ Supabase client initialized');
+            return true;
+        } catch (error) {
+            console.error('❌ Supabase initialization error:', error);
+            return false;
         }
-        document.getElementById('loginError').classList.remove('show');
     }
 
+    // ────────────────────────────────────────────────
+    // MEETING CRUD OPERATIONS
+    // ────────────────────────────────────────────────
+    async function fetchMeetings() {
+        try {
+            const { data, error } = await sbClient
+                .from('meetings')
+                .select('*')
+                .order('meeting_date', { ascending: true });
+            
+            if (error) throw new Error(error.message);
+            meetings = data || [];
+            renderMyMeetings();
+            document.getElementById('meetingCount').textContent = meetings.length;
+            return meetings;
+        } catch (error) {
+            console.error('Error fetching meetings:', error);
+            return [];
+        }
+    }
+
+    async function saveMeetingToSupabase(meetingData) {
+        try {
+            const { data, error } = await sbClient.from('meetings').insert([meetingData]).select();
+            if (error) throw new Error(error.message);
+            return data ? data[0] : null;
+        } catch (error) {
+            console.error('Error saving meeting to Supabase:', error);
+            return null;
+        }
+    }
+
+    async function deleteMeetingFromSupabase(id) {
+        try {
+            const { error } = await sbClient.from('meetings').delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting meeting from Supabase:', error);
+            return false;
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // AUTHENTICATION
+    // ────────────────────────────────────────────────
     function handleLogin(e) {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value.trim();
@@ -689,85 +731,21 @@
         loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing in...';
         
         setTimeout(() => {
-            const user = staffUsers.find(s => s.email.toLowerCase() === email.toLowerCase());
-            if (user && password === 'Staff@2026') {
-                currentStaff = user;
-                setStaffSession(user);
-                showToast('✅ Welcome back, ' + user.name + '!', 'success');
+            if (email === STAFF_CREDENTIALS.email && password === STAFF_CREDENTIALS.password) {
+                currentStaff = { name: 'Staff Member', email: email, subject: 'Mathematics' };
+                setStaffSession(currentStaff);
+                showToast('✅ Welcome back, ' + currentStaff.name + '!', 'success');
                 showDashboard();
-            } else if (user && password !== 'Staff@2026') {
-                errorMsg.textContent = 'Incorrect password. Please try again.';
+            } else {
+                errorMsg.textContent = 'Invalid email or password.';
                 errorEl.classList.add('show');
+                document.getElementById('loginPassword').classList.add('error');
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginPassword').focus();
-            } else {
-                errorMsg.textContent = 'Account not found. Please sign up first.';
-                errorEl.classList.add('show');
-                switchAuthTab('register');
             }
             loginBtn.disabled = false;
             loginBtn.innerHTML = '<i class="fas fa-lock mr-2"></i> Sign In';
         }, 800);
-    }
-
-    function handleRegister(e) {
-        e.preventDefault();
-        const name = document.getElementById('regName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const subject = document.getElementById('regSubject').value.trim();
-        const password = document.getElementById('regPassword').value;
-        const confirm = document.getElementById('regConfirmPassword').value;
-        const errorEl = document.getElementById('loginError');
-        const errorMsg = document.getElementById('loginErrorMessage');
-        const regBtn = document.getElementById('registerBtn');
-        
-        errorEl.classList.remove('show');
-        
-        if (!name || !email || !subject || !password || !confirm) {
-            errorMsg.textContent = 'Please fill in all required fields.';
-            errorEl.classList.add('show');
-            return;
-        }
-        
-        if (password.length < 6) {
-            errorMsg.textContent = 'Password must be at least 6 characters.';
-            errorEl.classList.add('show');
-            return;
-        }
-        
-        if (password !== confirm) {
-            errorMsg.textContent = 'Passwords do not match.';
-            errorEl.classList.add('show');
-            return;
-        }
-        
-        if (staffUsers.some(s => s.email.toLowerCase() === email.toLowerCase())) {
-            errorMsg.textContent = 'Email already registered. Please sign in.';
-            errorEl.classList.add('show');
-            return;
-        }
-        
-        regBtn.disabled = true;
-        regBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creating account...';
-        
-        setTimeout(() => {
-            const newUser = {
-                id: staffUsers.length + 1,
-                name: name,
-                email: email,
-                subject: subject,
-                role: 'staff',
-                classes: ['Grade 7A', 'Grade 8B'],
-                createdAt: new Date().toISOString().split('T')[0]
-            };
-            staffUsers.push(newUser);
-            currentStaff = newUser;
-            setStaffSession(newUser);
-            showToast('✅ Account created successfully! Welcome, ' + name + '!', 'success');
-            showDashboard();
-            regBtn.disabled = false;
-            regBtn.innerHTML = '<i class="fas fa-user-plus mr-2"></i> Create Account';
-        }, 1000);
     }
 
     function showDashboard() {
@@ -776,6 +754,9 @@
         document.getElementById('staffName').textContent = currentStaff?.name || 'Staff Member';
         document.getElementById('staffSubject').textContent = currentStaff?.subject || 'General';
         document.getElementById('staffEmail').textContent = currentStaff?.email || '';
+        
+        initSupabase();
+        fetchMeetings();
         renderDashboard();
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
@@ -796,14 +777,19 @@
     // RENDER DASHBOARD
     // ────────────────────────────────────────────────
     function renderDashboard() {
-        const classCount = currentStaff?.classes?.length || 0;
+        const classCount = 3;
         document.getElementById('classCount').textContent = classCount;
         document.getElementById('studentCount').textContent = classCount * 32;
-        document.getElementById('assignmentCount').textContent = 3;
         document.getElementById('todayClasses').textContent = scheduleData.length;
         
-        const scheduleContainer = document.getElementById('scheduleList');
-        scheduleContainer.innerHTML = scheduleData.map(item => `
+        renderSchedule();
+        renderAnnouncements();
+        renderMyMeetings();
+    }
+
+    function renderSchedule() {
+        const container = document.getElementById('scheduleList');
+        container.innerHTML = scheduleData.map(item => `
             <div class="flex flex-wrap items-center justify-between px-6 py-3 hover:bg-gray-50 transition">
                 <div class="flex items-center gap-4">
                     <span class="font-medium text-kdf-navy">${item.time}</span>
@@ -816,8 +802,37 @@
             </div>
         `).join('');
         
-        const announcementsContainer = document.getElementById('announcementsList');
-        announcementsContainer.innerHTML = announcementsData.map(a => `
+        // Full schedule
+        const fullContainer = document.getElementById('fullScheduleList');
+        if (fullContainer) {
+            fullContainer.innerHTML = `
+                <table class="w-full text-sm">
+                    <thead class="bg-kdf-gray">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-gray-600">Time</th>
+                            <th class="px-4 py-3 text-left text-gray-600">Subject</th>
+                            <th class="px-4 py-3 text-left text-gray-600">Class</th>
+                            <th class="px-4 py-3 text-left text-gray-600">Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${scheduleData.map(item => `
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="px-4 py-3 font-medium text-kdf-navy">${item.time}</td>
+                                <td class="px-4 py-3">${item.subject}</td>
+                                <td class="px-4 py-3">${item.class}</td>
+                                <td class="px-4 py-3 text-gray-500">${item.room}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    }
+
+    function renderAnnouncements() {
+        const container = document.getElementById('announcementsList');
+        container.innerHTML = announcementsData.map(a => `
             <div class="flex items-start gap-3 p-3 bg-kdf-gray rounded-lg">
                 <span class="${a.priority === 'high' ? 'text-kdf-red' : a.priority === 'medium' ? 'text-kdf-gold' : 'text-kdf-light-blue'}">
                     <i class="fas ${a.priority === 'high' ? 'fa-exclamation-circle' : a.priority === 'medium' ? 'fa-info-circle' : 'fa-check-circle'}"></i>
@@ -830,153 +845,127 @@
         `).join('');
     }
 
-    // ────────────────────────────────────────────────
-    // USER MANAGEMENT
-    // ────────────────────────────────────────────────
-    function openUserManagement() {
-        document.getElementById('userManagementModal').classList.add('open');
-        renderUserList();
-        switchUserTab('list');
-    }
-
-    function closeUserManagement() {
-        document.getElementById('userManagementModal').classList.remove('open');
-    }
-
-    function switchUserTab(tab) {
-        const listTab = document.getElementById('userListTab');
-        const addTab = document.getElementById('userAddTab');
-        const listContent = document.getElementById('userListContent');
-        const addContent = document.getElementById('userAddContent');
+    function renderMyMeetings() {
+        const container = document.getElementById('myMeetingsList');
+        if (!container) return;
         
-        if (tab === 'list') {
-            listTab.classList.add('active');
-            addTab.classList.remove('active');
-            listContent.style.display = 'block';
-            addContent.style.display = 'none';
-            renderUserList();
-        } else {
-            addTab.classList.add('active');
-            listTab.classList.remove('active');
-            addContent.style.display = 'block';
-            listContent.style.display = 'none';
+        if (meetings.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No meetings created yet. Click "Create Meeting" to get started!</div>`;
+            return;
         }
-    }
-
-    function renderUserList() {
-        const container = document.getElementById('userList');
-        container.innerHTML = staffUsers.map(user => `
-            <div class="user-card bg-kdf-gray rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-kdf-red/10 flex items-center justify-center text-kdf-red font-bold text-sm">
-                        ${user.name.charAt(0)}
+        
+        container.innerHTML = meetings.map(m => `
+            <div class="meeting-card bg-kdf-gray rounded-xl p-4 border-l-4 border-kdf-light-blue hover:shadow-md transition">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">🎥</span>
+                            <h4 class="font-bold text-kdf-navy">${m.title}</h4>
+                            <span class="status-badge ${new Date(m.meeting_date) >= new Date() ? 'live' : 'completed'} text-xs">
+                                ${new Date(m.meeting_date) >= new Date() ? '🟢 Upcoming' : '✅ Completed'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">
+                            <i class="far fa-calendar-alt mr-1"></i> ${new Date(m.meeting_date).toLocaleDateString('en-KE', { year: 'numeric', month: 'long', day: 'numeric' })} 
+                            at ${m.meeting_time}
+                        </p>
+                        ${m.class_target ? `<p class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> ${m.class_target}</p>` : ''}
+                        <p class="text-sm text-gray-500 mt-1">${m.description || 'No description'}</p>
+                        <a href="${m.meeting_link}" target="_blank" class="inline-block mt-2 bg-kdf-light-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition text-sm font-medium">
+                            <i class="fas fa-video mr-1"></i> Join Meeting
+                        </a>
                     </div>
-                    <div>
-                        <p class="font-medium text-kdf-navy">${user.name}</p>
-                        <p class="text-xs text-gray-500">${user.email} • ${user.subject}</p>
-                        <span class="text-xs ${user.role === 'admin' ? 'text-kdf-red font-semibold' : user.role === 'manager' ? 'text-kdf-gold font-semibold' : 'text-gray-500'}">
-                            ${user.role || 'staff'}
-                        </span>
+                    <div class="flex gap-2">
+                        <button onclick="deleteMeeting(${m.id})" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="openEditUser(${user.id})" class="text-kdf-gold hover:text-kdf-red transition text-sm px-3 py-1.5 border border-kdf-gold rounded-lg">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <button onclick="deleteUser(${user.id})" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
                 </div>
             </div>
         `).join('');
     }
 
-    function handleAddUser(e) {
+    // ────────────────────────────────────────────────
+    // MEETING CRUD FUNCTIONS
+    // ────────────────────────────────────────────────
+    function openMeetingModal() {
+        document.getElementById('meetingModal').classList.add('open');
+        document.getElementById('meetingForm').reset();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('meetingDate').value = today;
+    }
+
+    function closeMeetingModal() {
+        document.getElementById('meetingModal').classList.remove('open');
+    }
+
+    async function handleCreateMeeting(e) {
         e.preventDefault();
-        const name = document.getElementById('addName').value.trim();
-        const email = document.getElementById('addEmail').value.trim();
-        const subject = document.getElementById('addSubject').value.trim();
-        const role = document.getElementById('addRole').value;
         
-        if (!name || !email || !subject) {
+        const title = document.getElementById('meetingTitle').value.trim();
+        const date = document.getElementById('meetingDate').value;
+        const time = document.getElementById('meetingTime').value;
+        const link = document.getElementById('meetingLink').value.trim();
+        const classTarget = document.getElementById('meetingClass').value;
+        const description = document.getElementById('meetingDescription').value.trim();
+        
+        if (!title || !date || !time || !link) {
             showToast('Please fill in all required fields.', 'error');
             return;
         }
         
-        if (staffUsers.some(s => s.email.toLowerCase() === email.toLowerCase())) {
-            showToast('Email already registered.', 'error');
-            return;
-        }
-        
-        const newUser = {
-            id: staffUsers.length + 1,
-            name: name,
-            email: email,
-            subject: subject,
-            role: role,
-            classes: ['Grade 7A', 'Grade 8B'],
-            createdAt: new Date().toISOString().split('T')[0]
+        const meetingData = {
+            title,
+            meeting_date: date,
+            meeting_time: time,
+            meeting_link: link,
+            class_target: classTarget,
+            description,
+            created_by: currentStaff?.email || 'staff',
+            created_at: new Date().toISOString()
         };
-        staffUsers.push(newUser);
-        renderUserList();
-        document.getElementById('addUserForm').reset();
-        showToast('✅ User added successfully!', 'success');
-    }
-
-    function openEditUser(id) {
-        const user = staffUsers.find(u => u.id === id);
-        if (!user) return;
-        editingUserId = id;
-        document.getElementById('editUserId').value = id;
-        document.getElementById('editName').value = user.name;
-        document.getElementById('editEmail').value = user.email;
-        document.getElementById('editSubject').value = user.subject;
-        document.getElementById('editRole').value = user.role || 'staff';
-        document.getElementById('editUserModal').classList.add('open');
-    }
-
-    function closeEditUser() {
-        document.getElementById('editUserModal').classList.remove('open');
-        editingUserId = null;
-    }
-
-    function handleEditUser(e) {
-        e.preventDefault();
-        const id = parseInt(document.getElementById('editUserId').value);
-        const user = staffUsers.find(u => u.id === id);
-        if (!user) return;
         
-        user.name = document.getElementById('editName').value.trim();
-        user.email = document.getElementById('editEmail').value.trim();
-        user.subject = document.getElementById('editSubject').value.trim();
-        user.role = document.getElementById('editRole').value;
+        const result = await saveMeetingToSupabase(meetingData);
         
-        closeEditUser();
-        renderUserList();
-        showToast('✅ User updated successfully!', 'success');
-        
-        // Update dashboard if current user was edited
-        if (currentStaff && currentStaff.id === id) {
-            currentStaff = user;
-            document.getElementById('staffName').textContent = user.name;
-            document.getElementById('staffSubject').textContent = user.subject;
-            document.getElementById('staffEmail').textContent = user.email;
+        if (result) {
+            const savedMeeting = { ...meetingData, id: result.id };
+            meetings.push(savedMeeting);
+            renderMyMeetings();
+            document.getElementById('meetingCount').textContent = meetings.length;
+            closeMeetingModal();
+            showToast(`✅ Meeting "${title}" created and shared with students!`, 'success');
+            switchTab('my-meetings');
+        } else {
+            showToast('⚠️ Failed to create meeting. Please try again.', 'error');
         }
     }
 
-    function deleteUser(id) {
-        if (id === currentStaff?.id) {
-            showToast('❌ You cannot delete your own account.', 'error');
-            return;
+    async function deleteMeeting(id) {
+        if (!confirm('Are you sure you want to delete this meeting?')) return;
+        const meeting = meetings.find(m => m.id === id);
+        
+        const success = await deleteMeetingFromSupabase(id);
+        if (success) {
+            meetings = meetings.filter(m => m.id !== id);
+            renderMyMeetings();
+            document.getElementById('meetingCount').textContent = meetings.length;
+            showToast(`Meeting "${meeting?.title}" deleted.`, 'success');
+        } else {
+            showToast('Failed to delete meeting.', 'error');
         }
-        if (!confirm('Are you sure you want to delete this staff member?')) return;
-        staffUsers = staffUsers.filter(u => u.id !== id);
-        renderUserList();
-        showToast('✅ User deleted successfully.', 'success');
     }
 
     // ────────────────────────────────────────────────
-    // TOAST NOTIFICATION
+    // TAB MANAGEMENT
+    // ────────────────────────────────────────────────
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById(`tab-${tab}`);
+        if (target) target.classList.remove('hidden');
+    }
+
+    // ────────────────────────────────────────────────
+    // TOAST
     // ────────────────────────────────────────────────
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
@@ -1018,23 +1007,17 @@
         });
     });
 
-    window.switchAuthTab = switchAuthTab;
+    window.switchTab = switchTab;
+    window.openMeetingModal = openMeetingModal;
+    window.closeMeetingModal = closeMeetingModal;
+    window.handleCreateMeeting = handleCreateMeeting;
+    window.deleteMeeting = deleteMeeting;
     window.handleLogin = handleLogin;
-    window.handleRegister = handleRegister;
     window.handleLogout = handleLogout;
-    window.openUserManagement = openUserManagement;
-    window.closeUserManagement = closeUserManagement;
-    window.switchUserTab = switchUserTab;
-    window.handleAddUser = handleAddUser;
-    window.openEditUser = openEditUser;
-    window.closeEditUser = closeEditUser;
-    window.handleEditUser = handleEditUser;
-    window.deleteUser = deleteUser;
     window.showToast = showToast;
 
-    console.log('👨‍🏫 Staff Portal with User Management loaded successfully!');
-    console.log('📊 Total staff users:', staffUsers.length);
+    console.log('👨‍🏫 Staff Portal with Virtual Meeting Creation loaded successfully!');
+    console.log('🎥 Teachers can now create and manage virtual meetings for students');
 </script>
-
 </body>
 </html>
