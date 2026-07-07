@@ -147,7 +147,6 @@
         }
         .admin-btn:hover::before { opacity: 1; }
         
-        /* Portal Buttons */
         .portal-btn {
             transition: all 0.3s ease;
             position: relative;
@@ -281,8 +280,30 @@
         .db-status.connecting { background: #fef3c7; color: #92400e; }
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
+        /* Badge styles */
+        .badge-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+            filter: drop-shadow(0 0 20px rgba(212, 160, 23, 0.15));
+        }
+        
+        .nav-badge {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4A017;
+            background: #0a1a3a;
+            padding: 3px;
+            flex-shrink: 0;
+        }
+        
         @media (max-width: 640px) {
             .updates-grid { grid-template-columns: 1fr; }
+            .nav-badge { width: 40px; height: 40px; }
+            .badge-logo { padding: 10px; }
         }
     </style>
 </head>
@@ -296,7 +317,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
             <a href="#home" class="flex items-center gap-3" aria-label="Moi Forces Academy Home">
-                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">MFA</div>
+                <!-- Moi Forces Academy Badge -->
+                <img src="https://upload.wikimedia.org/wikipedia/en/d/d4/Moi_forces_academy.jpeg" 
+                     alt="Moi Forces Academy Badge" 
+                     class="nav-badge" />
                 <div>
                     <h1 class="text-white font-display font-bold text-lg leading-tight">
                         Moi Forces Academy
@@ -347,7 +371,6 @@
             <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
             <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
             
-            <!-- Portal Buttons - Mobile -->
             <a href="staff-portal.html" class="bg-kdf-navy text-white border-2 border-kdf-gold px-5 py-3 rounded-full font-bold text-center hover:bg-kdf-navy/80 transition flex items-center justify-center gap-2">
                 <i class="fas fa-chalkboard-teacher"></i> Staff Portal
             </a>
@@ -404,9 +427,10 @@
             <div class="hidden md:block">
                 <div class="relative">
                     <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                        <div class="aspect-video rounded-xl overflow-hidden bg-kdf-navy/50">
-                            <!-- Replace your current img tag with this exact path -->
-                          <img src="https://upload.wikimedia.org/wikipedia/en/d/d4/Moi_forces_academy.jpeg" alt="Moi Forces Academy Badge" class="badge-logo">
+                        <div class="aspect-video rounded-xl overflow-hidden bg-kdf-navy/50 flex items-center justify-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/d/d4/Moi_forces_academy.jpeg" 
+                                 alt="Moi Forces Academy Official Badge" 
+                                 class="badge-logo" />
                         </div>
                         <p class="text-center text-gray-400 text-sm mt-4">"Excellence Our Commitment"</p>
                     </div>
@@ -735,7 +759,9 @@
         <div class="grid md:grid-cols-4 gap-8">
             <div>
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold">MFA</div>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/d/d4/Moi_forces_academy.jpeg" 
+                         alt="MFA Badge" 
+                         class="w-12 h-12 rounded-full border-2 border-kdf-gold object-cover" />
                     <span class="font-display font-bold text-lg">Moi Forces Academy</span>
                 </div>
                 <p class="text-gray-400 text-sm">Sponsored by the Kenya Defence Forces. Excellence Our Commitment.</p>
