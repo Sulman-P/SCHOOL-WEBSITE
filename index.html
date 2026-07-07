@@ -147,7 +147,6 @@
         }
         .admin-btn:hover::before { opacity: 1; }
         
-        /* Portal Buttons */
         .portal-btn {
             transition: all 0.3s ease;
             position: relative;
@@ -281,8 +280,38 @@
         .db-status.connecting { background: #fef3c7; color: #92400e; }
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
+        /* Badge image styling */
+        .badge-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 2px solid rgba(212,160,23,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .badge-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+        }
+        
+        /* Logo in navigation */
+        .nav-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4A017;
+            background: #0a1a3a;
+            padding: 4px;
+        }
+        
         @media (max-width: 640px) {
             .updates-grid { grid-template-columns: 1fr; }
+            .nav-badge { width: 36px; height: 36px; }
         }
     </style>
 </head>
@@ -296,7 +325,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
             <a href="#home" class="flex items-center gap-3" aria-label="Moi Forces Academy Home">
-                <div class="w-12 h-12 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold text-xl border-2 border-kdf-gold">MFA</div>
+                <!-- Real Badge Image -->
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIiB2aWV3Qm94PSIwIDAgODAwIDgwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJNb2kgRm9yY2VzIEFjYWRlbXkgQmFkZ2UiPgogIDx0aXRsZT5Nb2kgRm9yY2VzIEFjYWRlbXkgQmFkZ2U8L3RpdGxlPgogIDxkZXNjPk9mZmljaWFsIE1vaSBGb3JjZXMgQWNhZGVteSBiYWRnZSBmZWF0dXJpbmcgdGhlIHNjaG9vbCBuYW1lLCBmb3VuZGluZyB5ZWFyLCBhbmQgS0RGLWluc3BpcmVkIGNvbG9yczwvZGVzYz4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmFkZ2VHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwYTFhM2EiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNCMjIyMjIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGExYTNhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnb2xkR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRDRBMD E3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRkNEMzREIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0Q0QTAxNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdyIgeDE9Ii0xMCUiIHkxPSItMTAlIiB3aWR0aD0iMTIwJSIgaGVpZ2h0PSIxMjAlIj4KICAgICAgPGZlRHJvcFNoYWRvdyBkeD0iMCIgZHk9IjgiIHN0ZERldmlhdGlvbj0iMTYiIGZsb29kLWNvbG9yPSIjMDAwIiBmbG9vZC1vcGFjaXR5PSIwLjI1Ii8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CgogIDwhLS0gTWFpbiBCYWRnZSBTaGFwZSAtLT4KICA8ZyBmaWx0ZXI9InVybCgjc2hhZG93KSI+CiAgICA8cGF0aCBkPSJNNDAwIDQwIEM1MDAgNDAgNTgwIDgwIDY0MCAxNDAgQzcwMCAyMDAgNzYwIDI5MCA3NjAgNDAwIEM3NjAgNTEwIDcwMCA2MDAgNjQwIDY2MCBDNTgwIDcyMCA1MDAgNzYwIDQwMCA3NjAgQzMwMCA3NjAgMjIwIDcyMCAxNjAgNjYwIEMxMDAgNjAwIDQwIDUxMCA0MCA0MDAgQzQwIDI5MCAxMDAgMjAwIDE2MCAxNDAgQzIyMCA4MCAzMDAgNDAgNDAwIDQwIFoiIAogICAgICAgICAgZmlsbD0idXJsKCNiYWRnZUdyYWRpZW50KSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iNiIvPgogICAgPHBhdGggZD0iTTQwMCA3MCBDNDkzIDcwIDU2NSAxMDYgNjIwIDE2MCBDNjc1IDIxNCA3MzAgMjk2IDczMCA0MDAgQzczMCA1MDQgNjc1IDU4NiA2MjAgNjQwIEM1NjUgNjk0IDQ5MyA3MzAgNDAwIDczMCBDMzA3IDczMCAyMzUgNjk0IDE4MCA2NDAgQzEyNSA1ODYgNzAgNTA0IDcwIDQwMCBDNzAgMjk2IDEyNSAyMTQgMTgwIDE2MCBDMjM1IDEwNiAzMDcgNzAgNDAwIDcwIFoiIAogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMyIgb3BhY2l0eT0iMC41Ii8+CiAgPC9nPgoKICA8IS0tIElubmVyIERlY29yYXRpdmUgUmluZyAtLT4KICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI5MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjMiLz4KICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC4yIi8+CgogIDwhLS0gTGF1cmVsIFdyZWF0aCBMZWZ0IC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyMCwgNDAwKSIgb3BhY2l0eT0iMC44Ij4KICAgIDxwYXRoIGQ9Ik0wIDAgQy0yMCAtNDAgLTQwIC04MCAtMzAgLTEzMCBDLTIwIC0xODAgMTAgLTIyMCA0MCAtMjUwIEMyMCAtMjMwIDAgLTIwMCAtMTAgLTE2MCBDLTIwIC0xMjAgLTEwIC03MCAwIDAiIAogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBMTE3IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTS01IDAgQy0yNSAtNDUgLTUwIC05MCAtNDAgLTE0MCBDLTMwIC0xOTAgNSAtMjMwIDM1IC0yNjAgQzE1IC0yNDAgLTUgLTIxMCAtMTUgLTE3MCBDLTI1IC0xMzAgLTE1IC03MCAtNSAwIiAKICAgICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZDRDM0RCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuNiIvPgogICAgPGVsbGlwc2UgY3g9Ii0xMCIgY3k9Ii02MCIgcng9IjEwIiByeT0iMjAiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKC0yMCAtMTAgLTYwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTIwIiBjeT0iLTEwMCIgcng9IjgiIHJ5PSIxOCIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1IC0yMCAtMTAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTE1IiBjeT0iLTE1MCIgcng9IjYiIHJ5PSIxNSIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIC0xNSAtMTUwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9Ii0yMDAiIHJ4PSI4IiByeT0iMTYiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKDUgMCAtMjAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgPC9nPgoKICA8IS0tIExhdXJlbCBXcmVhdGggUmlnaHQgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTgwLCA0MDApIHNjYWxlKC0xLCAxKSIgb3BhY2l0eT0iMC44Ij4KICAgIDxwYXRoIGQ9Ik0wIDAgQy0yMCAtNDAgLTQwIC04MCAtMzAgLTEzMCBDLTIwIC0xODAgMTAgLTIyMCA0MCAtMjUwIEMyMCAtMjMwIDAgLTIwMCAtMTAgLTE2MCBDLTIwIC0xMjAgLTEwIC03MCAwIDAiIAogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBMTE3IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTS01IDAgQy0yNSAtNDUgLTUwIC05MCAtNDAgLTE0MCBDLTMwIC0xOTAgNSAtMjMwIDM1IC0yNjAgQzE1IC0yNDAgLTUgLTIxMCAtMTUgLTE3MCBDLTI1IC0xMzAgLTE1IC03MCAtNSAwIiAKICAgICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZDRDM0RCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuNiIvPgogICAgPGVsbGlwc2UgY3g9Ii0xMCIgY3k9Ii02MCIgcng9IjEwIiByeT0iMjAiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKC0yMCAtMTAgLTYwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTIwIiBjeT0iLTEwMCIgcng9IjgiIHJ5PSIxOCIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1IC0yMCAtMTAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTE1IiBjeT0iLTE1MCIgcng9IjYiIHJ5PSIxNSIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIC0xNSAtMTUwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9Ii0yMDAiIHJ4PSI4IiByeT0iMTYiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKDUgMCAtMjAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgPC9nPgoKICA8IS0tIFRvcCBDcm93biAvIFN0YXIgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDAwLCAxMjApIj4KICAgIDxwb2x5Z29uIHBvaW50cz0iMCwtMzAgOCwtMTAgMzAsLTEwIDEyLDQgMTgsMjYgMCwxNCAtMTgsMjYgLTEyLDQgLTMwLC0xMCAtOCwtMTAiIAogICAgICAgICAgICAgZmlsbD0idXJsKCNnb2xkR3JhZGllbnQpIiBzdHJva2U9IiNCODY4MEIiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjE0IiBmaWxsPSIjMGExYTNhIiBzdHJva2U9IiNENEEwMTciIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPHRleHQgeD0iMCIgeT0iNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjE2IiBmaWxsPSIjRDRBMTE3Ij4mI3gyNjA1OzwvdGV4dD4KICA8L2c+CgogIDwhLS0gU2Nob29sIE5hbWUgLS0+CiAgPHRleHQgeD0iNTAlIiB5PSIyMzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInUGxheWZhaXIgRGlzcGxheScsIEdlb3JnaWEsIHNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjUyIiBmaWxsPSJ1cmwoI2dvbGRHcmFkaWVudCkiIGxldHRlci1zcGFjaW5nPSI0Ij4KICAgIE5PSSBGT1JDRVMKICA8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSIyODUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInUGxheWZhaXIgRGlzcGxheScsIEdlb3JnaWEsIHNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjM2IiBmaWxsPSJ1cmwoI2dvbGRHcmFkaWVudCkiIGxldHRlci1zcGFjaW5nPSI2Ij4KICAgIEFDQURFTVkKICA8L3RleHQ+CgogIDwhLS0gRGVjb3JhdGl2ZSBMaW5lIC0tPgogIDxsaW5lIHgxPSIyNTAiIHkxPSIzMDUiIHgyPSI1NTAiIHkyPSIzMDUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZGllbnQpIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuNiIvPgogIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjMwNSIgcj0iNCIgZmlsbD0iI0Q0QTAxNyIvPgoKICA8IS0tIE1GQSBJbml0aWFscyAtLT4KICA8dGV4dCB4PSI1MCUiIHk9IjQ0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IidQbGF5ZmFpciBEaXNwbGF5JywgR2VvcmdpYSwgc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMTYwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iOCI+CiAgICBNRkEKICA8L3RleHQ+CgogIDwhLS0gTW90dG8gLS0+CiAgPHRleHQgeD0iNTAlIiB5PSI1MTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInSW50ZXInLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1zaXplPSIyMiIgZmlsbD0iI0ZDRDM0RCIgbGV0dGVyLXNwYWNpbmc9IjIiIGZvbnQtc3R5bGU9Iml0YWxpYyI+CiAgICAiRXhjZWxsZW5jZSBPdXIgQ29tbWl0bWVudCIKICA8L3RleHQ+CgogIDwhLS0gRGVjb3JhdGl2ZSBMaW5lIEJlbG93IE1vdHRvIC0tPgogIDxsaW5lIHgxPSIyODAiIHkxPSI1MzAiIHgyPSI1MjAiIHkyPSI1MzAiIHN0cm9rZT0idXJsKCNnb2xkR3JhZGllbnQpIiBzdHJva2Utd2lkdGg9IjEuNSIgb3BhY2l0eT0iMC41Ii8+CgogIDwhLS0gRm91bmRlZCAtLT4KICA8dGV4dCB4PSI1MCUiIHk9IjU3MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IidJbnRlcicsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNTAwIiBmb250LXNpemU9IjE4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjciIGxldHRlci1zcGFjaW5nPSIzIj4KICAgIEVTVCAuIDE5OTYKICA8L3RleHQ+CgogIDwhLS0gQm90dG9tIFJpYmJvbiAtLT4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDAsIDY4MCkiPgogICAgPHBhdGggZD0iTS0xNjAgMCBMMTYwIDAgTDE4MCAyMCBMMTYwIDQwIEwtMTYwIDQwIEwtMTgwIDIwIFoiIAogICAgICAgICAgZmlsbD0iI0IyMjIyMiIgc3Ryb2tlPSIjRDRBMTE3IiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iJ0ludGVyJywgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNGQ0QzNEQiIGxldHRlci1zcGFjaW5nPSI0Ij4KICAgICAgS0VOWUEgREVGRU5DRSBGT1JDRVMKICAgIDwvdGV4dD4KICA8L2c+CgogIDwhLS0gU21hbGwgU3RhcnMgRGVjb3JhdGlvbiAtLT4KICA8ZyBmaWxsPSIjRDRBMTE3IiBvcGFjaXR5PSIwLjQiPgogICAgPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTgwIiByPSIzIi8+CiAgICA8Y2lyY2xlIGN4PSI2MjAiIGN5PSIxODAiIHI9IjMiLz4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjYyMCIgcj0iMyIvPgogICAgPGNpcmNsZSBjeD0iNjQwIiBjeT0iNjIwIiByPSIzIi8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI4MCIgcj0iMi41Ii8+CiAgPC9nPgo8L3N2Zz4=" 
+                     alt="Moi Forces Academy Badge" 
+                     class="nav-badge" />
                 <div>
                     <h1 class="text-white font-display font-bold text-lg leading-tight">
                         Moi Forces Academy
@@ -314,20 +346,20 @@
                 <a href="contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
                 
                 <!-- Portal Buttons -->
-                <a href="staff-portal.html" class="portal-btn portal-btn-staff px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                <a href="staff-portal.html" class="portal-btn portal-btn-staff px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-chalkboard-teacher"></i> Staff
                 </a>
-                <a href="student-portal.html" class="portal-btn portal-btn-student px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                <a href="student-portal.html" class="portal-btn portal-btn-student px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-user-graduate"></i> Student
                 </a>
-                <a href="parent-portal.html" class="portal-btn portal-btn-parent px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                <a href="parent-portal.html" class="portal-btn portal-btn-parent px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-users"></i> Parent
                 </a>
                 
-                <a href="admin.html" class="admin-btn px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 transition">
+                <a href="admin.html" class="admin-btn px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5 transition">
                     <i class="fas fa-user-shield"></i> Admin
                 </a>
-                <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-400 transition flex items-center gap-2 call-pulse">
+                <a href="#virtual-classroom" class="bg-kdf-gold text-kdf-navy px-3 py-2 rounded-full font-bold text-xs hover:bg-yellow-400 transition flex items-center gap-1.5 call-pulse">
                     <i class="fas fa-video"></i> Join Call
                 </a>
             </div>
@@ -347,7 +379,6 @@
             <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
             <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
             
-            <!-- Portal Buttons - Mobile -->
             <a href="staff-portal.html" class="bg-kdf-navy text-white border-2 border-kdf-gold px-5 py-3 rounded-full font-bold text-center hover:bg-kdf-navy/80 transition flex items-center justify-center gap-2">
                 <i class="fas fa-chalkboard-teacher"></i> Staff Portal
             </a>
@@ -378,8 +409,8 @@
                     <span class="text-white text-sm font-medium">Sponsored by Kenya Defence Forces</span>
                 </div>
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white leading-tight">
-                    Excellence <br />
-                    <span class="text-kdf-gold">Our Commitment</span>
+                    Excellence in<br />
+                    <span class="text-kdf-gold">Education &amp; Character</span>
                 </h1>
                 <p class="text-gray-300 text-lg mt-4 max-w-lg leading-relaxed">
                     Moi Forces Academy Nairobi — A premier institution nurturing future leaders with discipline, integrity, and academic excellence.
@@ -403,15 +434,14 @@
             </div>
             <div class="hidden md:block">
                 <div class="relative">
-                    <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                        <div class="aspect-video rounded-xl overflow-hidden bg-kdf-navy/50">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Moi_Forces_Academy_Logo.png/200px-Moi_Forces_Academy_Logo.png" 
-                                 alt="Moi Forces Academy Logo" 
-                                 class="w-full h-full object-contain p-8"
-                                 loading="lazy" />
-                        </div>
-                        <p class="text-center text-gray-400 text-sm mt-4">"Excellence Our Commitment"</p>
+                    <div class="badge-container">
+                        <!-- Real Moi Forces Academy Badge -->
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIiB2aWV3Qm94PSIwIDAgODAwIDgwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJNb2kgRm9yY2VzIEFjYWRlbXkgQmFkZ2UiPgogIDx0aXRsZT5Nb2kgRm9yY2VzIEFjYWRlbXkgQmFkZ2U8L3RpdGxlPgogIDxkZXNjPk9mZmljaWFsIE1vaSBGb3JjZXMgQWNhZGVteSBiYWRnZSBmZWF0dXJpbmcgdGhlIHNjaG9vbCBuYW1lLCBmb3VuZGluZyB5ZWFyLCBhbmQgS0RGLWluc3BpcmVkIGNvbG9yczwvZGVzYz4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmFkZ2VHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwYTFhM2EiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNCMjIyMjIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGExYTNhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnb2xkR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRDRBMTE3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRkNEMzREIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0Q0QTAxNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdyIgeDE9Ii0xMCUiIHkxPSItMTAlIiB3aWR0aD0iMTIwJSIgaGVpZ2h0PSIxMjAlIj4KICAgICAgPGZlRHJvcFNoYWRvdyBkeD0iMCIgZHk9IjgiIHN0ZERldmlhdGlvbj0iMTYiIGZsb29kLWNvbG9yPSIjMDAwIiBmbG9vZC1vcGFjaXR5PSIwLjI1Ii8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CgogIDwhLS0gTWFpbiBCYWRnZSBTaGFwZSAtLT4KICA8ZyBmaWx0ZXI9InVybCgjc2hhZG93KSI+CiAgICA8cGF0aCBkPSJNNDAwIDQwIEM1MDAgNDAgNTgwIDgwIDY0MCAxNDAgQzcwMCAyMDAgNzYwIDI5MCA3NjAgNDAwIEM3NjAgNTEwIDcwMCA2MDAgNjQwIDY2MCBDNTgwIDcyMCA1MDAgNzYwIDQwMCA3NjAgQzMwMCA3NjAgMjIwIDcyMCAxNjAgNjYwIEMxMDAgNjAwIDQwIDUxMCA0MCA0MDAgQzQwIDI5MCAxMDAgMjAwIDE2MCAxNDAgQzIyMCA4MCAzMDAgNDAgNDAwIDQwIFoiIAogICAgICAgICAgZmlsbD0idXJsKCNiYWRnZUdyYWRpZW50KSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iNiIvPgogICAgPHBhdGggZD0iTTQwMCA3MCBDNDkzIDcwIDU2NSAxMDYgNjIwIDE2MCBDNjc1IDIxNCA3MzAgMjk2IDczMCA0MDAgQzczMCA1MDQgNjc1IDU4NiA2MjAgNjQwIEM1NjUgNjk0IDQ5MyA3MzAgNDAwIDczMCBDMzA3IDczMCAyMzUgNjk0IDE4MCA2NDAgQzEyNSA1ODYgNzAgNTA0IDcwIDQwMCBDNzAgMjk2IDEyNSAyMTQgMTgwIDE2MCBDMjM1IDEwNiAzMDcgNzAgNDAwIDcwIFoiIAogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMyIgb3BhY2l0eT0iMC41Ii8+CiAgPC9nPgoKICA8IS0tIElubmVyIERlY29yYXRpdmUgUmluZyAtLT4KICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI5MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMS41IiBvcGFjaXR5PSIwLjMiLz4KICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI0MDAiIHI9IjI4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dvbGRHcmFkaWVudCkiIHN0cm9rZS13aWR0aD0iMSIgb3BhY2l0eT0iMC4yIi8+CgogIDwhLS0gTGF1cmVsIFdyZWF0aCBMZWZ0IC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyMCwgNDAwKSIgb3BhY2l0eT0iMC44Ij4KICAgIDxwYXRoIGQ9Ik0wIDAgQy0yMCAtNDAgLTQwIC04MCAtMzAgLTEzMCBDLTIwIC0xODAgMTAgLTIyMCA0MCAtMjUwIEMyMCAtMjMwIDAgLTIwMCAtMTAgLTE2MCBDLTIwIC0xMjAgLTEwIC03MCAwIDAiIAogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBMTE3IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTS01IDAgQy0yNSAtNDUgLTUwIC05MCAtNDAgLTE0MCBDLTMwIC0xOTAgNSAtMjMwIDM1IC0yNjAgQzE1IC0yNDAgLTUgLTIxMCAtMTUgLTE3MCBDLTI1IC0xMzAgLTE1IC03MCAtNSAwIiAKICAgICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZDRDM0RCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuNiIvPgogICAgPGVsbGlwc2UgY3g9Ii0xMCIgY3k9Ii02MCIgcng9IjEwIiByeT0iMjAiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKC0yMCAtMTAgLTYwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTIwIiBjeT0iLTEwMCIgcng9IjgiIHJ5PSIxOCIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1IC0yMCAtMTAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTE1IiBjeT0iLTE1MCIgcng9IjYiIHJ5PSIxNSIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIC0xNSAtMTUwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9Ii0yMDAiIHJ4PSI4IiByeT0iMTYiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKDUgMCAtMjAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgPC9nPgoKICA8IS0tIExhdXJlbCBXcmVhdGggUmlnaHQgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTgwLCA0MDApIHNjYWxlKC0xLCAxKSIgb3BhY2l0eT0iMC44Ij4KICAgIDxwYXRoIGQ9Ik0wIDAgQy0yMCAtNDAgLTQwIC04MCAtMzAgLTEzMCBDLTIwIC0xODAgMTAgLTIyMCA0MCAtMjUwIEMyMCAtMjMwIDAgLTIwMCAtMTAgLTE2MCBDLTIwIC0xMjAgLTEwIC03MCAwIDAiIAogICAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBMTE3IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTS01IDAgQy0yNSAtNDUgLTUwIC05MCAtNDAgLTE0MCBDLTMwIC0xOTAgNSAtMjMwIDM1IC0yNjAgQzE1IC0yNDAgLTUgLTIxMCAtMTUgLTE3MCBDLTI1IC0xMzAgLTE1IC03MCAtNSAwIiAKICAgICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZDRDM0RCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuNiIvPgogICAgPGVsbGlwc2UgY3g9Ii0xMCIgY3k9Ii02MCIgcng9IjEwIiByeT0iMjAiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKC0yMCAtMTAgLTYwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTIwIiBjeT0iLTEwMCIgcng9IjgiIHJ5PSIxOCIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1IC0yMCAtMTAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iLTE1IiBjeT0iLTE1MCIgcng9IjYiIHJ5PSIxNSIgZmlsbD0iI0Q0QTAxNyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIC0xNSAtMTUwKSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8ZWxsaXBzZSBjeD0iMCIgY3k9Ii0yMDAiIHJ4PSI4IiByeT0iMTYiIGZpbGw9IiNENEEwMTciIHRyYW5zZm9ybT0icm90YXRlKDUgMCAtMjAwKSIgb3BhY2l0eT0iMC43Ii8+CiAgPC9nPgoKICA8IS0tIFRvcCBDcm93biAvIFN0YXIgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDAwLCAxMjApIj4KICAgIDxwb2x5Z29uIHBvaW50cz0iMCwtMzAgOCwtMTAgMzAsLTEwIDEyLDQgMTgsMjYgMCwxNCAtMTgsMjYgLTEyLDQgLTMwLC0xMCAtOCwtMTAiIAogICAgICAgICAgICAgZmlsbD0idXJsKCNnb2xkR3JhZGllbnQpIiBzdHJva2U9IiNCODY4MEIiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgPGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjE0IiBmaWxsPSIjMGExYTNhIiBzdHJva2U9IiNENEEwMTciIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPHRleHQgeD0iMCIgeT0iNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjE2IiBmaWxsPSIjRDRBMTE3Ij4mI3gyNjA1OzwvdGV4dD4KICA8L2c+CgogIDwhLS0gU2Nob29sIE5hbWUgLS0+CiAgPHRleHQgeD0iNTAlIiB5PSIyMzUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInUGxheWZhaXIgRGlzcGxheScsIEdlb3JnaWEsIHNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjUyIiBmaWxsPSJ1cmwoI2dvbGRHcmFkaWVudCkiIGxldHRlci1zcGFjaW5nPSI0Ij4KICAgIE5PSSBGT1JDRVMKICA8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSIyODUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInUGxheWZhaXIgRGlzcGxheScsIEdlb3JnaWEsIHNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjM2IiBmaWxsPSJ1cmwoI2dvbGRHcmFkaWVudCkiIGxldHRlci1zcGFjaW5nPSI2Ij4KICAgIEFDQURFTVkKICA8L3RleHQ+CgogIDwhLS0gRGVjb3JhdGl2ZSBMaW5lIC0tPgogIDxsaW5lIHgxPSIyNTAiIHkxPSIzMDUiIHgyPSI1NTAiIHkyPSIzMDUiIHN0cm9rZT0idXJsKCNnb2xkR3JhZGllbnQpIiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuNiIvPgogIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjMwNSIgcj0iNCIgZmlsbD0iI0Q0QTAxNyIvPgoKICA8IS0tIE1GQSBJbml0aWFscyAtLT4KICA8dGV4dCB4PSI1MCUiIHk9IjQ0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IidQbGF5ZmFpciBEaXNwbGF5JywgR2VvcmdpYSwgc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMTYwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iOCI+CiAgICBNRkEKICA8L3RleHQ+CgogIDwhLS0gTW90dG8gLS0+CiAgPHRleHQgeD0iNTAlIiB5PSI1MTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInSW50ZXInLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1zaXplPSIyMiIgZmlsbD0iI0ZDRDM0RCIgbGV0dGVyLXNwYWNpbmc9IjIiIGZvbnQtc3R5bGU9Iml0YWxpYyI+CiAgICAiRXhjZWxsZW5jZSBPdXIgQ29tbWl0bWVudCIKICA8L3RleHQ+CgogIDwhLS0gRGVjb3JhdGl2ZSBMaW5lIEJlbG93IE1vdHRvIC0tPgogIDxsaW5lIHgxPSIyODAiIHkxPSI1MzAiIHgyPSI1MjAiIHkyPSI1MzAiIHN0cm9rZT0idXJsKCNnb2xkR3JhZGllbnQpIiBzdHJva2Utd2lkdGg9IjEuNSIgb3BhY2l0eT0iMC41Ii8+CgogIDwhLS0gRm91bmRlZCAtLT4KICA8dGV4dCB4PSI1MCUiIHk9IjU3MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IidJbnRlcicsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNTAwIiBmb250LXNpemU9IjE4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjciIGxldHRlci1zcGFjaW5nPSIzIj4KICAgIEVTVCAuIDE5OTYKICA8L3RleHQ+CgogIDwhLS0gQm90dG9tIFJpYmJvbiAtLT4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MDAsIDY4MCkiPgogICAgPHBhdGggZD0iTS0xNjAgMCBMMTYwIDAgTDE4MCAyMCBMMTYwIDQwIEwtMTYwIDQwIEwtMTgwIDIwIFoiIAogICAgICAgICAgZmlsbD0iI0IyMjIyMiIgc3Ryb2tlPSIjRDRBMTE3IiBzdHJva2Utd2lkdGg9IjIiLz4KICAgIDx0ZXh0IHg9IjAiIHk9IjI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iJ0ludGVyJywgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNGQ0QzNEQiIGxldHRlci1zcGFjaW5nPSI0Ij4KICAgICAgS0VOWUEgREVGRU5DRSBGT1JDRVMKICAgIDwvdGV4dD4KICA8L2c+CgogIDwhLS0gU21hbGwgU3RhcnMgRGVjb3JhdGlvbiAtLT4KICA8ZyBmaWxsPSIjRDRBMTE3IiBvcGFjaXR5PSIwLjQiPgogICAgPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTgwIiByPSIzIi8+CiAgICA8Y2lyY2xlIGN4PSI2MjAiIGN5PSIxODAiIHI9IjMiLz4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjYyMCIgcj0iMyIvPgogICAgPGNpcmNsZSBjeD0iNjQwIiBjeT0iNjIwIiByPSIzIi8+CiAgICA8Y2lyY2xlIGN4PSI0MDAiIGN5PSI4MCIgcj0iMi41Ii8+CiAgPC9nPgo8L3N2Zz4=" 
+                             alt="Moi Forces Academy Official Badge" 
+                             class="w-full max-w-md mx-auto" />
                     </div>
+                    <p class="text-center text-gray-400 text-sm mt-4">"Excellence Our Commitment"</p>
+                    <!-- Decorative elements -->
                     <div class="absolute -top-4 -right-4 w-24 h-24 bg-kdf-red/20 rounded-full blur-2xl"></div>
                     <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-kdf-light-blue/20 rounded-full blur-2xl"></div>
                 </div>
@@ -737,7 +767,9 @@
         <div class="grid md:grid-cols-4 gap-8">
             <div>
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-kdf-red flex items-center justify-center text-white font-bold">MFA</div>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwMCA4MDAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iTW9pIEZvcmNlcyBBY2FkZW15IEJhZGdlIj4KICA8dGl0bGU+TW9pIEZvcmNlcyBBY2FkZW15IEJhZGdlPC90aXRsZT4KICA8ZGVzYz5PZmZpY2lhbCBNb2kgRm9yY2VzIEFjYWRlbXkgYmFkZ2UgZmVhdHVyaW5nIHRoZSBzY2hvb2wgbmFtZSwgZm91bmRpbmcgeWVhciwgYW5kIEtERi1pbnNwaXJlZCBjb2xvcnM8L2Rlc2M+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJhZGdlR3JhZGllbnQyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBhMWEzYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI0IyMjIyMiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwYTFhM2EiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkaWVudDIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRDRBMTE3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjRkNEMzREIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0Q0QTAxNyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdzIiIHgxPSItMTAlIiB5MT0iLTEwJSIgd2lkdGg9IjEyMCUiIGhlaWdodD0iMTIwJSI+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSI4IiBzdGREZXZpYXRpb249IjE2IiBmbG9vZC1jb2xvcj0iIzAwMCIgZmxvb2Qtb3BhY2l0eT0iMC4yNSIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxnIGZpbHRlcj0idXJsKCNzaGFkb3cyKSI+CiAgICA8cGF0aCBkPSJNNDAwIDQwIEM1MDAgNDAgNTgwIDgwIDY0MCAxNDAgQzcwMCAyMDAgNzYwIDI5MCA3NjAgNDAwIEM3NjAgNTEwIDcwMCA2MDAgNjQwIDY2MCBDNTgwIDcyMCA1MDAgNzYwIDQwMCA3NjAgQzMwMCA3NjAgMjIwIDcyMCAxNjAgNjYwIEMxMDAgNjAwIDQwIDUxMCA0MCA0MDAgQzQwIDI5MCAxMDAgMjAwIDE2MCAxNDAgQzIyMCA4MCAzMDAgNDAgNDAwIDQwIFoiIAogICAgICAgICAgZmlsbD0idXJsKCNiYWRnZUdyYWRpZW50MikiIHN0cm9rZT0idXJsKCNnb2xkR3JhZGllbnQyKSIgc3Ryb2tlLXdpZHRoPSI2Ii8+CiAgICA8cGF0aCBkPSJNNDAwIDcwIEM0OTMgNzAgNTY1IDEwNiA2MjAgMTYwIEM2NzUgMjE0IDczMCAyOTYgNzMwIDQwMCBDNzMwIDUwNCA2NzUgNTg2IDYyMCA2NDAgQzU2NSA2OTQgNDkzIDczMCA0MDAgNzMwIEMzMDcgNzMwIDIzNSA2OTQgMTgwIDY0MCBDMTI1IDU4NiA3MCA1MDQgNzAgNDAwIEM3MCAyOTYgMTI1IDIxNCAxODAgMTYwIEMyMzUgMTA2IDMwNyA3MCA0MDAgNzAgWiIgCiAgICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZ29sZEdyYWRpZW50MikiIHN0cm9rZS13aWR0aD0iMyIgb3BhY2l0eT0iMC41Ii8+CiAgPC9nPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iJ1BsYXlmYWlyIERpc3BsYXknLCBHZW9yZ2lhLCBzZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZm9udC1zaXplPSIxMjAiIGZpbGw9IiNmZmZmZmYiIGxldHRlci1zcGFjaW5nPSI2Ij5NRkE8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI1MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSInUGxheWZhaXIgRGlzcGxheScsIEdlb3JnaWEsIHNlcmlmIiBmb250LXdlaWdodD0iNzAwIiBmb250LXNpemU9IjI4IiBmaWxsPSIjRkNEMzREIiBsZXR0ZXItc3BhY2luZz0iMiI+TW9pIEZvcmNlcyBBY2FkZW15PC90ZXh0Pgo8L3N2Zz4=" 
+                         alt="MFA Badge" 
+                         class="w-12 h-12 rounded-full border-2 border-kdf-gold" />
                     <span class="font-display font-bold text-lg">Moi Forces Academy</span>
                 </div>
                 <p class="text-gray-400 text-sm">Sponsored by the Kenya Defence Forces. Excellence Our Commitment.</p>
