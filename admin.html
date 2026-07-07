@@ -11,27 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'kdf-red': '#B22222',
-                        'kdf-navy': '#0a1a3a',
-                        'kdf-light-blue': '#4A90D9',
-                        'kdf-gold': '#D4A017',
-                        'kdf-white': '#FFFFFF',
-                        'kdf-gray': '#F5F5F5',
-                    },
-                    fontFamily: {
-                        'display': ['Playfair Display', 'serif'],
-                        'body': ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
@@ -200,6 +179,8 @@
         .status-badge.scheduled { background: #fef3c7; color: #92400e; }
         .status-badge.draft { background: #f3f4f6; color: #6b7280; }
         .status-badge.live { background: #fee2e2; color: #991b1b; }
+        .status-badge.active { background: #dbeafe; color: #1e40af; }
+        .status-badge.inactive { background: #f3f4f6; color: #6b7280; }
         
         .login-page {
             min-height: 100vh;
@@ -306,7 +287,14 @@
         .db-status.connecting { background: #fef3c7; color: #92400e; }
         .db-status.error { background: #fee2e2; color: #991b1b; }
         
-        /* Meeting Cards */
+        .user-card {
+            transition: all 0.3s ease;
+        }
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        
         .meeting-card {
             transition: all 0.3s ease;
         }
@@ -328,6 +316,12 @@
             left: 0;
             width: 100%;
             height: 100%;
+        }
+        
+        .search-highlight {
+            background: #FEF3C7;
+            padding: 0 4px;
+            border-radius: 2px;
         }
         
         @media (max-width: 640px) {
@@ -404,10 +398,14 @@
             </div>
             
             <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                <!-- Main Admin Links -->
                 <a href="#" onclick="switchTab('dashboard')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="dashboard">
                     <i class="fas fa-chart-pie w-5 text-center"></i>
                     <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="switchTab('users')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="users">
+                    <i class="fas fa-users w-5 text-center"></i>
+                    <span>User Management</span>
+                    <span class="ml-auto bg-kdf-red text-white text-xs px-2 py-0.5 rounded-full" id="userCount">0</span>
                 </a>
                 <a href="#" onclick="switchTab('posts')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="posts">
                     <i class="fas fa-newspaper w-5 text-center"></i>
@@ -437,7 +435,6 @@
                     <span>Categories</span>
                 </a>
                 
-                <!-- Portal Management Section -->
                 <div class="mt-4 pt-4 border-t border-kdf-gold/20">
                     <p class="text-xs text-gray-500 uppercase tracking-wider px-4 mb-2 font-semibold">Portals</p>
                     
@@ -458,7 +455,6 @@
                     </a>
                 </div>
                 
-                <!-- Settings -->
                 <div class="mt-4 pt-4 border-t border-kdf-gold/20">
                     <a href="#" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white transition" data-tab="settings">
                         <i class="fas fa-cog w-5 text-center"></i>
@@ -510,6 +506,16 @@
                         <h2 id="pageTitle" class="text-lg font-bold text-kdf-navy">Dashboard</h2>
                     </div>
                     <div class="flex items-center gap-3">
+                        <!-- Global Search Bar -->
+                        <div class="relative hidden md:block">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="globalSearchInput" placeholder="Search staff, students, posts..." 
+                                   class="pl-9 pr-4 py-2 w-64 border-2 border-gray-200 rounded-full text-sm focus:border-kdf-gold focus:outline-none transition"
+                                   oninput="globalSearch(this.value)" />
+                        </div>
+                        <button onclick="document.getElementById('globalSearchInput').focus()" class="md:hidden text-gray-500 hover:text-kdf-navy transition">
+                            <i class="fas fa-search text-lg"></i>
+                        </button>
                         <span class="text-xs text-gray-400 hidden sm:inline">Last updated: <span id="lastUpdated">Just now</span></span>
                         <button onclick="syncWithSupabase()" class="text-kdf-gold hover:text-kdf-red transition" title="Sync with Supabase">
                             <i class="fas fa-sync-alt text-lg"></i>
@@ -548,19 +554,19 @@
                         </div>
                         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between">
-                                <span class="text-2xl text-kdf-light-blue">📌</span>
-                                <span class="text-xs text-kdf-gold font-semibold">Published</span>
+                                <span class="text-2xl text-kdf-light-blue">👥</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Staff</span>
                             </div>
-                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statPublished">0</p>
-                            <p class="text-sm text-gray-500">Published Posts</p>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statStaff">0</p>
+                            <p class="text-sm text-gray-500">Staff Members</p>
                         </div>
                         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between">
-                                <span class="text-2xl text-kdf-gold">🎥</span>
-                                <span class="text-xs text-kdf-gold font-semibold">Videos</span>
+                                <span class="text-2xl text-kdf-gold">🎓</span>
+                                <span class="text-xs text-kdf-gold font-semibold">Students</span>
                             </div>
-                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statVideos">0</p>
-                            <p class="text-sm text-gray-500">Video Resources</p>
+                            <p class="text-2xl font-bold text-kdf-navy mt-2" id="statStudents">0</p>
+                            <p class="text-sm text-gray-500">Active Students</p>
                         </div>
                         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between">
@@ -573,7 +579,11 @@
                     </div>
 
                     <div class="grid sm:grid-cols-4 gap-4 mb-6">
-                        <button onclick="switchTab('create')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
+                        <button onclick="switchTab('users')" class="bg-kdf-navy text-white p-4 rounded-xl hover:bg-kdf-navy/90 transition flex items-center gap-3">
+                            <i class="fas fa-users text-xl text-kdf-gold"></i>
+                            <span class="font-medium">Manage Users</span>
+                        </button>
+                        <button onclick="switchTab('create')" class="bg-kdf-red text-white p-4 rounded-xl hover:bg-red-800 transition flex items-center gap-3">
                             <i class="fas fa-plus-circle text-xl text-kdf-gold"></i>
                             <span class="font-medium">New Post</span>
                         </button>
@@ -585,10 +595,6 @@
                             <i class="fas fa-video text-xl text-kdf-gold"></i>
                             <span class="font-medium">Create Meeting</span>
                         </button>
-                        <button onclick="openVideoModal()" class="bg-kdf-gold text-kdf-navy p-4 rounded-xl hover:bg-yellow-400 transition flex items-center gap-3">
-                            <i class="fab fa-youtube text-xl"></i>
-                            <span class="font-medium">Add Video</span>
-                        </button>
                     </div>
 
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -597,6 +603,30 @@
                             <button onclick="switchTab('posts')" class="text-sm text-kdf-gold hover:text-kdf-red transition">View All</button>
                         </div>
                         <div id="recentPostsList" class="divide-y divide-gray-100"></div>
+                    </div>
+                </div>
+
+                <!-- User Management Tab -->
+                <div id="tab-users" class="tab-content hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                            <h3 class="font-bold text-kdf-navy">👥 User Management</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="filterUsers('all')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition active" data-filter="all">All</button>
+                                <button onclick="filterUsers('staff')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="staff">👨‍🏫 Staff</button>
+                                <button onclick="filterUsers('student')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="student">🎓 Students</button>
+                                <button onclick="filterUsers('parent')" class="filter-btn px-3 py-1.5 text-sm rounded-full border border-gray-300 hover:border-kdf-gold transition" data-filter="parent">👨‍👩‍👦 Parents</button>
+                            </div>
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" id="userSearchInput" placeholder="Search users..." 
+                                       class="pl-8 pr-4 py-1.5 border-2 border-gray-200 rounded-full text-sm focus:border-kdf-gold focus:outline-none transition w-48"
+                                       oninput="searchUsers(this.value)" />
+                            </div>
+                        </div>
+                        <div id="usersList" class="divide-y divide-gray-100">
+                            <!-- Rendered by JS -->
+                        </div>
                     </div>
                 </div>
 
@@ -793,7 +823,7 @@
                                 </div>
                                 <div class="bg-kdf-gray rounded-xl p-4">
                                     <p class="text-sm text-gray-500">Tables</p>
-                                    <p class="font-bold text-kdf-navy">posts, events, meetings, videos, categories</p>
+                                    <p class="font-bold text-kdf-navy">staff_users, students, parents, posts, events, meetings, videos</p>
                                 </div>
                             </div>
                             <div class="bg-kdf-gray rounded-xl p-4">
@@ -810,9 +840,9 @@
                             <div class="bg-kdf-gray rounded-xl p-4">
                                 <h4 class="font-bold text-kdf-navy mb-2">Table Records</h4>
                                 <div class="grid grid-cols-3 gap-4 text-sm">
-                                    <div><span class="text-gray-500">Posts:</span> <span id="dbPostCount" class="font-bold">0</span></div>
-                                    <div><span class="text-gray-500">Meetings:</span> <span id="dbMeetingCount" class="font-bold">0</span></div>
-                                    <div><span class="text-gray-500">Videos:</span> <span id="dbVideoCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Staff:</span> <span id="dbStaffCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Students:</span> <span id="dbStudentCount" class="font-bold">0</span></div>
+                                    <div><span class="text-gray-500">Parents:</span> <span id="dbParentCount" class="font-bold">0</span></div>
                                 </div>
                             </div>
                             <div class="text-xs text-gray-400 mt-2">
@@ -998,6 +1028,11 @@
     let events = [];
     let meetings = [];
     let videos = [];
+    let staffUsers = [];
+    let studentUsers = [];
+    let parentUsers = [];
+    let currentUserFilter = 'all';
+    let userSearchTerm = '';
     let categories = [
         { id: 1, name: 'News', slug: 'news', icon: '📰' },
         { id: 2, name: 'Updates', slug: 'updates', icon: '📌' },
@@ -1093,8 +1128,35 @@
             if (videosError) throw new Error(videosError.message);
             if (videosData && videosData.length > 0) videos = videosData;
             
+            // Load staff users
+            const { data: staffData, error: staffError } = await sbClient
+                .from('staff_users')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (staffError) throw new Error(staffError.message);
+            if (staffData && staffData.length > 0) staffUsers = staffData;
+            
+            // Load student users
+            const { data: studentData, error: studentError } = await sbClient
+                .from('students')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (studentError) throw new Error(studentError.message);
+            if (studentData && studentData.length > 0) studentUsers = studentData;
+            
+            // Load parent users
+            const { data: parentData, error: parentError } = await sbClient
+                .from('parents')
+                .select('*')
+                .order('name', { ascending: true });
+            
+            if (parentError) throw new Error(parentError.message);
+            if (parentData && parentData.length > 0) parentUsers = parentData;
+            
             renderAll();
-            updateDbStatus('connected', `Supabase (${posts.length} posts, ${events.length} events, ${meetings.length} meetings, ${videos.length} videos)`);
+            updateDbStatus('connected', `Supabase (${staffUsers.length + studentUsers.length + parentUsers.length} users, ${posts.length} posts, ${meetings.length} meetings, ${videos.length} videos)`);
         } catch (error) {
             console.error('Error loading from Supabase:', error);
             if (posts.length === 0) loadSampleData();
@@ -1190,6 +1252,17 @@
         }
     }
 
+    async function deleteUserFromSupabase(table, id) {
+        try {
+            const { error } = await sbClient.from(table).delete().eq('id', id);
+            if (error) throw new Error(error.message);
+            return true;
+        } catch (error) {
+            console.error('Error deleting user from Supabase:', error);
+            return false;
+        }
+    }
+
     function updateDbStatus(status, message) {
         const statusEls = document.querySelectorAll('.db-status');
         const loginStatus = document.getElementById('dbStatusLogin');
@@ -1223,9 +1296,9 @@
             showToast('✅ Data synced with Supabase successfully!', 'success');
             document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
             
-            document.getElementById('dbPostCount').textContent = posts.length;
-            document.getElementById('dbMeetingCount').textContent = meetings.length;
-            document.getElementById('dbVideoCount').textContent = videos.length;
+            document.getElementById('dbStaffCount').textContent = staffUsers.length;
+            document.getElementById('dbStudentCount').textContent = studentUsers.length;
+            document.getElementById('dbParentCount').textContent = parentUsers.length;
             
             logActivity('🔄 Synced with Supabase', 'Database');
         } catch (error) {
@@ -1251,6 +1324,23 @@
             { id: 1, title: 'KJSEA 2026 Revision Guide', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Comprehensive revision guide for KJSEA 2026.' },
         ];
         
+        staffUsers = [
+            { id: 1, name: 'David Ochieng', email: 'staff@moiforces.ac.ke', subject: 'Mathematics', role: 'staff' },
+            { id: 2, name: 'Faith Wanjiru', email: 'faith.wanjiru@moiforces.ac.ke', subject: 'English', role: 'staff' },
+            { id: 3, name: 'Grace Akinyi', email: 'grace.akinyi@moiforces.ac.ke', subject: 'Science', role: 'admin' },
+        ];
+        
+        studentUsers = [
+            { id: 1, student_id: 'S001', name: 'John Mwangi', class: 'Grade 8A' },
+            { id: 2, student_id: 'S002', name: 'Mary Wanjiru', class: 'Grade 7B' },
+            { id: 3, student_id: 'S003', name: 'Peter Kiprop', class: 'Grade 9A' },
+        ];
+        
+        parentUsers = [
+            { id: 1, parent_id: 'P001', name: 'James Mwangi', child_name: 'John Mwangi', child_class: 'Grade 8A' },
+            { id: 2, parent_id: 'P002', name: 'Ann Wanjiru', child_name: 'Mary Wanjiru', child_class: 'Grade 7B' },
+        ];
+        
         activityLog = [
             { action: '✅ Login successful', category: 'Security', time: new Date().toLocaleString() },
         ];
@@ -1265,6 +1355,9 @@
             events: events,
             meetings: meetings,
             videos: videos,
+            staff: staffUsers,
+            students: studentUsers,
+            parents: parentUsers,
             categories: categories,
             exportedAt: new Date().toISOString()
         };
@@ -1403,13 +1496,16 @@
         renderCalendarEvents();
         renderMeetings();
         renderVideos();
+        renderUsers();
         renderActivityLog();
+        
         document.getElementById('postCount').textContent = posts.length;
         document.getElementById('meetingCount').textContent = meetings.length;
         document.getElementById('videoCount').textContent = videos.length;
-        document.getElementById('dbPostCount').textContent = posts.length;
-        document.getElementById('dbMeetingCount').textContent = meetings.length;
-        document.getElementById('dbVideoCount').textContent = videos.length;
+        document.getElementById('userCount').textContent = staffUsers.length + studentUsers.length + parentUsers.length;
+        document.getElementById('dbStaffCount').textContent = staffUsers.length;
+        document.getElementById('dbStudentCount').textContent = studentUsers.length;
+        document.getElementById('dbParentCount').textContent = parentUsers.length;
     }
 
     function renderStats() {
@@ -1419,6 +1515,8 @@
         document.getElementById('statPublished').textContent = published;
         document.getElementById('statVideos').textContent = videos.length;
         document.getElementById('statMeetings').textContent = meetings.length;
+        document.getElementById('statStaff').textContent = staffUsers.length;
+        document.getElementById('statStudents').textContent = studentUsers.length;
     }
 
     function renderRecentPosts() {
@@ -1558,7 +1656,6 @@
         }
         
         container.innerHTML = videos.map(v => {
-            // Extract video ID for embedding
             let videoId = '';
             if (v.video_url) {
                 const match = v.video_url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
@@ -1592,6 +1689,177 @@
                 </div>
             `;
         }).join('');
+    }
+
+    // ────────────────────────────────────────────────
+    // USER MANAGEMENT FUNCTIONS
+    // ────────────────────────────────────────────────
+    function renderUsers() {
+        const container = document.getElementById('usersList');
+        if (!container) return;
+        
+        let allUsers = [];
+        
+        // Add staff users with type
+        staffUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'staff', icon: '👨‍🏫', displayName: u.name, details: u.subject || 'Staff' });
+        });
+        
+        // Add student users with type
+        studentUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'student', icon: '🎓', displayName: u.name, details: u.class || 'Student' });
+        });
+        
+        // Add parent users with type
+        parentUsers.forEach(u => {
+            allUsers.push({ ...u, type: 'parent', icon: '👨‍👩‍👦', displayName: u.name, details: u.child_name || 'Parent' });
+        });
+        
+        // Apply filters
+        if (currentUserFilter !== 'all') {
+            allUsers = allUsers.filter(u => u.type === currentUserFilter);
+        }
+        
+        // Apply search
+        if (userSearchTerm.trim()) {
+            const term = userSearchTerm.toLowerCase().trim();
+            allUsers = allUsers.filter(u => 
+                (u.name || '').toLowerCase().includes(term) ||
+                (u.email || '').toLowerCase().includes(term) ||
+                (u.subject || '').toLowerCase().includes(term) ||
+                (u.class || '').toLowerCase().includes(term) ||
+                (u.child_name || '').toLowerCase().includes(term) ||
+                (u.student_id || '').toLowerCase().includes(term)
+            );
+        }
+        
+        document.getElementById('userCount').textContent = allUsers.length;
+        
+        if (allUsers.length === 0) {
+            container.innerHTML = `<div class="px-6 py-12 text-center text-gray-500 text-sm">No users found matching your criteria.</div>`;
+            return;
+        }
+        
+        container.innerHTML = allUsers.map(u => `
+            <div class="user-card flex flex-wrap items-center justify-between px-6 py-4 hover:bg-gray-50 transition gap-3">
+                <div class="flex items-center gap-3 flex-1 min-w-[200px]">
+                    <div class="w-10 h-10 rounded-full ${u.type === 'staff' ? 'bg-kdf-navy' : u.type === 'student' ? 'bg-kdf-light-blue' : 'bg-kdf-red'} flex items-center justify-center text-white font-bold text-sm">
+                        ${u.name ? u.name.charAt(0).toUpperCase() : '?'}
+                    </div>
+                    <div>
+                        <p class="font-medium text-kdf-navy">${u.name || 'Unknown'}</p>
+                        <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                            <span class="text-xs px-2 py-0.5 rounded-full ${u.type === 'staff' ? 'bg-kdf-navy/10 text-kdf-navy' : u.type === 'student' ? 'bg-kdf-light-blue/10 text-kdf-light-blue' : 'bg-kdf-red/10 text-kdf-red'}">
+                                ${u.icon} ${u.type.charAt(0).toUpperCase() + u.type.slice(1)}
+                            </span>
+                            <span class="text-xs text-gray-500">${u.details || ''}</span>
+                            ${u.email ? `<span class="text-xs text-gray-400">${u.email}</span>` : ''}
+                            ${u.student_id ? `<span class="text-xs text-gray-400">ID: ${u.student_id}</span>` : ''}
+                            ${u.parent_id ? `<span class="text-xs text-gray-400">ID: ${u.parent_id}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="viewUser('${u.id}', '${u.type}')" class="text-kdf-gold hover:text-kdf-red transition text-sm px-3 py-1.5 border border-kdf-gold rounded-lg">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                    <button onclick="deleteUser('${u.id}', '${u.type}')" class="text-red-500 hover:text-red-700 transition text-sm px-3 py-1.5 border border-red-300 rounded-lg">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterUsers(type) {
+        currentUserFilter = type;
+        document.querySelectorAll('#tab-users .filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === type);
+        });
+        renderUsers();
+    }
+
+    function searchUsers(term) {
+        userSearchTerm = term;
+        renderUsers();
+    }
+
+    function globalSearch(term) {
+        const searchTerm = term.toLowerCase().trim();
+        
+        if (searchTerm.length > 0) {
+            let results = [];
+            
+            staffUsers.forEach(u => {
+                if ((u.name || '').toLowerCase().includes(searchTerm) || (u.email || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Staff', name: u.name, details: u.subject || 'Staff' });
+                }
+            });
+            
+            studentUsers.forEach(u => {
+                if ((u.name || '').toLowerCase().includes(searchTerm) || (u.student_id || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Student', name: u.name, details: u.class || 'Student' });
+                }
+            });
+            
+            posts.forEach(p => {
+                if ((p.title || '').toLowerCase().includes(searchTerm) || (p.content || '').toLowerCase().includes(searchTerm)) {
+                    results.push({ type: 'Post', name: p.title, details: p.category || 'Post' });
+                }
+            });
+            
+            if (results.length > 0) {
+                const message = results.slice(0, 5).map(r => `${r.type}: ${r.name}`).join('\n');
+                showToast(`🔍 Found ${results.length} results:\n${message}`, 'success');
+                switchTab('users');
+            } else {
+                showToast('🔍 No results found for "' + term + '"', 'error');
+            }
+        }
+    }
+
+    function viewUser(id, type) {
+        let user;
+        if (type === 'staff') {
+            user = staffUsers.find(u => u.id == id);
+        } else if (type === 'student') {
+            user = studentUsers.find(u => u.id == id);
+        } else {
+            user = parentUsers.find(u => u.id == id);
+        }
+        
+        if (user) {
+            const details = Object.entries(user).map(([key, value]) => `${key}: ${value}`).join('\n');
+            showToast(`👤 User Details:\n${details}`, 'success');
+        }
+    }
+
+    async function deleteUser(id, type) {
+        if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+        
+        let table;
+        if (type === 'staff') table = 'staff_users';
+        else if (type === 'student') table = 'students';
+        else table = 'parents';
+        
+        const success = await deleteUserFromSupabase(table, id);
+        
+        if (success) {
+            if (type === 'staff') {
+                staffUsers = staffUsers.filter(u => u.id != id);
+            } else if (type === 'student') {
+                studentUsers = studentUsers.filter(u => u.id != id);
+            } else {
+                parentUsers = parentUsers.filter(u => u.id != id);
+            }
+            
+            renderUsers();
+            renderStats();
+            showToast(`✅ ${type} deleted successfully!`, 'success');
+            logActivity(`🗑️ Deleted ${type}: ${id}`, 'Users');
+        } else {
+            showToast('❌ Failed to delete user.', 'error');
+        }
     }
 
     // ────────────────────────────────────────────────
@@ -1776,8 +2044,6 @@
     function openMeetingModal() {
         document.getElementById('meetingModal').classList.add('open');
         document.getElementById('meetingForm').reset();
-        
-        // Set default date to today
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('meetingDate').value = today;
     }
@@ -1960,6 +2226,7 @@
         
         const titles = {
             dashboard: 'Dashboard',
+            users: 'User Management',
             posts: 'All Posts',
             create: 'Create Post',
             calendar: 'Calendar Manager',
@@ -2019,6 +2286,10 @@
             closeMeetingModal();
             closeVideoModal();
         }
+        if (e.ctrlKey && e.key === 'f') {
+            e.preventDefault();
+            document.getElementById('globalSearchInput').focus();
+        }
     });
 
     // ────────────────────────────────────────────────
@@ -2027,6 +2298,11 @@
     window.switchTab = switchTab;
     window.toggleSidebar = toggleSidebar;
     window.filterPosts = filterPosts;
+    window.filterUsers = filterUsers;
+    window.searchUsers = searchUsers;
+    window.globalSearch = globalSearch;
+    window.viewUser = viewUser;
+    window.deleteUser = deleteUser;
     window.handleCreatePost = handleCreatePost;
     window.deletePost = deletePost;
     window.editPost = editPost;
@@ -2065,7 +2341,9 @@
 
     console.log('🔒 MFA Admin Dashboard with Supabase loaded successfully!');
     console.log('📊 Connected to Supabase PostgreSQL');
+    console.log('👥 User Management: Staff, Students, Parents');
     console.log('🎥 Virtual Meeting and Video Library features enabled');
+    console.log('🔍 Global Search: Ctrl+F to search users and content');
     console.log('🛡️ Security features: Session management, activity logging');
     console.log('🏠 Logout redirects to Moi Forces Academy homepage');
 </script>
