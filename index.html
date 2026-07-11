@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Moi Forces Academy — Primary & Junior School</title>
     <meta name="description" content="Moi Forces Academy Nairobi - A premier educational institution sponsored by the Kenya Defence Forces. Excellence in education, character, and leadership." />
-    <meta name="keywords" content="Moi Forces Academy, Nairobi, Kenya Defence Forces, education, KDF, school, primary, junior school" />
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
@@ -48,8 +47,6 @@
         .border-kdf-red { border-color: #B22222; }
         .border-kdf-navy { border-color: #0a1a3a; }
         .border-kdf-gold { border-color: #D4A017; }
-        .hover-bg-kdf-gold:hover { background-color: #D4A017; color: #0a1a3a; }
-        .hover-text-kdf-gold:hover { color: #D4A017; }
         
         .hero-gradient {
             background: linear-gradient(135deg, #0a1a3a 0%, #1a2a5a 30%, #B22222 70%, #4A90D9 100%);
@@ -126,31 +123,15 @@
             background: #D4A017;
             color: #0a1a3a;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
         .admin-btn:hover {
             background: #FCD34D;
             transform: translateY(-2px);
             box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
         }
-        .admin-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .admin-btn:hover::before { opacity: 1; }
         
         .portal-btn {
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
         .portal-btn:hover {
             transform: translateY(-2px);
@@ -180,11 +161,6 @@
         }
         .portal-btn-parent:hover {
             background: #8B1A1A;
-        }
-        
-        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
-            outline: 3px solid #D4A017;
-            outline-offset: 2px;
         }
         
         .skip-link {
@@ -219,23 +195,6 @@
             outline: none;
             border-color: #D4A017;
             box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.15);
-        }
-        .form-input.error {
-            border-color: #B22222;
-            box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.15);
-        }
-        
-        .call-container {
-            background: #0a1a3a;
-            border-radius: 16px;
-            overflow: hidden;
-            min-height: 400px;
-        }
-        .call-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background: #1a2a5a;
         }
         
         .updates-grid {
@@ -299,6 +258,19 @@
             flex-shrink: 0;
         }
         
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
         @media (max-width: 640px) {
             .updates-grid { grid-template-columns: 1fr; }
             .nav-badge { width: 40px; height: 40px; }
@@ -331,11 +303,11 @@
                 <a href="#home" class="nav-link active text-white font-medium">Home</a>
                 <a href="#about" class="nav-link text-gray-300 hover:text-white font-medium">About</a>
                 <a href="#academics" class="nav-link text-gray-300 hover:text-white font-medium">Academics</a>
-                <a href="updates.html" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
+                <a href="#updates" class="nav-link text-gray-300 hover:text-white font-medium">Updates</a>
                 <a href="#videos" class="nav-link text-gray-300 hover:text-white font-medium">Videos</a>
                 <a href="#gallery" class="nav-link text-gray-300 hover:text-white font-medium">Gallery</a>
                 <a href="#virtual-classroom" class="nav-link text-gray-300 hover:text-white font-medium">Virtual Class</a>
-                <a href="contact.html" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
+                <a href="#contact" class="nav-link text-gray-300 hover:text-white font-medium">Contact</a>
                 
                 <a href="staff-portal.html" class="portal-btn portal-btn-staff px-3 py-2 rounded-full font-bold text-xs flex items-center gap-1.5">
                     <i class="fas fa-chalkboard-teacher"></i> Staff
@@ -366,11 +338,11 @@
             <a href="#home" class="text-white font-medium py-2 hover:text-kdf-gold transition">Home</a>
             <a href="#about" class="text-gray-300 font-medium py-2 hover:text-white transition">About</a>
             <a href="#academics" class="text-gray-300 font-medium py-2 hover:text-white transition">Academics</a>
-            <a href="updates.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
+            <a href="#updates" class="text-gray-300 font-medium py-2 hover:text-white transition">Updates</a>
             <a href="#videos" class="text-gray-300 font-medium py-2 hover:text-white transition">Videos</a>
             <a href="#gallery" class="text-gray-300 font-medium py-2 hover:text-white transition">Gallery</a>
             <a href="#virtual-classroom" class="text-gray-300 font-medium py-2 hover:text-white transition">Virtual Classroom</a>
-            <a href="contact.html" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
+            <a href="#contact" class="text-gray-300 font-medium py-2 hover:text-white transition">Contact</a>
             
             <a href="staff-portal.html" class="bg-kdf-navy text-white border-2 border-kdf-gold px-5 py-3 rounded-full font-bold text-center hover:bg-kdf-navy/80 transition flex items-center justify-center gap-2">
                 <i class="fas fa-chalkboard-teacher"></i> Staff Portal
@@ -409,7 +381,7 @@
                     Moi Forces Academy Nairobi — A premier institution nurturing future leaders with discipline, integrity, and academic excellence.
                 </p>
                 <div class="flex flex-wrap gap-4 mt-8">
-                    <a href="updates.html" class="bg-kdf-gold text-kdf-navy px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition shadow-lg shadow-kdf-gold/30">
+                    <a href="#updates" class="bg-kdf-gold text-kdf-navy px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition shadow-lg shadow-kdf-gold/30">
                         <i class="fas fa-newspaper mr-2"></i> School Updates
                     </a>
                     <a href="#videos" class="bg-white/10 backdrop-blur-sm text-white px-8 py-3.5 rounded-full font-bold border border-white/20 hover:bg-white/20 transition flex items-center gap-2">
@@ -586,9 +558,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- VIDEOS SECTION -->
-<!-- ════════════════════════════════════════ -->
+<!-- Videos Section -->
 <section id="videos" class="py-20 bg-kdf-gray" aria-label="School videos">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -598,10 +568,7 @@
             <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Watch educational videos, school events, and important announcements from Moi Forces Academy.</p>
         </div>
         
-        <!-- Video Grid -->
-        <div id="videosGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Rendered by JavaScript -->
-        </div>
+        <div id="videosGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         
         <div class="text-center mt-8">
             <p class="text-sm text-gray-500">🎬 Videos are loaded from the school's video library. Check back for new content!</p>
@@ -609,9 +576,7 @@
     </div>
 </section>
 
-<!-- ════════════════════════════════════════ -->
-<!-- GALLERY SECTION -->
-<!-- ════════════════════════════════════════ -->
+<!-- Gallery Section -->
 <section id="gallery" class="py-20 bg-white" aria-label="School gallery">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -621,25 +586,13 @@
             <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Explore photos from school events, sports days, academic activities, and more.</p>
         </div>
         
-        <!-- Gallery Grid -->
-        <div id="galleryGrid" class="gallery-grid">
-            <!-- Rendered by JavaScript -->
-        </div>
+        <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
         
         <div class="text-center mt-8">
             <p class="text-sm text-gray-500">📸 Click on any photo to view it in full size.</p>
         </div>
     </div>
 </section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- LIGHTBOX -->
-<!-- ════════════════════════════════════════ -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <button class="close-lightbox" onclick="closeLightbox()">&times;</button>
-    <img id="lightboxImage" src="" alt="Gallery image" />
-    <div id="lightboxCaption" class="caption"></div>
-</div>
 
 <!-- Virtual Classroom Section -->
 <section id="virtual-classroom" class="py-20 bg-kdf-navy" aria-label="Virtual Classroom">
@@ -831,7 +784,7 @@
                     <li><a href="#home" class="hover:text-kdf-gold transition">Home</a></li>
                     <li><a href="#about" class="hover:text-kdf-gold transition">About</a></li>
                     <li><a href="#academics" class="hover:text-kdf-gold transition">Academics</a></li>
-                    <li><a href="updates.html" class="hover:text-kdf-gold transition">Updates</a></li>
+                    <li><a href="#updates" class="hover:text-kdf-gold transition">Updates</a></li>
                     <li><a href="#videos" class="hover:text-kdf-gold transition">Videos</a></li>
                     <li><a href="#gallery" class="hover:text-kdf-gold transition">Gallery</a></li>
                 </ul>
@@ -935,7 +888,7 @@
                 eventDescription: e.description
             }));
             
-            // Combine and sort for updates grid (latest 6)
+            // Combine and sort for updates grid (latest 6 - newest first)
             let allItems = [...(postsData || []), ...eventPosts];
             allItems.sort((a, b) => new Date(b.date) - new Date(a.date));
             allItems = allItems.slice(0, 6);
@@ -943,10 +896,10 @@
             // Render updates grid
             renderUpdates(allItems);
             
-            // Render announcements from posts (real data)
+            // Render announcements from posts (newest first)
             renderAnnouncements(postsData || []);
             
-            // Render events from events table (real data)
+            // Render events from events table (upcoming first, newest first)
             renderEvents(eventsData || []);
             
             updateDbStatus('connected', `Supabase (${allItems.length} updates)`);
@@ -1002,10 +955,11 @@
         const container = document.getElementById('announcements');
         if (!container) return;
         
-        // Filter for 'updates' and 'news' categories
-        const announcements = (posts || []).filter(p => 
-            p.category === 'updates' || p.category === 'news'
-        ).slice(0, 4);
+        // Filter for 'updates' and 'news' categories and sort by date (newest first)
+        const announcements = (posts || [])
+            .filter(p => p.category === 'updates' || p.category === 'news')
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .slice(0, 4);
         
         if (announcements.length === 0) {
             container.innerHTML = `<p class="text-sm text-gray-500">No announcements available.</p>`;
@@ -1032,10 +986,19 @@
             return;
         }
         
-        // Sort events by date (upcoming first)
-        const sortedEvents = [...events].sort((a, b) => 
-            new Date(a.date || a.event_date) - new Date(b.date || b.event_date)
-        ).slice(0, 4);
+        // Sort events: upcoming first, then by date (newest first)
+        const now = new Date();
+        const sortedEvents = [...events]
+            .sort((a, b) => {
+                const dateA = new Date(a.date || a.event_date);
+                const dateB = new Date(b.date || b.event_date);
+                const aIsUpcoming = dateA >= now;
+                const bIsUpcoming = dateB >= now;
+                if (aIsUpcoming && !bIsUpcoming) return -1;
+                if (!aIsUpcoming && bIsUpcoming) return 1;
+                return dateB - dateA;
+            })
+            .slice(0, 4);
         
         container.innerHTML = sortedEvents.map(event => `
             <div class="flex items-center justify-between p-2 border-b border-white/10">
@@ -1047,19 +1010,19 @@
     
     function loadSampleData() {
         const samplePosts = [
-            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚' },
-            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃' },
-            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️' },
-            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦' },
-            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖' },
             { id: 6, title: '🗓️ End Term 2 Assessment Test', category: 'calendar', content: 'End Term 2 Assessment Test from July 20th to July 25th, 2026. 8:00 AM - 5:00 PM daily.', date: '2026-07-20', image: '📝' },
+            { id: 4, title: 'Parent-Teacher Conference', category: 'events', content: 'The term 1 parent-teacher conference will be held on January 30th.', date: '2026-01-25', image: '👨‍👩‍👦' },
+            { id: 2, title: 'Annual Sports Day - Coming Soon', category: 'events', content: 'Our annual sports day is scheduled for February 2026.', date: '2026-01-20', image: '🏃' },
+            { id: 1, title: 'KJSEA 2026 Preparation Underway', category: 'news', content: 'Grade 9 students are now in intensive preparation for the KJSEA 2026 examinations.', date: '2026-01-15', image: '📚' },
+            { id: 3, title: 'KDF Career Day 2026', category: 'updates', content: 'Kenya Defence Forces will host a career day at our school.', date: '2026-01-10', image: '🎖️' },
+            { id: 5, title: 'New CBC Resources Available', category: 'news', content: 'We have updated our CBC resources for all grades.', date: '2026-01-05', image: '📖' },
         ];
         
         const sampleEvents = [
+            { title: 'Parent-Teacher Conference', date: '2026-01-30' },
             { title: 'Sports Day', date: '2026-02-15' },
             { title: 'KDF Career Day', date: '2026-02-20' },
             { title: 'Science Fair', date: '2026-02-28' },
-            { title: 'Parent-Teacher Conference', date: '2026-01-30' },
         ];
         
         renderUpdates(samplePosts);
@@ -1069,178 +1032,281 @@
     }
     
     // ────────────────────────────────────────────────
-    // VIDEOS & GALLERY FUNCTIONS
+    // VIDEOS - LOAD FROM SUPABASE
     // ────────────────────────────────────────────────
-    async function fetchVideos() {
+    async function fetchVideosFromSupabase() {
         try {
             const { data, error } = await sbClient
                 .from('videos')
                 .select('*')
                 .order('created_at', { ascending: false });
-            
+                
             if (error) throw new Error(error.message);
             console.log('🎬 Videos fetched:', data?.length || 0);
+            
             renderVideos(data || []);
         } catch (error) {
             console.error('Error fetching videos:', error);
-            renderVideos([
-                { id: 1, title: 'KJSEA 2026 Revision Guide', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Comprehensive revision guide for KJSEA 2026.' },
-                { id: 2, title: 'Mathematics Made Easy', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', category: 'academic', description: 'Step-by-step guide to mastering Mathematics.' },
-            ]);
+            renderVideos([]);
         }
     }
     
     function renderVideos(videos) {
         const container = document.getElementById('videosGrid');
         if (!container) return;
-        // ... video rendering code ...
+        
+        if (!videos || videos.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-8 text-gray-500">
+                    <i class="fas fa-video text-4xl mb-3 block"></i>
+                    <p>No videos available yet. Check back soon!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = videos.map(video => `
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition">
+                <div class="aspect-video bg-kdf-navy/10 flex items-center justify-center relative">
+                    ${video.thumbnail ? 
+                        `<img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover" />` :
+                        `<div class="text-4xl text-kdf-gold">🎬</div>`
+                    }
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-kdf-gold rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition">
+                            <i class="fas fa-play text-kdf-navy text-xl ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-kdf-navy">${video.title}</h4>
+                    <p class="text-sm text-gray-500 mt-1">${video.description || ''}</p>
+                    <a href="${video.video_url || '#'}" target="_blank" class="inline-block mt-2 text-kdf-red text-sm font-medium hover:text-kdf-gold transition">
+                        Watch Video <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        `).join('');
     }
     
-    async function fetchGallery() {
+    // ────────────────────────────────────────────────
+    // GALLERY - LOAD FROM SUPABASE
+    // ────────────────────────────────────────────────
+    async function fetchGalleryFromSupabase() {
         try {
             const { data, error } = await sbClient
                 .from('gallery')
                 .select('*')
                 .order('created_at', { ascending: false });
-            
+                
             if (error) throw new Error(error.message);
-            console.log('🖼️ Gallery images fetched:', data?.length || 0);
+            console.log('🖼️ Gallery fetched:', data?.length || 0);
+            
             renderGallery(data || []);
         } catch (error) {
             console.error('Error fetching gallery:', error);
-            renderGallery([
-                { id: 1, title: 'Sports Day 2026', image_url: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=400&fit=crop' },
-                { id: 2, title: 'Science Fair', image_url: 'https://images.unsplash.com/photo-1530023367847-a683933f4172?w=400&h=400&fit=crop' },
-            ]);
+            renderGallery([]);
         }
     }
     
     function renderGallery(images) {
         const container = document.getElementById('galleryGrid');
         if (!container) return;
-        // ... gallery rendering code ...
-    }
-    
-    // ────────────────────────────────────────────────
-    // CALL FUNCTIONALITY
-    // ────────────────────────────────────────────────
-    function startVideoCall() { /* ... existing code ... */ }
-    function startVoiceCall() { /* ... existing code ... */ }
-    function endCall() { /* ... existing code ... */ }
-    
-    // ────────────────────────────────────────────────
-    // CONTACT FORM HANDLER
-    // ────────────────────────────────────────────────
-    function handleContactForm(event) { /* ... existing code ... */ }
-    
-    // ────────────────────────────────────────────────
-    // SCHEDULE DATA
-    // ────────────────────────────────────────────────
-    const scheduleData = [
-        { time: '8:00 AM', subject: 'Mathematics - Grade 9', teacher: 'Mr. Ochieng' },
-        { time: '10:00 AM', subject: 'English - Grade 7', teacher: 'Ms. Wanjiru' },
-        { time: '12:00 PM', subject: 'Science - Grade 8', teacher: 'Dr. Akinyi' },
-        { time: '2:00 PM', subject: 'Kiswahili - Grade 7', teacher: 'Mr. Kiprop' },
-        { time: '4:00 PM', subject: 'Social Studies - Grade 8', teacher: 'Ms. Muthoni' }
-    ];
-    
-    function renderSchedule() {
-        const container = document.getElementById('scheduleList');
-        if (!container) return;
-        container.innerHTML = scheduleData.map(item => `
-            <div class="flex items-center justify-between p-2 bg-white/5 rounded-lg">
-                <div>
-                    <span class="text-sm font-medium text-white">${item.subject}</span>
-                    <span class="block text-xs text-gray-400">${item.teacher}</span>
+        
+        if (!images || images.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-8 text-gray-500">
+                    <i class="fas fa-images text-4xl mb-3 block"></i>
+                    <p>No gallery images available yet. Check back soon!</p>
                 </div>
-                <span class="text-xs text-kdf-gold font-semibold">${item.time}</span>
+            `;
+            return;
+        }
+        
+        container.innerHTML = images.map(image => `
+            <div class="aspect-square bg-kdf-gray rounded-xl overflow-hidden cursor-pointer hover:scale-105 transition duration-300" onclick="openLightbox('${image.image_url || ''}', '${image.title || ''}')">
+                <img src="${image.image_url || ''}" alt="${image.title || 'Gallery image'}" class="w-full h-full object-cover" />
             </div>
         `).join('');
     }
     
     // ────────────────────────────────────────────────
-    // LIGHTBOX FUNCTIONS
+    // LIGHTBOX
     // ────────────────────────────────────────────────
-    function openLightbox(imageUrl, caption) {
+    function openLightbox(src, caption) {
         const lightbox = document.getElementById('lightbox');
         const img = document.getElementById('lightboxImage');
-        const captionEl = document.getElementById('lightboxCaption');
-        img.src = imageUrl;
-        captionEl.textContent = caption || 'School Event';
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
+        const cap = document.getElementById('lightboxCaption');
+        if (lightbox && img) {
+            img.src = src;
+            if (cap) cap.textContent = caption || '';
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
     }
     
     function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('open');
-        document.body.style.overflow = '';
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox) {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
     
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeLightbox();
-    });
+    // ────────────────────────────────────────────────
+    // VIRTUAL CLASSROOM
+    // ────────────────────────────────────────────────
+    function startVideoCall() {
+        const status = document.getElementById('callStatus');
+        if (status) {
+            status.classList.remove('hidden');
+            status.querySelector('.call-container p').textContent = 'Video call connecting...';
+        }
+    }
+    
+    function startVoiceCall() {
+        const status = document.getElementById('callStatus');
+        if (status) {
+            status.classList.remove('hidden');
+            status.querySelector('.call-container p').textContent = 'Voice call connecting...';
+        }
+    }
+    
+    function endCall() {
+        const status = document.getElementById('callStatus');
+        if (status) {
+            status.classList.add('hidden');
+        }
+    }
+    
+    // ────────────────────────────────────────────────
+    // CONTACT FORM
+    // ────────────────────────────────────────────────
+    function handleContactForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const feedback = document.getElementById('formFeedback');
+        
+        if (feedback) {
+            feedback.className = 'mt-4 p-4 bg-green-50 text-green-700 rounded-xl flex items-center gap-3';
+            feedback.innerHTML = `<i class="fas fa-check-circle text-xl"></i> Thank you for your message! We'll get back to you soon.`;
+            feedback.classList.remove('hidden');
+        }
+        
+        form.reset();
+        setTimeout(() => {
+            if (feedback) {
+                feedback.classList.add('hidden');
+            }
+        }, 5000);
+    }
     
     // ────────────────────────────────────────────────
     // MOBILE MENU TOGGLE
     // ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
-        initSupabase();
-        
-        const menuToggle = document.getElementById('menuToggle');
+        const toggleBtn = document.getElementById('menuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
         
-        if (menuToggle && mobileMenu) {
-            menuToggle.addEventListener('click', function() {
+        if (toggleBtn && mobileMenu) {
+            toggleBtn.addEventListener('click', function() {
                 const isOpen = mobileMenu.classList.toggle('open');
-                menuToggle.setAttribute('aria-expanded', isOpen);
-                menuToggle.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                toggleBtn.setAttribute('aria-expanded', isOpen);
+                toggleBtn.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
             });
         }
         
-        renderSchedule();
-        fetchPostsFromSupabase();
-        fetchVideos();
-        fetchGallery();
-        
-        document.querySelectorAll('#mobileMenu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuToggle.setAttribute('aria-expanded', 'false');
-                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-        
-        document.querySelectorAll('[onclick="startVideoCall()"], [onclick="startVoiceCall()"]').forEach(btn => {
-            btn.setAttribute('role', 'button');
-            btn.setAttribute('tabindex', '0');
-        });
+        // Load schedule
+        const scheduleEl = document.getElementById('scheduleList');
+        if (scheduleEl) {
+            const now = new Date();
+            const day = now.toLocaleDateString('en-KE', { weekday: 'long' });
+            const scheduleData = {
+                'Monday': ['8:00 AM - Math', '10:00 AM - English', '1:00 PM - Science'],
+                'Tuesday': ['8:00 AM - Kiswahili', '10:00 AM - Social Studies', '1:00 PM - CRE'],
+                'Wednesday': ['8:00 AM - Math', '10:00 AM - English', '1:00 PM - Science'],
+                'Thursday': ['8:00 AM - Kiswahili', '10:00 AM - Social Studies', '1:00 PM - CRE'],
+                'Friday': ['8:00 AM - Math', '10:00 AM - English', '1:00 PM - Science'],
+            };
+            const todaySchedule = scheduleData[day] || ['No classes scheduled for today.'];
+            scheduleEl.innerHTML = todaySchedule.map(item => 
+                `<div class="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                    <span>${item}</span>
+                    <span class="text-xs text-kdf-gold">🟢 Live</span>
+                </div>`
+            ).join('');
+        }
     });
     
     // ────────────────────────────────────────────────
-    // EXPOSE FUNCTIONS TO GLOBAL SCOPE
+    // INITIALIZE
     // ────────────────────────────────────────────────
-    window.startVideoCall = startVideoCall;
-    window.startVoiceCall = startVoiceCall;
-    window.endCall = endCall;
-    window.handleContactForm = handleContactForm;
-    window.openLightbox = openLightbox;
-    window.closeLightbox = closeLightbox;
+    document.addEventListener('DOMContentLoaded', function() {
+        if (initSupabase()) {
+            fetchPostsFromSupabase();
+            fetchVideosFromSupabase();
+            fetchGalleryFromSupabase();
+        } else {
+            loadSampleData();
+            renderVideos([]);
+            renderGallery([]);
+        }
+    });
     
-    console.log('🚀 Moi Forces Academy website loaded successfully!');
-    console.log('📊 Connected to Supabase PostgreSQL');
-    console.log('📅 Events are now fetched from the events table');
-    console.log('📌 Announcements from posts with category "updates" or "news"');
-    console.log('🔑 Supabase URL:', SUPABASE_URL);
+    // ────────────────────────────────────────────────
+    // LIGHTBOX STYLES (injected dynamically)
+    // ────────────────────────────────────────────────
+    (function injectLightboxStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .lightbox {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.9);
+                z-index: 9999;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                cursor: pointer;
+            }
+            .lightbox img {
+                max-width: 90%;
+                max-height: 80vh;
+                object-fit: contain;
+                border-radius: 8px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            }
+            .lightbox .caption {
+                color: white;
+                text-align: center;
+                margin-top: 16px;
+                font-size: 1rem;
+                max-width: 80%;
+            }
+            .lightbox .close-lightbox {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                color: white;
+                font-size: 2.5rem;
+                font-weight: 300;
+                background: none;
+                border: none;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: opacity 0.3s;
+            }
+            .lightbox .close-lightbox:hover {
+                opacity: 1;
+            }
+        `;
+        document.head.appendChild(style);
+    })();
 </script>
+
 </body>
 </html>
